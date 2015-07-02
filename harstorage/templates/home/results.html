@@ -1,0 +1,50 @@
+<center>
+    <div id="reportControls">
+        <div class="uploader">
+            <form action="/results/upload" enctype="multipart/form-data" method="post">
+                <fieldset>
+                    <legend>New File</legend>
+                    <input class="file"     id="file"   name="file"     type="file"     size="25" />
+                    <input class="button"   id="upload" name="upload"   type="submit"   value="Upload"/>
+                </fieldset>
+            </form>
+        </div>
+        <div class="uploader reports">
+            <form action="#">
+                    <fieldset>
+                            <legend>Reports</legend>
+                            <button class="button" style="width:200px;" type="button" onclick="window.location.href='/superposed/create';">Aggregate and Compare</button>
+                    </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <div class="summary" id="summary-table">
+        <p class="title">Latest Results</p>
+
+        <table class="display" id="stats_table">
+            <thead>
+                <tr>
+                    <th width="18%" class="left">Timestamp</th>
+                    <th width="20%" class="left">Label</th>
+                    <th width="33%" class="left">URL</th>
+                    <th width="10%" class="center">Total Size (kB)</th>
+                    <th width="9%" class="center">Total Requests</th>
+                    <th width="10%" class="center">Full Load Time (s)</th>
+                </tr>
+            </thead>
+            <tbody>
+                % for index in range(c.rowcount):
+                <tr> 
+                    <td class="left">${c.metrics_table[0][index]}</td>
+                    <td class="left"><a href="${h.url_for(controller='results',action='details',label=c.metrics_table[1][index],method='GET')}">${c.metrics_table[1][index]}</a></td>
+                    <td class="left"><a href="${h.url_for(controller='results',action='details',url=c.metrics_table[2][index],method='GET')}">${c.metrics_table[2][index]}</a></td>
+                    <td class="center">${c.metrics_table[3][index]}</td>
+                    <td class="center">${c.metrics_table[4][index]}</td>
+                    <td class="center">${c.metrics_table[5][index]}</td>
+                </tr>
+                % endfor
+            </tbody>
+        </table>
+    </div>
+</center>

@@ -1,0 +1,29 @@
+<div id="ectoMain">
+    <div id="logo" style="float:left;">
+        <img src="/images/slimer.png" />
+    </div>
+    <form id="casperForm" class="uploader">
+        <label for="casperScripts" style="margin:0px 10px 0px 40px">Select The Casperjs Script to Run </label>
+        <select id="casperScripts" style="margin:16px auto 16px 2%;">
+            <option>Casperjs Script</option>
+            <option value=1 selected>Performance Measurement - Har Storage</option>
+        </select>
+        <fieldset id="harOptions" style="width:90%;margin:16px auto 16px auto;">
+            <legend>ScriptOptions</legend>
+            <div id="scriptOptCont"> 
+                Parameters for selected Script go Here.
+            </div>
+        </fieldset>
+        <button id="ghostIt" class="button"  style="position:relative;left:69%;" type="button" onclick="#">Execute Script</button>
+    </form>
+    <hr style="width:100%" />
+    <div id="scriptOutputCont" style="width:70%; background-color:#c2c2c2;margin:16px auto 16px 25%;">
+        <div id="casperScripts" style="width:98%; height:300px;background-color:#000000; margin:16px auto 16px auto; overflow:scroll;">
+            <span id="scriptOutput">
+                <p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;---- Script Output ----
+                </p>
+            </span>
+        </div>
+    </div>
+</div>
