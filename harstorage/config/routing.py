@@ -6,15 +6,16 @@ def make_map(config):
     map = Mapper(directory=config["pylons.paths"]["controllers"],
                  always_scan=config["debug"])
     map.minimization = False
-    map.explicit = True
+    map.explicit = False
 
     # The ErrorController route (handles 4xx/5xx error pages)
     map.connect("/error/{action}", controller="error")
-    
-    #map.connect("/casperjs/{action}", controller="casperjs")
 
     # Home page
     map.connect("/", controller="results", action="index")
+    
+    # Casper Execution
+    map.connect("/casperjs/{action}", controller="casperjs")
 
     # Common routing to controllers
     map.connect("/{controller}/{action}")
