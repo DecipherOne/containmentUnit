@@ -6,12 +6,20 @@
         <label for="casperScripts" style="margin:0px 10px 0px 40px">Select The Casperjs Script to Run </label>
         <select id="casperScripts" style="margin:16px auto 16px 2%;">
             <option>Casperjs Script</option>
-            <option value=1 selected>Performance Measurement - Har Storage</option>
+            <option value='1' selected>Performance Measurement - Har Storage</option>
         </select>
         <fieldset id="harOptions" style="width:90%;margin:16px auto 16px auto;">
             <legend>ScriptOptions</legend>
-            <div id="scriptOptCont"> 
-                Parameters for selected Script go Here.
+            <div id="scriptOptCont" >
+                <div style="width:70%; margin:10px auto;">
+                    <label for="waitTime">Time in milli-sec to wait between each script execution.</label>
+                    <input id="waitTime" placeholder="100" type="number" value="100" />
+                </div>
+                <div style="width:70%; margin:10px auto;">
+                    <label for="timesToExe">How many times to run the script.</label>
+                    <input id="timesToExe" placeholder="1" type="number" value="1" />
+                </div>
+                
             </div>
         </fieldset>
         <button id="ghostIt" class="button"  style="position:relative;left:69%;" type="button" onclick="#">Execute Script</button>
@@ -27,3 +35,4 @@
         </div>
     </div>
 </div>
+<div style="display:none;" id="loadBuffer"></div>

@@ -14,12 +14,14 @@ fs = require('fs'),
 page = casper,
 har = null,  
 iterations = casper.cli.args[2],
-waitTime = casper.cli.args[1],
+waitTime = casper.cli.args[1] || 100,
 preservedUrls = null,  
 itCount = 0,
 jsonFile = casper.cli.args[0],
 brandId = null,
-uploadPath = 'http://10.196.100.81:5000/results/upload';
+uploadPath = 'http://localhost:5000/results/upload',
+filePreFix = null,
+curPage=null;
 
 casper.resources = [];
 
@@ -36,18 +38,18 @@ function spider(url) {
         page.title = casper.evaluate(function() {
             return document.title.replace(/\s+/g, "");
         });
-
-        if(waitTime > 0){    
-            this.wait(waitTime,function(){
-              this.echo('waited '+ waitTime +' milli-secs for page load');
-            });
-        }
-
+        
+        brandId = casper.evaluate(function(){
+            return document.body.classList[0];
+        });
+        
+        this.wait(waitTime,function(){
+          this.echo('waited '+ waitTime +' milli-secs for page load');
+          curPage =  getParameterByName('containerName',url);
+        });
     });
 
     casper.then(function(){
-
-        var filePreFix = null;
          
         filePreFix = casper.evaluate(function() {
 
@@ -60,21 +62,15 @@ function spider(url) {
                 return "test";
             }
             else{
-                return"prod";
+                return "prod";
             }
-            
         });
 
-        brandId = casper.evaluate(function(){
-
-          return  window.document.body.classList[0];
-
-        });
-
-        filePreFix += brandId.toUpperCase();
-
-		var curPage = casper.getCurrentUrl(); 
-        filePreFix += '_' + getParameterByName('containerName',curPage);
+        if(brandId === null||brandId==="null"){
+            brandId = "NoBrand";   
+        }
+        
+        filePreFix += brandId.toUpperCase() + '_' + curPage;;
        
         // generate har file
         har = helpers.createHAR(filePreFix, page.title, casper.startTime, page.resources);
@@ -198,6 +194,17 @@ casper.start('localHost',function() {
 casper.run();
 
 function getParameterByName(parameter,page) {
-	var match = RegExp('[?&]' + parameter + '=([^&]*)').exec(page);
-	return match[1];
+        var match = RegExp('[?&]' + parameter + '=([^&]*)').exec(page);
+        return match[1].replace(/\+/g, ' ');
+}
+
+function getHostName(url) {
+    var match = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
+    if (match != null && match.length > 2 &&
+        typeof match[2] === 'string' && match[2].length > 0) {
+    return match[2];
+    }
+    else {
+        return null;
+    }
 }
