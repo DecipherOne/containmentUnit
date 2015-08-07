@@ -10,32 +10,47 @@
     
     var scriptSelect = $('#casperScripts'),
         jsonSelect   = $('#harPerfJsonFiles'),
-        optionsCont  = $('#scriptOptCont');
+        optionsCont  = $('#scriptOptCont'),
+        submitButton = $('#ghostIt'),
+        waitTime = $('#waitTime'),
+        timesToExe = $('#timesToExe'),
+        payLoad = null;
     
     //harScript name space - all related to our performanceHarRepo.js
     ecto1.casper.harScript = ecto1.casper.harScript || {};
     
-    ecto1.casper.harScript.getParameters = function(){
-        
-    };
     
     // Send a request to python to scan the script directory and return a list
     // of available scripts to be populated in the drop down.
-    ecto1.casper.populateAvailableScripts = function(){
+    ecto1.casper.populateAvailableScripts = function(directory){
         
     };
     
     
     $(document).ready(function(){
         ecto1.casper.populateAvailableScripts();
+        if(scriptSelect.val()==='0'){
+            toggleSubmit();
+        }
     });
     
     scriptSelect.on('change',function(){
+        
+        toggleSubmit('enabled');
+        removeAppendedNodes();
+        
         switch(scriptSelect.val()){
+            case'0':{
+                    toggleSubmit();
+                    break;
+            }
             case'1':{ //harperf script load additional form fields
-                $('#loadBuffer').load("../home/casperForms/crtHarPerfForm.html",function(){
-                    optionsCont.append($(this).html());
-                }); 
+                    jsonSelect   = $('#harPerfJsonFiles');
+                    if(jsonSelect.length<1){
+                        $('#loadBuffer').load("/casperjs/harJsonFiles",function(){
+                            optionsCont.append($(this).html());
+                        }); 
+                    }
                 break;
             }
             default:{
@@ -43,6 +58,67 @@
             }
         }
     });
+    
+    function removeAppendedNodes(){
+        var nodes = $('.appendedNode');
+        for(i=0; i < nodes.length; i++){
+            
+            nodes[i].remove();
+        }
+    }
+    
+    submitButton.on('click',function(){
+        switch(scriptSelect.val()){
+            case'1':{
+                    postHarScript();
+                    break;
+            }
+            default:{
+                    break;
+            }
+        }
+    });
+    
+    function postHarScript(){
+        payLoad = {
+                'script' : scriptSelect.val(),
+                'waitTime' : waitTime.val() ,
+                'timesToExe' : timesToExe.val()
+                //jsonUrlFile : jsonSelect.val()
+            };
+        
+        payLoad = JSON.stringify(payLoad);
+        
+        $.ajax({
+            url: "/casperjs/exeScript",
+            type: "POST",
+            data:  payLoad,
+            async: true,
+            contentType: 'application/json; charset=utf-8',
+
+            //Load the minibrowser with the redirection url in the success handler
+            success: function (response) {
+                console.log(response);
+               
+            },
+            error: function (response) {
+               
+
+            }
+        });
+    }
+    
+    function toggleSubmit(arg){
+        
+        if(arg==='enabled'){
+           submitButton.prop('disabled',false);
+           submitButton.css('background-color','#498a2d');
+        }
+        else{
+           submitButton.prop('disabled',true);
+           submitButton.css('background-color','red');
+        }
+    }
    
     
     return ecto1;

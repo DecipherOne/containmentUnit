@@ -1,9 +1,12 @@
 # This block is used to run casperjs scripts from a web interface.
-import os
+import json
+
 import subprocess
-from pylons import request, tmpl_context as c
+from pylons import request, response, tmpl_context as c
 from pylons import config
-from webhelpers.html.builder import literal
+from pylons.controllers.util import redirect
+from pylons.decorators.rest import restrict
+
 
 from harstorage.lib.base import BaseController, render
 
@@ -15,16 +18,41 @@ scriptDirectory = APP_ROOT + "/templates/home/CasperScripts/"
 #This opens a pipe to the standard cmd shell and sets input and output
 class CasperjsController(BaseController):
     
+    def __before__(self):
+        """Define version of static content"""
+
+        c.rev = config["app_conf"]["static_version"]
+    
     # default script to run
     scriptName ="performanceHarRepo.js "
     waitTime = "100"
     jsonFile = "HighResLinks.json"
     timesToExe = '3'
     
-    args ="casperjs " + scriptDirectory + scriptName + " " + scriptDirectory + jsonFile + " " + waitTime + " " + timesToExe;
+   
     
-    def exeScript(self,script,timeToWait,jsonFileName,timesToRun):
+    def exeScript(self):
         
+        reqParams = json.loads(request.body)
+        
+        #setup which script to run
+        if reqParams['script']== None or reqParams['timesToExe'] == None :
+            return render("/error.html")
+        
+        #har script
+        if reqParams['script']=='1':
+            scriptName ="performanceHarRepo.js "
+        # if(reqParams['jsonFile'] == 1:
+            jsonFile = "HighResLinks.json"
+                
+        if reqParams['waitTime'] != None:
+            waitTime = reqParams['waitTime']
+            
+        if reqParams['timesToExe'] != None:
+            timesToExe = reqParams['timesToExe']
+        
+        # We have all our values setup the cmdline cmd
+        args ="casperjs " + scriptDirectory + scriptName + " " + scriptDirectory + jsonFile + " " + waitTime + " " + timesToExe;
         
         
         myProc = subprocess.Popen(args,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.STDOUT);
@@ -41,4 +69,7 @@ class CasperjsController(BaseController):
         #accumulate all the file names
         #return json array
         return "availableScripts"
+    
+    def harJsonFiles(self):
+        return render('/home/casperForms/crtHarPerfForm.html')
         

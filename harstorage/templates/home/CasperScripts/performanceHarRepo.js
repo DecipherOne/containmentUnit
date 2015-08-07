@@ -79,15 +79,17 @@ function spider(url) {
         
         page.resources = []; 
         
-        if(casper.cli.args.length>2 && casper.cli.args[3]=="true"){
+        if(casper.cli.args.length>2 && casper.cli.args[3]==="true"){
             this.capture('png/' + filePreFix + "_" +  itCount +'.png');
         }
         //Send Data to Har Storage
         this.echo(this.colorizer.format("Attempting to upload Har to : " + uploadPath , 
             { bg:'green',fg: 'yellow', bold: true }));
+       
         casper.open(uploadPath, {
             method: 'post',
-            headers:{"Content-type": "application/x-www-form-urlencoded", "Automated": "true"},
+            headers:{"Content-type": "application/x-www-form-urlencoded"},
+            asynch:false,
             data:har
         }).then(function(response){
            
@@ -96,7 +98,7 @@ function spider(url) {
             var status = this.status().currentHTTPStatus;
             switch(status) {
                 case 200: var statusStyle = { fg: 'green', bold: true };
-                this.echo(this.colorizer.format("Success : Har Recorded added to : " + filePreFix , 
+                this.echo(this.colorizer.format("Success : Har Record added to : " + filePreFix , 
                 { bg:'yellow',fg: 'green', bold: true }));
                  break;
                 case 404: var statusStyle = { fg: 'red', bold: true }; break;
@@ -145,11 +147,7 @@ casper.on('resource.received', function(res) {
 });
 
 casper.on('http.status.200',function(response){
-
-    switch(http.status){
-        default:
-        this.echo("here's the status code :" + http.status);
-    }
+        this.echo(" here's the status code :" + http.status);
 
 });
 
