@@ -17,19 +17,18 @@ scriptDirectory = APP_ROOT + "/templates/home/CasperScripts/"
 #print "app root is: " + APP_ROOT;
 #This opens a pipe to the standard cmd shell and sets input and output
 class CasperjsController(BaseController):
+    # default script to run
+    scriptName ="performanceHarRepo.js "
+    waitTime = "100"
+    jsonFile = "HighResLinks.json"
+    timesToExe = '3'
+    scriptOutput = ""
     
     def __before__(self):
         """Define version of static content"""
 
         c.rev = config["app_conf"]["static_version"]
     
-    # default script to run
-    scriptName ="performanceHarRepo.js "
-    waitTime = "100"
-    jsonFile = "HighResLinks.json"
-    timesToExe = '3'
-    
-   
     
     def exeScript(self):
         
@@ -54,13 +53,16 @@ class CasperjsController(BaseController):
         # We have all our values setup the cmdline cmd
         args ="casperjs " + scriptDirectory + scriptName + " " + scriptDirectory + jsonFile + " " + waitTime + " " + timesToExe;
         
-        
+        self.scriptIsRunning = True
         myProc = subprocess.Popen(args,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.STDOUT);
         stdout_value, stderr_value = myProc.communicate('through stdin to stdout\n')
-        scriptOutput = stdout_value
-        scriptErrors = stderr_value
-        print '\n\t combined output:', repr(stdout_value)
+        self.scriptOutput = repr(stdout_value)
+        self.scriptErrors = stderr_value
+        print '\n\t Script output:', repr(stdout_value)
         print '\n\t stderr value   :', repr(stderr_value)
+        print "Value of Script Output : ", self.scriptOutput
+        return self.scriptOutput
+       
 # need to return this to the output section of the calling page. scriptOutput + scriptErrors
 
 
@@ -72,4 +74,8 @@ class CasperjsController(BaseController):
     
     def harJsonFiles(self):
         return render('/home/casperForms/crtHarPerfForm.html')
+    
+        
+        
+        
         

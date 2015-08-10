@@ -19,7 +19,7 @@ preservedUrls = null,
 itCount = 0,
 jsonFile = casper.cli.args[0],
 brandId = null,
-uploadPath = 'http://localhost:5000/results/upload',
+uploadPath = 'http://10.196.100.81:5000/results/upload',
 filePreFix = null,
 curPage=null;
 
@@ -88,8 +88,7 @@ function spider(url) {
        
         casper.open(uploadPath, {
             method: 'post',
-            headers:{"Content-type": "application/x-www-form-urlencoded"},
-            asynch:false,
+            headers:{"Content-type": "application/x-www-form-urlencoded", "Automated": "true"},
             data:har
         }).then(function(response){
            

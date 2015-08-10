@@ -14,7 +14,9 @@
         submitButton = $('#ghostIt'),
         waitTime = $('#waitTime'),
         timesToExe = $('#timesToExe'),
-        payLoad = null;
+        scriptOutputCont = $('#scriptOutput'),
+        payLoad = null,
+        scriptIsRunning = false;
     
     //harScript name space - all related to our performanceHarRepo.js
     ecto1.casper.harScript = ecto1.casper.harScript || {};
@@ -80,6 +82,9 @@
     });
     
     function postHarScript(){
+        
+        scriptOutputCont.append('<div>-------Running the selected Script -------</div>');
+        
         payLoad = {
                 'script' : scriptSelect.val(),
                 'waitTime' : waitTime.val() ,
@@ -96,14 +101,14 @@
             async: true,
             contentType: 'application/json; charset=utf-8',
 
-            //Load the minibrowser with the redirection url in the success handler
             success: function (response) {
-                console.log(response);
-               
+                response += '<div>------- End of Script Output ------</div>';
+                scriptOutputCont.append(response);
+              
             },
             error: function (response) {
                
-
+               scriptOutputCont.append("There was a problem executing the script : " + response.responseText);
             }
         });
     }
@@ -119,7 +124,7 @@
            submitButton.css('background-color','red');
         }
     }
-   
+    
     
     return ecto1;
     
