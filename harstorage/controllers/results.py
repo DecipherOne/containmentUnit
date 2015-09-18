@@ -6,6 +6,7 @@ import time
 import re
 import functools
 import platform
+import logging
 
 from pylons import request, response, tmpl_context as c
 from pylons import config
@@ -16,6 +17,8 @@ from harstorage.lib.base import BaseController, render
 from harstorage.lib.HAR import HAR
 from harstorage.lib.MongoHandler import MongoDB
 import harstorage.lib.helpers as h
+
+log = logging.getLogger(__name__)
 
 class ResultsController(BaseController):
 
@@ -327,6 +330,7 @@ class ResultsController(BaseController):
     @upload_rest
     def upload(self):
         """Controller for uploads of new test results"""
+        log.debug('-------------> attempting to Upload a file');
 
         # HAR initialization
         try:
@@ -346,7 +350,7 @@ class ResultsController(BaseController):
             if config["app_conf"]["ps_enabled"] == "true":
                 scores = self._get_pagespeed_scores(har.har)
             else:
-                scores = dict([("Total Score", 100)])
+                scores = dict([("Total Score", 0)])
             
             # Add document to collection
             timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())

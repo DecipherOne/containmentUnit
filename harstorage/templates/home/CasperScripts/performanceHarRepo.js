@@ -44,7 +44,7 @@ function spider(url) {
         });
         
         this.wait(waitTime,function(){
-          this.echo('waited '+ waitTime +' milli-secs for page load');
+          this.echo('<div> waited '+ waitTime +' milli-secs for page load </div>');
           curPage =  getParameterByName('containerName',url);
         });
     });
@@ -77,35 +77,37 @@ function spider(url) {
         har = JSON.stringify(har, undefined, 4);
         har = {'file':har};
         
+        
         page.resources = []; 
         
         if(casper.cli.args.length>2 && casper.cli.args[3]==="true"){
             this.capture('png/' + filePreFix + "_" +  itCount +'.png');
         }
         //Send Data to Har Storage
-        this.echo(this.colorizer.format("Attempting to upload Har to : " + uploadPath , 
+        this.echo(this.colorizer.format("<div> Attempting to upload Har to : " + uploadPath + " </div>" , 
             { bg:'green',fg: 'yellow', bold: true }));
        
         casper.open(uploadPath, {
-            method: 'post',
-            headers:{"Content-type": "application/x-www-form-urlencoded", "Automated": "true"},
+            method: 'POST',
+            headers:{"Content-type": "application/x-www-form-urlencoded",'Automated':'true'},
             data:har
         }).then(function(response){
            
 
             // Set the status style based on server status code
-            var status = this.status().currentHTTPStatus;
+            var status = response.status;
             switch(status) {
                 case 200: var statusStyle = { fg: 'green', bold: true };
-                this.echo(this.colorizer.format("Success : Har Record added to : " + filePreFix , 
+                this.echo(this.colorizer.format("<div> Success : Har Record added to : " + filePreFix + " </div>" , 
                 { bg:'yellow',fg: 'green', bold: true }));
                  break;
                 case 404: var statusStyle = { fg: 'red', bold: true }; break;
                  default: var statusStyle = { fg: 'magenta', bold: true }; break;
+                     this.echo("Upload Failed");
             }
 
             // Display the spidered URL and status
-            this.echo(this.colorizer.format(status, statusStyle) + ' ' + url + ' ' + response.statusText);
+            this.echo("<div> " + this.colorizer.format(status, statusStyle) + ' ' + url + ' ' + response.statusText + " </div>");
         }); 
 
     });
@@ -155,7 +157,7 @@ casper.on('http.status.200',function(response){
 casper.start('localHost',function() {
 
     if(!jsonFile.length || !isNaN(jsonFile)){
-        this.echo(this.colorizer.format("Error : No file for urls specified: ", 
+        this.echo(this.colorizer.format("<div> Error : No file for urls specified: </div> ", 
             { bg:'red',fg: 'green', bold: true }));
 
         return 0;
@@ -169,7 +171,7 @@ casper.start('localHost',function() {
     
     for(var links in rawJson){
         pendingUrls = rawJson[links];
-        this.echo(this.colorizer.format("Urls loaded From File : " + rawJson[links], 
+        this.echo(this.colorizer.format("<div> Urls loaded From File : " + rawJson[links] + " </div>", 
             { bg:'green',fg: 'yellow', bold: true }));
     }
     
@@ -182,7 +184,7 @@ casper.start('localHost',function() {
             pendingUrls = preservedUrls.slice();
         }
 
-        this.echo(this.colorizer.format("itCount : " + itCount, { fg: 'red', bold: true }));
+        this.echo(this.colorizer.format("<div> itCount : " + itCount +" </div>", { fg: 'red', bold: true }));
         spider(pendingUrls[0]);
     });
 });

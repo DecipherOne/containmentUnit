@@ -9,7 +9,7 @@
     ecto1.casper = ecto1.casper ||{};
     
     var scriptSelect = $('#casperScripts'),
-        jsonSelect   = $('#harPerfJsonFiles'),
+        urlText   = $('#harPerfUrls'),
         optionsCont  = $('#scriptOptCont'),
         submitButton = $('#ghostIt'),
         waitTime = $('#waitTime'),
@@ -29,12 +29,6 @@
     };
     
     
-    $(document).ready(function(){
-        ecto1.casper.populateAvailableScripts();
-        if(scriptSelect.val()==='0'){
-            toggleSubmit();
-        }
-    });
     
     scriptSelect.on('change',function(){
         
@@ -47,11 +41,13 @@
                     break;
             }
             case'1':{ //harperf script load additional form fields
-                    jsonSelect   = $('#harPerfJsonFiles');
-                    if(jsonSelect.length<1){
+                    
+                    if(urlText.length<1){
                         $('#loadBuffer').load("/casperjs/harJsonFiles",function(){
                             optionsCont.append($(this).html());
                         }); 
+                        
+                        setTimeout(updateUrlText,300);
                     }
                 break;
             }
@@ -60,15 +56,6 @@
             }
         }
     });
-    
-    function removeAppendedNodes(){
-        var nodes = $('.appendedNode');
-        for(i=0; i < nodes.length; i++){
-            
-            nodes[i].remove();
-        }
-    }
-    
     submitButton.on('click',function(){
         switch(scriptSelect.val()){
             case'1':{
@@ -81,15 +68,28 @@
         }
     });
     
+    function updateUrlText(){
+        urlText = $('#harPerfUrls');
+    }
+                
+    function removeAppendedNodes(){
+        var nodes = $('.appendedNode');
+        for(i=0; i < nodes.length; i++){
+            
+            nodes[i].remove();
+        }
+    }
+    
+ 
     function postHarScript(){
         
-        scriptOutputCont.append('<div>-------Running the selected Script -------</div>');
+        scriptOutputCont.append('<div>-------Running the selected Script, Please Wait -------</div></br></br>');
         
         payLoad = {
                 'script' : scriptSelect.val(),
                 'waitTime' : waitTime.val() ,
-                'timesToExe' : timesToExe.val()
-                //jsonUrlFile : jsonSelect.val()
+                'timesToExe' : timesToExe.val(),
+                'urls' : urlText.val()
             };
         
         payLoad = JSON.stringify(payLoad);
@@ -102,7 +102,7 @@
             contentType: 'application/json; charset=utf-8',
 
             success: function (response) {
-                response += '<div>------- End of Script Output ------</div>';
+                response += '<div>------- End of Script Output ------</div></br></br>';
                 scriptOutputCont.append(response);
               
             },
@@ -124,6 +124,14 @@
            submitButton.css('background-color','red');
         }
     }
+    
+    
+    $(document).ready(function(){
+        ecto1.casper.populateAvailableScripts();
+        if(scriptSelect.val()==='0'){
+            toggleSubmit();
+        }
+    });
     
     
     return ecto1;

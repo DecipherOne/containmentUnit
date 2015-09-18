@@ -715,7 +715,7 @@ HARSTORAGE.RunInfo.prototype.get = function(opt_ts) {
 
         $("#harviewer").html(iframe);
 
-        window.setInterval("HARSTORAGE.autoHeight()", 100);
+        window.setTimeout("HARSTORAGE.autoHeight()", 300);
 
         // New tab feature of HAR Viewer
         var newtab = document.getElementById("newtab");

@@ -1,7 +1,20 @@
 
-<div id="harJsonCont" class="appendedNode" style="width:70%; margin:10px auto;">
-    <label for="harPerfJsonFiles">Select the json file of Urls to test.</label>
-    <select id="harPerfJsonFiles" >
-        <option value="0">Default Json File</option> 
-    </select>
+<div id='urlList' class='appendedNode' style='width:70%; margin:10px auto;'>
+    <label for="harPerfUrls">
+        Enter the urls you want to test.
+        Please Enter your links in the following format. As many as needed.
+        </br></br>
+        Example :
+        </br></br>
+        
+        
+        "https://secure.bhg.com/order/?containerName=1_highres70",
+        "https://secure.bhg.com/order/?containerName=1_highres70",
+        "https://secure.allrecipesmagazine.com/order/?containerName=2_highres50"
+        
+        </br></br>
+    </label>
+    <textarea id="harPerfUrls" rows="10" cols="80">
+    "url1","url2"
+    </textarea>
 </div>
