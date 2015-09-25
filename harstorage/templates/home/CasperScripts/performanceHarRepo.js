@@ -77,7 +77,7 @@ function spider(url) {
         har = JSON.stringify(har, undefined, 4);
         har = {'file':har};
         
-        
+        casper.echo('harFile Contents : '+ JSON.stringify(har));
         page.resources = []; 
         
         if(casper.cli.args.length>2 && casper.cli.args[3]==="true"){
