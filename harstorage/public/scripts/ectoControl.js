@@ -16,10 +16,16 @@
         timesToExe = $('#timesToExe'),
         scriptOutputCont = $('#scriptOutput'),
         payLoad = null,
-        scriptIsRunning = false;
+        scriptIsRunning = false,
+        testLabel = $('#testLabel'),
+        start = null,
+        target = null,
+        myTimer = null,
+        elapsed = '0.0';
     
     //harScript name space - all related to our performanceHarRepo.js
     ecto1.casper.harScript = ecto1.casper.harScript || {};
+    ecto1.aux = ecto1.aux || {};
     
     
     // Send a request to python to scan the script directory and return a list
@@ -47,7 +53,7 @@
                             optionsCont.append($(this).html());
                         }); 
                         
-                        setTimeout(updateUrlText,300);
+                        setTimeout(updateUrlText,2000);
                     }
                 break;
             }
@@ -57,6 +63,7 @@
         }
     });
     submitButton.on('click',function(){
+         scriptOutputCont.html('');
         switch(scriptSelect.val()){
             case'1':{
                     postHarScript();
@@ -66,10 +73,12 @@
                     break;
             }
         }
+        toggleSubmit('disabled');
     });
     
     function updateUrlText(){
         urlText = $('#harPerfUrls');
+        testLabel = $('#testLabel');
     }
                 
     function removeAppendedNodes(){
@@ -84,12 +93,19 @@
     function postHarScript(){
         
         scriptOutputCont.append('<div>-------Running the selected Script, Please Wait -------</div></br></br>');
+        var tempTime = waitTime.val();
+        if(tempTime<1){
+            tempTime=1;
+        }
+        
+        tempTime = String(tempTime*1000);
         
         payLoad = {
                 'script' : scriptSelect.val(),
-                'waitTime' : waitTime.val() ,
+                'waitTime' : tempTime ,
                 'timesToExe' : timesToExe.val(),
-                'urls' : urlText.val()
+                'urls' : urlText.val(),
+                'testLabel': testLabel.val()
             };
         
         payLoad = JSON.stringify(payLoad);
@@ -99,17 +115,62 @@
             type: "POST",
             data:  payLoad,
             async: true,
+            timeout:0,
             contentType: 'application/json; charset=utf-8',
+            
+            beforeSend:function(){
+               scriptOutputCont.append("<div id='timer'>Starting Timer</div>").each(function(){
+                 ecto1.aux.startTimer(); 
+               });
+                
+            },
 
             success: function (response) {
-                response += '<div>------- End of Script Output ------</div></br></br>';
-                scriptOutputCont.append(response);
-              
+                
+                $.ajax({
+                    url: "casperjs/getScriptOutput",
+                    type: "GET",
+                 
+                    success:function(response){
+                        response += '</br><div>------- End of Script Output ------</div></br></br>';
+                        scriptOutputCont.append(response);
+                    },
+                    error:function(){
+                        scriptOutputCont.append("Problem retrieving script output : " + JSON.stringify(response));
+                    }
+                    
+                });
+                
             },
             error: function (response) {
                
-               scriptOutputCont.append("There was a problem executing the script : " + response.responseText);
+               if(response.status===0){
+                   $.ajax({
+                    url: "casperjs/getScriptOutput",
+                    type: "GET",
+                    
+                    success:function(response){
+                        scriptOutputCont.append(response);
+                    },
+                    error:function(){
+                        scriptOutputCont.append("Problem retrieving script output : " + JSON.stringify(response));
+                    }
+                    
+                });
+                   return;
+               }
+               if(response.responseText.length){
+                    scriptOutputCont.append("There was a problem executing the script : " + response.responseText);
+               }
+               else{
+                   scriptOutputCont.append("There was a problem executing the script : " + JSON.stringify(response)); 
+               }
+            },
+            complete: function(){
+                toggleSubmit('enabled');
+                ecto1.aux.stopTimer();
             }
+            
         });
     }
     
@@ -134,6 +195,41 @@
     });
     
     
+        
+    ecto1.aux.startTimer = function(){
+        start = new Date().getTime();
+        target = $('#timer');
+        var hrs=0,mins=0,secs=0;
+        
+        myTimer = setInterval(function()
+        {
+            var time = new Date().getTime() - start;
+
+            elapsed = Math.floor(time / 100) / 10;
+            if(Math.round(elapsed) === elapsed) { elapsed += '.0'; }
+            
+            secs = Math.floor(elapsed%60);
+            if(elapsed>3599){
+               hrs = Math.floor(elapsed/3600);
+               mins = Math.floor(elapsed/60)%60;
+               
+            }
+            else if( elapsed > 59){
+              mins = Math.floor(elapsed/60)%60; 
+            }
+
+            $(target).html(" Script has been running for " +hrs+" :hours " + mins + " :minutes " + secs +" :seconds.");
+
+        }, 100);
+    };
+        
+    ecto1.aux.stopTimer = function(){
+        clearInterval(myTimer);
+    };
+    
+    
+    
     return ecto1;
+    
     
 })(jQuery,ecto1 = window.ecto1 || {});

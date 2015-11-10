@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "porForward.py", line 45, in <module>
+    main('proxy.ini', 'error.log')
+  File "porForward.py", line 7, in main
+    for settings in parse(setup):
+  File "porForward.py", line 15, in parse
+    for line in file(setup):
+IOError: [Errno 2] No such file or directory: 'proxy.ini'
+Traceback (most recent call last):
+  File "porForward.py", line 45, in <module>
+    main('proxy.ini', 'error.log')
+  File "porForward.py", line 7, in main
+    for settings in parse(setup):
+  File "porForward.py", line 15, in parse
+    for line in file(setup):
+IOError: [Errno 2] No such file or directory: 'proxy.ini'
