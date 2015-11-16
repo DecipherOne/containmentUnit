@@ -1,17 +1,12 @@
 # This block is used to run casperjs scripts from a web interface.
 import json
-
 import subprocess,time, requests as serverReq
 from pylons import request, response, tmpl_context as c
 from pylons import config
 from pylons.controllers.util import redirect
 from pylons.decorators.rest import restrict
 from browsermobproxy import Server
-
 from harstorage.lib.base import BaseController, render
-
-        
-
 
 #print "app root is: " + APP_ROOT;
 #This opens a pipe to the standard cmd shell and sets input and output
@@ -28,14 +23,12 @@ class CasperjsController(BaseController):
     myProxy = None
     url = None
     testLabel = '-defaultLabel-'
-    
+    throttleSpeed = None
     
     def __before__(self):
         """Define version of static content"""
-
         c.rev = config["app_conf"]["static_version"]
-    
-    
+    @restrict("POST")
     def exeScript(self):
         
         reqParams = json.loads(request.body)
@@ -49,7 +42,7 @@ class CasperjsController(BaseController):
             self.scriptName ="performanceHarRepo.js "
             
         if reqParams['urls'] != None:
-            self.writeUrlsToFile(reqParams)
+            self._writeUrlsToFile(reqParams)
             self.jsonFile = "HighResLinks.json"
         else:
             self.scriptOutput = "<div> Please Enter in Urls to Test </div></br>"
@@ -63,9 +56,17 @@ class CasperjsController(BaseController):
             
         if reqParams['testLabel'] != None:
             self.testLabel = reqParams['testLabel'] 
+            
+        if reqParams['throttleSpeed'] != None:
+            self.throttleSpeed = reqParams['throttleSpeed']
+            
+        
         
         count = int(self.timesToExe)
         self.startProxy()
+        
+        if self.throttleSpeed != None:
+            self.setNetworkSpeed(self.throttleSpeed)
         
         while count>0:
         
@@ -77,36 +78,46 @@ class CasperjsController(BaseController):
             args ="casperjs --proxy='http://localhost:8081' --ssl-protocol='any' --ignore-ssl-errors=true --disc-cahce=false " + self.scriptDirectory + self.scriptName + self.scriptDirectory + self.jsonFile + " " + self.waitTime + " " + self.testLabel
 
             myProc = subprocess.Popen(args,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.STDOUT);
-
-            stdout_value, stderr_value = myProc.communicate()
-            self.scriptOutput = repr(stdout_value)
-            self.scriptErrors = stderr_value
+            
+            try:
+                stdout_value, stderr_value = myProc.communicate()
+                self.scriptOutput = repr(stdout_value)
+                self.scriptErrors = stderr_value
+            except:
+                print "\n\t Error : could not get script Output. Trying again"
+                myProc = subprocess.Popen(args,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.STDOUT);
+                try:
+                    stdout_value, stderr_value = myProc.communicate()
+                    self.scriptOutput = repr(stdout_value)
+                    self.scriptErrors = stderr_value
+                except:
+                    print "\n\t Error: second attempt failed, program will quit."
+                    self.stopProxy()
             
             if count== int(self.timesToExe):    
-                self.writeOutput(self.scriptOutput)
+                self._writeOutput(self.scriptOutput)
             else:
-                self.appendOutput(self.scriptOutput)
+                self._appendOutput(self.scriptOutput)
                 
             print '\n\t Script output:', repr(self.scriptOutput) , '</br>'
             print '\n\t stderr value   :', repr(self.scriptErrors), '</br>'
 
             count= count-1
-            
-        
         
         self.stopProxy()
 
-
+    @restrict("GET")
     def getAvailableScripts(self):
         #scan the script directory 
         #accumulate all the file names
         #return json array
         return "availableScripts"
     
+    @restrict("GET")
     def harJsonFiles(self):
         return render('/home/casperForms/crtHarPerfForm.html')
     
-    def writeUrlsToFile(self,reqParams):
+    def _writeUrlsToFile(self,reqParams):
         fileStream = open(self.scriptDirectory+self.jsonFile,'w')
         writeUrls = '{"links":[' + reqParams['urls'] + ']}'
         fileStream.write(writeUrls)
@@ -122,19 +133,16 @@ class CasperjsController(BaseController):
         payload = {'readTimeout':0,'requestTimeout':-1}
         serverReq.put('%s/proxy/%s/timeout' % ('http://localhost:8080', '8081'), payload)
         
-       
-        
     def stopProxy(self):
         self.scriptOutput += "<div>Reached end of script, closing proxy.</div></br>"
         self.myProxy.close()
         self.proxyServer.stop()
         
     def createHar(self):
-         
          payload = {'captureHeaders':True,'captureContent':False,'initialPageRef':request.params['label']}
          serverReq.put('%s/proxy/%s/har' % ('http://localhost:8080', '8081'), payload)
          
-        
+    @restrict("GET")     
     def getHar(self):
         """
         Gets the HAR that has been recorded
@@ -150,25 +158,33 @@ class CasperjsController(BaseController):
             r=serverReq.post(url,data=harFile,headers=customHeaders)
             
         else:
-            return   
+            return r  
     
-    def writeOutput(self,data):
+    def _writeOutput(self,data):
         fileStream = open(self.scriptDirectory+"scriptOutput.html",'w')
         fileStream.write(data)
         fileStream.close()
         
-    def appendOutput(self,data):
+    def _appendOutput(self,data):
         fileStream = open(self.scriptDirectory+"scriptOutput.html",'a')
         fileStream.write(data)
         fileStream.close()
-        
+    @restrict("GET")    
     def getScriptOutput(self):
         filestream = open(self.scriptDirectory+"scriptOutput.html",'r')
         output = filestream.read()
         return output
-        
     
+    def setNetworkSpeed(self,option):
         
-        
-        
-        
+        if int(option)== 1:
+          payload = {'sownstreamKbps':8389,'upstreamKbps':2097}
+        elif int(option)== 2:
+          payload = {'sownstreamKbps':2097,'upstreamKbps':600}
+        elif int(option)== 3:
+          payload = {'sownstreamKbps':500,'upstreamKbps':40}
+        else:
+            return
+            
+
+        serverReq.put('%s/proxy/%s/limit' % ('http://localhost:8080', '8081'), payload)

@@ -21,7 +21,12 @@
         start = null,
         target = null,
         myTimer = null,
-        elapsed = '0.0';
+        elapsed = '0.0',
+        mainContent = $('#mainContent'),
+        resultsTab = $('#mainContent ul li:first-child'),
+        resultsCont = $('#resultsCont'),
+        enableThrottle = $('#enableThrottle'),
+        throttleSpeed = $('#networkThrottle');
     
     //harScript name space - all related to our performanceHarRepo.js
     ecto1.casper.harScript = ecto1.casper.harScript || {};
@@ -34,6 +39,39 @@
         
     };
     
+    enableThrottle.on('click',function(){
+        if($(enableThrottle).is(":checked")){
+            throttleSpeed.prop('disabled',false);
+        }
+        else{
+           throttleSpeed.prop('disabled',true); 
+        }
+            
+    });
+    
+    
+    resultsTab.on('click',function(){
+        $.ajax({
+            url: "/results/results",
+            type: "GET",
+
+            success:function(response){
+                resultsCont.html(response);
+                $('#stats_table').dataTable({
+                    "bJQueryUI": true,
+                    "sPaginationType": "full_numbers",
+                    "sDom": 'R<"H"lfr>t<"F"ip<',
+                    "bAutoWidth": false,
+                    "iDisplayLength": 10,
+                    "aaSorting": [[ 0, "desc" ]]
+                });
+                $('#summary-table').css('visibility', 'visible');
+            },
+            error:function(){
+                resultsCont.prepend("Problem updating results, please refresh the page manually.");
+            }         
+        });
+    });
     
     
     scriptSelect.on('change',function(){
@@ -94,10 +132,14 @@
         
         scriptOutputCont.append('<div>-------Running the selected Script, Please Wait -------</div></br></br>');
         var tempTime = waitTime.val();
+        var speed = 0;
         if(tempTime<1){
             tempTime=1;
         }
         
+        if(enableThrottle.is(":checked")){
+            speed = throttleSpeed.val();
+        }
         tempTime = String(tempTime*1000);
         
         payLoad = {
@@ -105,7 +147,8 @@
                 'waitTime' : tempTime ,
                 'timesToExe' : timesToExe.val(),
                 'urls' : urlText.val(),
-                'testLabel': testLabel.val()
+                'testLabel': testLabel.val(),
+                'throttleSpeed':speed
             };
         
         payLoad = JSON.stringify(payLoad);

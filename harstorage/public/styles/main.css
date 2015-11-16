@@ -10,11 +10,78 @@ body a {
 body a:hover {
     text-decoration: underline;
 }
-
+/* Stuff added for this instance */
 #casperForm{
- width: 70%;
+ width: 100%;
   background-color: #c2c2c2;
-  margin: 16px auto 16px 11.5%;
+  margin: 0px auto 16px auto;
+}
+
+#casperScripts{
+  margin:16px auto 16px 2%;
+  padding:8px;
+}
+
+label [for=casperScripts]{
+   margin:0px 10px 0px 40px; 
+}
+
+#harOptions{
+    width:70%;
+    margin: 16px 17%;
+    color:black;
+}
+
+#logo{
+    float:left;
+    background-image:url('/images/slimer.png');
+    width:188px;
+    height:190px;
+}
+
+#urlList{
+    width:100%; 
+    margin:10px 16px;
+    clear:both;
+}
+
+#waitTimeCont, #exeTimeCont, #throttlingCont{
+    width:200px; 
+    margin:16px 16px;
+    float:left;
+}
+
+#networkThrottle{
+    width:155px;
+    position: relative;
+    bottom: 7px;
+}
+
+#enableThrottle{
+    width:20px;
+    height:20px;
+}
+
+#ghostIt{
+    background-color: red;
+    float: right;
+    margin-right: 150px;
+    padding: 16px;
+    width: 200px;  
+}
+
+#harPerfUrls{
+    box-sizing: border-box;
+    width:95%;
+}
+
+#scriptOutputCont{
+    width:95%; 
+    height:300px;
+    background-color:#000000;
+    margin:0 auto;
+    padding:16px;
+    overflow-y:scroll;
 }
 /* Document Header and Footer*/
 .header .left a:hover {

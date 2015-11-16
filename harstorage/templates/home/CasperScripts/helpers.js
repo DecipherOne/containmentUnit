@@ -8,6 +8,26 @@ mode = "a",
 fs = require('fs'),
 myItCount = 0;
 
+function getParameterByName(parameter,page) {
+        var match = RegExp('[?&]' + parameter + '=([^&]*)').exec(page);
+        return match[1].replace(/\+/g, ' ');
+}
+
+function getHostName(url) {
+    var match = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
+    if (match !== null && match.length > 2 &&
+        typeof match[2] === 'string' && match[2].length > 0) {
+    return match[2];
+    }
+    else {
+        return null;
+    }
+}
+
+function getRandomNum(min, max) {
+        return Math.floor(Math.random() * (max - min) + min);
+}
+
 function absoluteUri(base, href) {
 
     // Parse a URI and return its constituent parts

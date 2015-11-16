@@ -353,7 +353,7 @@ class ResultsController(BaseController):
                 scores = dict([("Total Score", 0)])
             
             # Add document to collection
-            timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            timestamp = time.strftime("%A, %B %d %Y %I:%M%p", time.localtime())
 
             result = {  "label":                har.label,
                         "url":                  har.url,
@@ -454,3 +454,48 @@ class ResultsController(BaseController):
         response.content_type = mimetypes.guess_type(filename)[0] or "text/plain"
 
         return data
+    
+    @restrict("GET")
+    def results(self):
+
+        # MongoDB handler
+        mdb_handler = MongoDB()
+        if hasattr(c, "message"): return render("/error.html")
+
+        # Read aggregated data from database
+        # Aggregation is based on unique labels, urls and latest timestamps
+        latest_results = mdb_handler.collection.group(
+            key = ["label", "url"],
+            condition = None,
+            initial = {"timestamp": "1970-01-01 01:00:00"},
+            reduce = "\
+                function(doc, prev) {                     \
+                    if (doc.timestamp > prev.timestamp) { \
+                        prev.timestamp = doc.timestamp;   \
+                    }                                     \
+                }")
+
+        key = lambda timestamp: timestamp["timestamp"]
+        latest_results = sorted(latest_results, key = key, reverse = True)
+
+        # Numner of records
+        c.rowcount = len(latest_results)
+
+        # Populate data table with the latest test results
+        c.metrics_table = [[], [], [], [], [], []]
+
+        fields = ["timestamp", "label", "url", "total_size", "requests",
+                    "full_load_time"]
+
+        for group in latest_results:
+            condition = {"label": group["label"], "timestamp": group["timestamp"]}
+
+            result = mdb_handler.collection.find_one(condition, fields = fields)
+
+            c.metrics_table[0].append(result["timestamp"])
+            c.metrics_table[1].append(result["label"])
+            c.metrics_table[2].append(result["url"])
+            c.metrics_table[3].append(result["total_size"])
+            c.metrics_table[4].append(result["requests"])
+            c.metrics_table[5].append(round(result["full_load_time"]/1000.0, 1))
+        return render('/home/results.html')
