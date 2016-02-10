@@ -16,7 +16,7 @@ class CasperjsController(BaseController):
     scriptDirectory = APP_ROOT + "/templates/home/CasperScripts/"
     scriptName ="performanceHarRepo.js "
     waitTime = "1000"
-    jsonFile = "HighResLinks.json"
+    jsonFile = "TestLinks.json"
     timesToExe = '3'
     scriptOutput = ""
     proxyServer = None
@@ -41,12 +41,12 @@ class CasperjsController(BaseController):
         if reqParams['script']=='1':
             self.scriptName ="performanceHarRepo.js "
             
-        if reqParams['urls'] != None:
-            self._writeUrlsToFile(reqParams)
-            self.jsonFile = "HighResLinks.json"
-        else:
-            self.scriptOutput = "<div> Please Enter in Urls to Test </div></br>"
-            return self.scriptOutput
+            if reqParams['urls'] != None:
+                self._writeUrlsToFile(reqParams)
+                self.jsonFile = "TestLinks.json"
+            else:
+                self.scriptOutput = "<div> Please Enter in Urls to Test </div></br>"
+                return self.scriptOutput
         
         if reqParams['waitTime'] != None:
             self.waitTime = reqParams['waitTime']

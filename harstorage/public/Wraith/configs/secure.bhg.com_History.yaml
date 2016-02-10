@@ -1,0 +1,32 @@
+# Wraith Yaml Generated Automagically on : 10/02/2016 @ 15:33:51
+# SiteName :secure.bhg.com
+browser: "phantomjs" 
+domains: 
+ secure_bhg_com: https://secure.bhg.com
+paths: 
+ multi_gift: /order/?containerName=bvt_multi_gift
+ legacy_sr: /order/?containerName=i4bvtto16
+
+screen_widths: 
+ - 320 
+ - 667 
+ - 768 
+ - 1024 
+ - 1280 
+ - 1920 
+ 
+resize_or_reload: 'reload' 
+history_dir: screenCaptures/secure.bhg.com_base_shots 
+directory: screenCaptures/secure.bhg.com_latest_shots 
+fuzz: '20%' 
+theshold: 5 
+
+gallery: 
+ template: 'slideshow_template' 
+ thumb_width: 250 
+ thumb_height: 250 
+
+mode: diffs_first 
+verbose: true 
+highligt_color: purple 
+phantomjs_options: '--ignore-ssl-errors=true --ssl-protocol=tlsv1'

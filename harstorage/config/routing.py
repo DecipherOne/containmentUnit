@@ -16,6 +16,9 @@ def make_map(config):
     
     # Casper Execution
     map.connect("/casperjs/{action}", controller="casperjs")
+    
+    # Wraith Execution
+    map.connect("/wraith/{action}", controller="wraith")
 
     # Common routing to controllers
     map.connect("/{controller}/{action}")
