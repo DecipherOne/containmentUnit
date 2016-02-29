@@ -30,29 +30,21 @@ function spider(url) {
 
     // Open the URL
     casper.echo("</br><div> --- Browsing To : " + url + " ---</div></br>");
-    //Initalize har for proxy
-    casper.open('http://localhost:5000/casperjs/createHar?label='+harLabel);
-    //Open the requested URL and wait a minimum of the specifed amount of time
-    casper.thenOpen(url).then(function() {
+    //Initalize har for proxy Open the requested URL and wait a minimum of the specifed amount of time
+    casper.open('http://localhost:5000/casperjs/createHar?label='+harLabel).thenOpen(url).then(function() {
 
         this.wait(waitTime,function(){
           this.echo('<div> waited '+ waitTime +' milli-secs for page load </div>');
-        });
-    });
-    
-    // Grab the generated har data and upload it to harStorage
-    casper.thenOpen('http://localhost:5000/casperjs/getHar').then(function(response){
+        });// Grab the generated har data and upload it to harStorage
+    }).thenOpen('http://localhost:5000/casperjs/getHar').then(function(response){
 
         if(response.status===200||response.status===0){
             this.echo("<div>Har File created and added to storage successfully.</div></br>");
         }
         else{
             this.echo("Could not retrieve har." + JSON.stringify(response));
-        }
-    });
-    
-    //Start over with new URL
-    casper.then(function(){ 
+        }//Start over with new URL
+    }).then(function(){ 
         // If there are URLs to be processed
         
         var nextUrl = pendingUrls.shift();

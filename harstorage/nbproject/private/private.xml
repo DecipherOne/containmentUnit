@@ -3,11 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Python27/Lib/site-packages/harstorage-1.0-py2.7.egg/harstorage/templates/common/header.html</file>
+            <file>file:/C:/Python27/Lib/site-packages/harstorage-1.0-py2.7.egg/harstorage/templates/home/CasperScripts/TestLinks.json</file>
+            <file>file:/C:/Python27/Lib/site-packages/harstorage-1.0-py2.7.egg/harstorage/templates/home/CasperScripts/performanceHarRepo.js</file>
+            <file>file:/C:/Python27/Lib/site-packages/harstorage-1.0-py2.7.egg/harstorage/config/routing.py</file>
+            <file>file:/C:/Python27/Lib/site-packages/harstorage-1.0-py2.7.egg/harstorage/public/Wraith/configs/existingSites.config</file>
+            <file>file:/C:/Python27/Lib/site-packages/harstorage-1.0-py2.7.egg/harstorage/templates/home/casperForms/wraithForm.html</file>
+            <file>file:/C:/Python27/Lib/site-packages/harstorage-1.0-py2.7.egg/harstorage/controllers/wraith.py</file>
+            <file>file:/C:/Python27/Lib/site-packages/harstorage-1.0-py2.7.egg/harstorage/templates/home/CasperScripts/harRepoProxy.js</file>
             <file>file:/C:/Python27/Lib/site-packages/harstorage-1.0-py2.7.egg/harstorage/public/scripts/ectoControl.js</file>
             <file>file:/C:/Python27/Lib/site-packages/harstorage-1.0-py2.7.egg/harstorage/templates/home/casperForms/crtHarPerfForm.html</file>
-            <file>file:/C:/Python27/Lib/site-packages/harstorage-1.0-py2.7.egg/harstorage/templates/home/CasperScripts/performanceHarRepo.js</file>
+            <file>file:/C:/Python27/Lib/site-packages/harstorage-1.0-py2.7.egg/harstorage/public/Wraith/configs/pathData/secure.bhg.com_paths.json</file>
             <file>file:/C:/Python27/Lib/site-packages/harstorage-1.0-py2.7.egg/harstorage/controllers/casperjs.py</file>
+            <file>file:/C:/Python27/Lib/site-packages/harstorage-1.0-py2.7.egg/harstorage/public/scripts/wraithControl.js</file>
+            <file>file:/C:/Python27/Lib/site-packages/harstorage-1.0-py2.7.egg/harstorage/templates/home/ectoCooler.html</file>
         </group>
     </open-files>
 </project-private>

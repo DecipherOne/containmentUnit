@@ -4,7 +4,7 @@
     Description : This script is the js Side of our casperjs/python interface
                   Handles all client side request/response
  */
-(function($,ecto1){
+(function EctoControl($,ecto1){
     
     ecto1.casper = ecto1.casper ||{};
     
@@ -13,7 +13,9 @@
         optionsCont  = $('#scriptOptCont'),
         submitButton = $('#ghostIt'),
         waitTime = $('#waitTime'),
+        waitTimeCont = $('#waitTimeCont'),
         timesToExe = $('#timesToExe'),
+        timesToExeCont = $('#exeTimeCont'),
         scriptOutputCont = $('#scriptOutput'),
         payLoad = null,
         scriptIsRunning = false,
@@ -26,11 +28,12 @@
         resultsTab = $('#mainContent ul li:first-child'),
         resultsCont = $('#resultsCont'),
         enableThrottle = $('#enableThrottle'),
+        throttleCont   = $('#throttlingCont'),
         throttleSpeed = $('#networkThrottle');
     
-    //harScript name space - all related to our performanceHarRepo.js
-    ecto1.casper.harScript = ecto1.casper.harScript || {};
+  
     ecto1.aux = ecto1.aux || {};
+    ecto1.wraith = ecto1.wraith ||{};
     
     
     // Send a request to python to scan the script directory and return a list
@@ -76,24 +79,36 @@
     
     scriptSelect.on('change',function(){
         
-        toggleSubmit('enabled');
+        
         removeAppendedNodes();
+        
         
         switch(scriptSelect.val()){
             case'0':{
-                    toggleSubmit();
+                    toggleButtonState(submitButton);
                     break;
             }
             case'1':{ //harperf script load additional form fields
+                    showCasperOptions();   
+                    toggleButtonState(submitButton,'enabled');
+                    $('#loadBuffer').load("/casperjs/harJsonFiles",function(){
+                        optionsCont.append($(this).html());
+                    }); 
+
+                    setTimeout(updateUrlText,2000);
                     
-                    if(urlText.length<1){
-                        $('#loadBuffer').load("/casperjs/harJsonFiles",function(){
+                break;
+            }
+            case '2':{
+                    toggleButtonState(submitButton);
+                    hideCasperOptions();
+                     $('#loadBuffer').load("/wraith/loadWraithForm",function(){
                             optionsCont.append($(this).html());
                         }); 
-                        
-                        setTimeout(updateUrlText,2000);
-                    }
-                break;
+                    
+                    setTimeout(ecto1.wraith.attachEventHandlers,1000);
+                    
+                    break;
             }
             default:{
                break;     
@@ -107,11 +122,15 @@
                     postHarScript();
                     break;
             }
+            case'2':{
+                    ecto1.wraith.getLatestImages();
+                    break;
+            }
             default:{
                     break;
             }
         }
-        toggleSubmit('disabled');
+        toggleButtonState(submitButton,'disabled');
     });
     
     function updateUrlText(){
@@ -210,22 +229,23 @@
                }
             },
             complete: function(){
-                toggleSubmit('enabled');
+                toggleButtonState(submitButton,'enabled');
                 ecto1.aux.stopTimer();
             }
             
         });
     }
     
-    function toggleSubmit(arg){
+    function toggleButtonState(target,arg){
+        var button = $(target);
         
         if(arg==='enabled'){
-           submitButton.prop('disabled',false);
-           submitButton.css('background-color','#498a2d');
+           button.prop('disabled',false);
+           button.css('background-color','#498a2d');
         }
         else{
-           submitButton.prop('disabled',true);
-           submitButton.css('background-color','red');
+           button.prop('disabled',true);
+           button.css('background-color','red');
         }
     }
     
@@ -233,12 +253,14 @@
     $(document).ready(function(){
         ecto1.casper.populateAvailableScripts();
         if(scriptSelect.val()==='0'){
-            toggleSubmit();
+            toggleButtonState(submitButton);
         }
     });
     
     
-        
+    ecto1.aux.toggleButtonState = function(target,arg){
+        return toggleButtonState(target,arg);
+    };
     ecto1.aux.startTimer = function(){
         start = new Date().getTime();
         target = $('#timer');
@@ -270,6 +292,26 @@
         clearInterval(myTimer);
     };
     
+    function hideCasperOptions(){
+        waitTimeCont.hide();
+        timesToExeCont.hide();
+        throttleCont.hide();
+       
+    }
+    
+    function showCasperOptions(){
+         waitTimeCont.show();
+        timesToExeCont.show();
+        throttleCont.show();
+    }
+    
+    ecto1.casper.hideOptions = function(){
+        return hideCasperOptions();
+    };
+    
+    ecto1.casper.showOptions = function(){
+        return showCasperOptions();
+    };
     
     
     return ecto1;

@@ -73,6 +73,7 @@ label [for=casperScripts]{
 #harPerfUrls{
     box-sizing: border-box;
     width:95%;
+    resize:none;
 }
 
 #scriptOutputCont{
@@ -526,4 +527,129 @@ label [for=casperScripts]{
     top: -27px;
     margin: 12px 0 0 0;
     display: none;
+}
+
+
+/* Wraith Interface Styles */
+#existingSiteCont, #newSiteCont, #newBaselineCont {
+    width: 200px;
+    margin: 8px 8px;
+    float: left;
+}
+
+#existingPathsCont{
+    height:100%;
+    width:50%; 
+    margin:0px 16px;
+    float:left;
+}
+
+#editPathsCont{
+    margin:8px;
+    width:300px;
+    float:left;
+}
+
+#wraithBottom {
+    height: 250px;
+    max-width:900px;
+}
+
+#wraithTop{
+   min-height:77px;
+   max-width:854px;
+}
+#updateData, #removeData {
+    padding: 16px;
+    width :80px;
+    height:76px;
+    background-color: red;
+    float:left;
+  
+}
+#existingPathsSel {
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    color: #498a2d;
+}
+
+input[type='checkbox']{
+    min-width:20px;
+    min-height:20px;
+}
+
+
+
+#existingSiteSel{
+    min-width:150px;
+    max-width:200px;
+}
+
+#newSiteCont label, #newPathCont label{
+    margin:5px 0px;
+}
+
+#labelNewPath, #labelSecureProto{
+    display:inline !important;
+}
+
+#newPathCont{
+    margin-bottom:16px;
+}
+
+#newPathCont label{
+   display:block; 
+}
+
+#newPathCheck{
+    margin-right:10px;
+}
+
+#newPathLabel{
+    margin-bottom:5px;
+    width:90%;
+}
+
+#newSiteCheck{
+    position: relative;
+    bottom: 3px;
+    float:left;
+}
+
+#newSiteName{
+   float:left;
+}
+
+#newBaselineCont{
+    width:300px; 
+}
+
+#newBaselineCont label{
+    float:left;
+    position: relative;
+    top: 3px;
+}
+
+#newBaslineCheck, #removeSiteCheck{
+    float:left;
+}
+
+#pathsInput{
+    width:90%;
+    resize:none;
+}
+
+#updateButtonsCont{
+    min-height:80px;
+    margin:0px auto;
+    display:block;
+    width:60%;
+}
+
+//For small devices
+@media only screen and (max-width: 767px) {
+    #existingPathsCont{
+      width:90%;    
+    }
 }

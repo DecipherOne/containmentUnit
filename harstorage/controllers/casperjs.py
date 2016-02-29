@@ -18,7 +18,7 @@ class CasperjsController(BaseController):
     waitTime = "1000"
     jsonFile = "TestLinks.json"
     timesToExe = '3'
-    scriptOutput = ""
+    scriptOutput = "::::::::::::::::::::::::::::::::::::::::::"
     proxyServer = None
     myProxy = None
     url = None
@@ -42,8 +42,8 @@ class CasperjsController(BaseController):
             self.scriptName ="performanceHarRepo.js "
             
             if reqParams['urls'] != None:
-                self._writeUrlsToFile(reqParams)
                 self.jsonFile = "TestLinks.json"
+                self._writeUrlsToFile(reqParams)
             else:
                 self.scriptOutput = "<div> Please Enter in Urls to Test </div></br>"
                 return self.scriptOutput
@@ -75,7 +75,7 @@ class CasperjsController(BaseController):
             print "\n \t count is :"+ str(count)
 
             # We have all our values setup the cmdline cmd
-            args ="casperjs --proxy='http://localhost:8081' --ssl-protocol='any' --ignore-ssl-errors=true --disc-cahce=false " + self.scriptDirectory + self.scriptName + self.scriptDirectory + self.jsonFile + " " + self.waitTime + " " + self.testLabel
+            args ="c:/Casper/bin/casperjs --proxy='http://localhost:8081' --ssl-protocol='any' --ignore-ssl-errors=true --disc-cache=false " + self.scriptDirectory + self.scriptName + self.scriptDirectory + self.jsonFile + " " + self.waitTime + " " + self.testLabel
 
             myProc = subprocess.Popen(args,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.STDOUT);
             
@@ -98,13 +98,12 @@ class CasperjsController(BaseController):
                 self._writeOutput(self.scriptOutput)
             else:
                 self._appendOutput(self.scriptOutput)
-                
-            print '\n\t Script output:', repr(self.scriptOutput) , '</br>'
-            print '\n\t stderr value   :', repr(self.scriptErrors), '</br>'
 
             count= count-1
         
         self.stopProxy()
+        print '\n\t Script output:', repr(self.scriptOutput) , '</br>'
+        print '\n\t stderr value   :', repr(self.scriptErrors), '</br>'
 
     @restrict("GET")
     def getAvailableScripts(self):
@@ -140,7 +139,8 @@ class CasperjsController(BaseController):
         
     def createHar(self):
          payload = {'captureHeaders':True,'captureContent':False,'initialPageRef':request.params['label']}
-         serverReq.put('%s/proxy/%s/har' % ('http://localhost:8080', '8081'), payload)
+         r = serverReq.put('%s/proxy/%s/har' % ('http://localhost:8080', '8081'), payload)
+         print "Create Har Response : " + str(r.status_code) + " " + str(r.text)
          
     @restrict("GET")     
     def getHar(self):

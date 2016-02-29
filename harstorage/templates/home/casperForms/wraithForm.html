@@ -1,0 +1,45 @@
+<div id="imageRegression" class="appendedNode">
+    <div id="wraithTop">
+        <div id="existingSiteCont">
+            <label for="existingSiteSel">Existing Sites</label>
+            <select id="existingSiteSel">
+                <option >    Please Choose   </option>
+            </select>
+        </div>
+        <div id="newSiteCont">
+            <label for="newSiteCheck">Add New Site</label>
+            <input id="newSiteName" placeholder="secure.bhg.com" disabled />
+            <input id="newSiteCheck" type="checkbox" />
+        </div>
+        <div id="newBaselineCont">
+            <label for="newBaselineCheck">Generate New Baseline Images</label>
+            <input id="newBaselineCheck" type="checkbox" disabled/>
+            <label for="removeSiteCheck">Delete Site Records </label>
+            <input id="removeSiteCheck" type="checkbox" disabled/>
+        </div>
+    </div>
+    <div id="wraithBottom">
+        <div id="existingPathsCont">
+            All Existing Paths will be Tested
+            <select multiple id="existingPathsSel">
+                <option disabled>Existing Paths</option>
+            </select>
+        </div>
+        <div id="editPathsCont">
+            <div id="newPathCont">
+                <label id="labelNewPath" for="newPathCheck">Add New Path</label>
+                <input id="newPathCheck" type="checkbox" disabled/>
+                <label id="labelSecureProto" for="secureProtoCheck">Use Secure https</label>
+                <input id="secureProtoCheck" type="checkbox" disabled />
+                <label for="newPathLabel">Path Label(s)</label>
+                <input id="newPathLabel" placeholder='"multi_mag","lgcy_sdr"' disabled/>
+                <label for="pathsInput">Url(s) for Path(s)<b style="font-size:10px;"> Each Path Requires a label</b> </label>
+                <textarea id="pathsInput" placeholder='"order/?containerName=i44gtox32","order/?containerName=i48gtox10_parents"' disabled ></textarea>
+            </div>
+            <div id="updateButtonsCont">
+                <button id="updateData" class="button" type="button"  disabled>Update</button>
+                <button id="removeData" class="button" type="button"  disabled>Remove Selected Path(s)</button>
+            </div>
+        </div>
+    </div>
+</div>
