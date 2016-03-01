@@ -653,3 +653,26 @@ input[type='checkbox']{
       width:90%;    
     }
 }
+
+#linkCont{
+    width:90%;
+    padding:10px 10px;
+    background-color:#c2c2c2;
+    margin:10px auto;
+    
+}
+
+#linkCont a{
+    margin:10px auto;
+}
+
+#wraithLogo{
+    float:left;
+    background-image:url('/images/wraithLogo.png');
+    width:188px;
+    height:190px;
+    background-size: contain;
+    position: relative;
+    bottom: 35px;
+    right: 20px;
+}

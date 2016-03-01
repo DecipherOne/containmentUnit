@@ -26,6 +26,7 @@
          scriptOutputCont = $('#scriptOutputCont'),
          pathLabel = $('#newPathLabel'),
          removeSiteCheckbox = $('#removeSiteCheck'),
+         penumbraTab = $('#mainContent ul li:nth-child(3)'),
          executeButton = $('#ghostIt');
          
          
@@ -243,7 +244,7 @@
             contentType: 'application/json; charset=utf-8',
             
             beforeSend:function(){
-               scriptOutputCont.append('<div>------- Getting Latest Images for site : ' + siteName.val() + ' -------</div></br></br>');
+               scriptOutputCont.append('<div>------- Getting Latest Images for site : ' + siteSelect.val() + ' -------</div></br></br>');
                scriptOutputCont.append("<div id='timer'>Starting Timer</div>").each(function(){
                  ecto1.aux.startTimer(); 
                });
@@ -259,6 +260,12 @@
                     success:function(response){
                         response += '</br><div>------- End of Script Output ------</div></br></br>';
                         scriptOutputCont.append(response);
+                        siteSelect.prop('disabled',false);
+                        siteSelect.trigger('change');
+                        siteCheckbox.prop('disabled',false);
+                        setTimeout(function(){
+                            alert("Latest Images Successfully updated");
+                        },200);
                     },
                     error:function(response){
                         scriptOutputCont.append("Problem retrieving script output : " + JSON.stringify(response));
@@ -399,6 +406,9 @@
             
            beforeSend:function(){
                scriptOutputCont.append('<div>------- Regenerating Base Test Images for site : ' + siteSelect.val() + ' -------</div></br></br>');
+               ecto1.aux.toggleButtonState(updateButton);
+               baseImageCheckbox.prop('checked',false);
+               baseImageCheckbox.prop('disabled',true);
                scriptOutputCont.append("<div id='timer'>Starting Timer</div>").each(function(){
                  ecto1.aux.startTimer(); 
                });
@@ -412,7 +422,13 @@
                  
                     success:function(response){
                         response += '</br><div>------- End of Script Output ------</div></br></br>';
+                        
                         scriptOutputCont.append(response);
+                        siteSelect.prop('disabled',false);
+                        siteSelect.trigger('change');
+                        setTimeout(function(){
+                            alert('Base Images Generated Successfully');
+                        },200);
                     },
                     error:function(){
                         scriptOutputCont.append("Problem retrieving script output : " + JSON.stringify(response));
@@ -459,6 +475,45 @@
             });
         }
     }
+    
+    function getWraithGalleries(){
+        $.ajax({
+             url: "/wraith/loadWraithGalleryIndex",
+             type: "GET",
+
+             success:function(response){
+                $('#linkCont').html(response);
+             },
+             error:function(){
+                 $('#linkCont').prepend("Problem updating results, please refresh the page manually.");
+             }         
+        });
+    }
+    
+    penumbraTab.on('click',function(){
+        getWraithGalleries();
+    });
+    
+    function disableAllControls(){
+        pathCheckbox.prop('disabled',true);
+        pathCheckbox.prop('checked',false);
+        siteCheckbox.prop('disabled',true);
+        siteCheckbox.prop('checked',false);
+        siteName.prop('disabled',true);
+        pathSelect.prop('disabled',true);
+        siteSelect.prop('disabled',true);
+        secureCheckbox.prop('disabled',true);
+        secureCheckbox.prop('checked',false);
+        baseImageCheckbox.prop('disabled',true);
+        baseImageCheckbox.prop('checked',false);
+        urlText.prop('disabled',true);
+        removeSiteCheckbox.prop('disabled',true);
+        removeSiteCheckbox.prop('checked',false);
+        pathLabel.prop('disabled',true);
+        
+    }
+    
+    
     
     //Allows our event handlers to be assigned dynamically/ at load time.
     
@@ -519,8 +574,7 @@
                 pathLabel.prop('disabled',true);
                 if(siteSelect.prop('selectedIndex')>0){
                     removeSiteCheckbox.prop('disabled',false);
-                }
-                
+                }   
             }
         });
 
@@ -681,6 +735,15 @@
     ecto1.wraith.getLatestImages = function(){
         return getLatestTestImages();
     };
+    
+    ecto1.wraith.disableControls = function(){
+        return disableAllControls();
+    };
+    
+    $(document).ready(function(){
+        getWraithGalleries(); 
+    });
+    
     
     return ecto1;
     

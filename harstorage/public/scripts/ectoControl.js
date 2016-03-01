@@ -65,7 +65,7 @@
                     "sPaginationType": "full_numbers",
                     "sDom": 'R<"H"lfr>t<"F"ip<',
                     "bAutoWidth": false,
-                    "iDisplayLength": 10,
+                    "iDisplayLength": 100,
                     "aaSorting": [[ 0, "desc" ]]
                 });
                 $('#summary-table').css('visibility', 'visible');
@@ -105,7 +105,6 @@
                      $('#loadBuffer').load("/wraith/loadWraithForm",function(){
                             optionsCont.append($(this).html());
                         }); 
-                    
                     setTimeout(ecto1.wraith.attachEventHandlers,1000);
                     
                     break;
@@ -123,6 +122,7 @@
                     break;
             }
             case'2':{
+                    ecto1.wraith.disableControls();
                     ecto1.wraith.getLatestImages();
                     break;
             }
@@ -130,7 +130,7 @@
                     break;
             }
         }
-        toggleButtonState(submitButton,'disabled');
+        toggleButtonState(submitButton);
     });
     
     function updateUrlText(){

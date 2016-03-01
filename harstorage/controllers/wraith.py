@@ -275,6 +275,7 @@ class WraithController(BaseController):
                 print "\n\t Error: second attempt failed, program will quit."
                 
 
+        self._addSiteToGalleryIndex()
         self._writeOutput(self.scriptOutput,'logs/'+self.siteName+'_GetLatestImageOutput.log')
         
 
@@ -290,7 +291,12 @@ class WraithController(BaseController):
         if os.path.isfile(self.scriptDirectory+'logs/' + self.siteName +'_GenBaseImageOutput.log'):
             os.remove(self.scriptDirectory+'logs/' + self.siteName +'_GenBaseImageOutput.log')
         
-        # TO DO : Delete Images and Folders
+        #Delete Images and Folders
+        if os.path.exists(self.scriptDirecotry + "screenCaptures/" + self.siteName + "_base_shots"):
+            shutil.remtree(self.scriptDirecotry + "screenCaptures/" + self.siteName + "_base_shots")
+            
+        if os.path.exists(self.scriptDirecotry + "screenCaptures/" + self.siteName + "_latest_shots"):
+            shutil.remtree(self.scriptDirecotry + "screenCaptures/" + self.siteName + "_latest_shots")
         
         #Delete Path Files
         if os.path.isfile(self.scriptDirectory+'pathData/' + self.siteName +'_paths.json'):
@@ -299,6 +305,7 @@ class WraithController(BaseController):
         #Delete yaml
         if os.path.isfile(self.scriptDirectory + self.siteName +'_History.yaml'):
             os.remove(self.scriptDirectory + self.siteName +'_History.yaml')
+        
         #remove site from existingSites.config
         f = open(self.scriptDirectory + "existingSites.config","r+")
         d = f.readlines()
@@ -306,6 +313,18 @@ class WraithController(BaseController):
         
         for i in d:
             if i != self.siteName+'\n':
+                f.write(i)
+                
+        f.truncate()
+        f.close()
+        
+        #remove site From Gallery Index
+        f = open(self.scriptDirectory + "wraithGalleryIndex.html","r+")
+        d = f.readlines()
+        f.seek(0)
+        
+        for i in d:
+            if i != '<a href="wraith/loadWraithGallery?siteName=' + self.siteName +'" target="_blank">' + self.siteName + '\'s gallery</a>':
                 f.write(i)
                 
         f.truncate()
@@ -332,6 +351,14 @@ class WraithController(BaseController):
     @restrict("GET")
     def loadWraithForm(self):
         return render('/home/casperForms/wraithForm.html')
+    
+    @restrict("GET")
+    def loadWraithGalleryIndex(self):
+        return self._getScriptOutput('wraithGalleryIndex.html')
+    
+    @restrict("GET")
+    def loadWraithGallery(self):
+        return self._getScriptOutput('screenCaptures/'+request.params['siteName']+'_latest_shots/gallery.html')
     
     @restrict("GET")
     def getExistingSites(self):
@@ -366,8 +393,6 @@ class WraithController(BaseController):
                 print("stream is open")
                 
                 for line in f:
-                    print("In for loop")
-                    print("length of line") + str(len(line))
                     if re.search(self.siteName,line):
                         
                         if self.updatingRecord :
@@ -385,8 +410,6 @@ class WraithController(BaseController):
                         self._writeOutput(self.rawPathData,"pathData/"+self.siteName+'_paths.json')
                         self.scriptOutput += "Site : " + self.siteName + " added Successfully"
                         return True
-                    
-                print ("out of for loop")
         else:
             self._writeOutput(self.siteName+'\n','existingSites.config')
             #preserve our paths to file so we can reference them from the web interface.
@@ -395,6 +418,31 @@ class WraithController(BaseController):
             return True
         
         return False
+    
+    def _addSiteToGalleryIndex(self):
+        print "Adding site to wraithGalleryIndex.html "
+        
+        if os.path.isfile('wraithGalleryIndex.html'):
+           
+            with open(self.scriptDirectory+'wraithGalleryIndex.html') as f:
+                print("stream is open")
+                
+                for line in f:
+                    if re.search(self.siteName,line):
+                        print("The Gallery Already Exists.")
+                        self.scriptOutput += self.siteName + "'s gallery is already listed."
+                        
+                    else:
+                        print("Adding site to gallery Index.")
+                        link = '<a href="wraith/loadWraithGallery?siteName='+self.siteName +'" target="_blank">' + self.siteName + '\'s gallery</a>'
+                        self._appendOutput(link,'wraithGalleryIndex.html')                        
+        else:
+            print("Adding site to gallery Index.")
+            link = '<a href="wraith/loadWraithGallery?siteName=' + self.siteName +'" target="_blank">' + self.siteName + '\'s gallery</a>'
+            self._writeOutput(link,'wraithGalleryIndex.html')
+            
+        
+       
     
     @restrict("GET")
     def returnProcessOutput(self):

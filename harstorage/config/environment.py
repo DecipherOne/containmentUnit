@@ -18,7 +18,7 @@ def load_environment(global_conf, app_conf):
     paths = dict(root=root,
                  controllers=os.path.join(root, "controllers"),
                  static_files=os.path.join(root, "public"),
-                 templates=[os.path.join(root, "templates")])
+                 templates=[os.path.join(root, "templates"),os.path.join(root,"public")])
 
     # Initialize config with the basic options
     config.init_app(global_conf, app_conf, package="harstorage", paths=paths)
