@@ -244,6 +244,7 @@
             contentType: 'application/json; charset=utf-8',
             
             beforeSend:function(){
+               scriptOutputCont.html('--- Script Output ---');
                scriptOutputCont.append('<div>------- Getting Latest Images for site : ' + siteSelect.val() + ' -------</div></br></br>');
                scriptOutputCont.append("<div id='timer'>Starting Timer</div>").each(function(){
                  ecto1.aux.startTimer(); 
@@ -263,6 +264,7 @@
                         siteSelect.prop('disabled',false);
                         siteSelect.trigger('change');
                         siteCheckbox.prop('disabled',false);
+                        pathSelect.prop('disabled',false);
                         setTimeout(function(){
                             alert("Latest Images Successfully updated");
                         },200);
@@ -309,7 +311,7 @@
            return alert("Every path entry requires a label. Label 1 is associated with Path 1. Please make sure you have at least one path and each path has a label.");
         }
         else{
-             siteCheckbox.trigger('click');
+             disableAllControls();
             //We need to build up our path object
             for(var i=0; i < pathLabels.length; i++){
                 if(i===pathLabels.length-1){
@@ -376,7 +378,11 @@
                 scriptOutputCont.append("Problem retrieving script output : " + JSON.stringify(response));    
             },
             complete: function(){
-                ecto1.aux.stopTimer();
+                ecto1.aux.stopTimer();                
+                siteSelect.prop('disabled',false);
+                siteSelect.trigger('change');
+                siteCheckbox.prop('disabled',false);
+                pathSelect.prop('disabled',false);
             }
         });
     }
@@ -405,6 +411,7 @@
             contentType: 'application/json; charset=utf-8',
             
            beforeSend:function(){
+               scriptOutputCont.html('--- Script Output ---');
                scriptOutputCont.append('<div>------- Regenerating Base Test Images for site : ' + siteSelect.val() + ' -------</div></br></br>');
                ecto1.aux.toggleButtonState(updateButton);
                baseImageCheckbox.prop('checked',false);
@@ -446,6 +453,12 @@
     
     function removeExistingSite(){
         
+        if($('#existingSiteSel').children().length <= 2){
+            alert('The system requires at least one site exists. If you wish to delete this site, add another first.');
+            removeSiteCheckbox.trigger('click');
+            return;
+        }
+        
         if(confirm("Are you sure you wish to delete the site " + siteSelect.val() + "? \n This will completely remove all paths and images from the system.")){
             
             ecto1.aux.toggleButtonState(updateButton);
@@ -463,7 +476,7 @@
 
                 success:function(response){
                    scriptOutputCont.append(response);
-                   populateExistingSites();
+                   getExistingSites();
                 },
                 error:function(response){
                      scriptOutputCont.append("Problem removing the site : " + response);
@@ -471,6 +484,8 @@
                 },
                 complete: function(){
                     ecto1.aux.stopTimer();
+                    removeSiteCheckbox.trigger('click');
+                    
                 }
             });
         }
@@ -510,6 +525,8 @@
         removeSiteCheckbox.prop('disabled',true);
         removeSiteCheckbox.prop('checked',false);
         pathLabel.prop('disabled',true);
+        ecto1.aux.toggleButtonState(updateButton);
+        ecto1.aux.toggleButtonState(removeButton);
         
     }
     
@@ -620,6 +637,8 @@
                 //Removes existing children every time a new site is selected
                 pathSelect.children("option").remove();
                 pathSelect.append("<option>Existing Paths</option>");
+                pathCheckbox.prop('disabled',true);
+                pathCheckbox.prop('checked',false);
             }
         });
         

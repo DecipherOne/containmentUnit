@@ -657,13 +657,17 @@ input[type='checkbox']{
 #linkCont{
     width:90%;
     padding:10px 10px;
-    background-color:#c2c2c2;
+    background-color:#090909;
     margin:10px auto;
+    min-height:300px;
     
 }
 
-#linkCont a{
-    margin:10px auto;
+#linkCont div{
+    margin:16px auto;
+    width:25%;
+    float:left;
+    padding:0px 10px;
 }
 
 #wraithLogo{

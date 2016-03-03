@@ -177,8 +177,9 @@ class Wraith::GalleryGenerator
   end
 
   def prompt_user_to_open_gallery(dest)
-    logger.info "\nView the gallery in your browser:"
-    logger.info "\t file://" + Dir.pwd + '/' + dest
+    mySiteName = wraith.domains.keys[0].gsub('_','.') 
+    logger.info "</br></br>View the gallery in your browser:"
+    logger.info "</br></br></br><a style='color:red;' target='_blank' href='/wraith/loadWraithGallery?siteName="+ mySiteName+ "'> View your new " +mySiteName  + " regression test gallery.</a></br></br>" 
   end
 
   class ErbBinding < OpenStruct
