@@ -1,4 +1,0 @@
-config
-controllers
-lib
-tests
