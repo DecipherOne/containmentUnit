@@ -1,11 +1,11 @@
 Metadata-Version: 1.0
-Name: harstorage
+Name: Containment Unit - Performance Tools
 Version: 1.0
-Summary: Free repository for performance measurements
-Home-page: http://harstorage.com/
-Author: Pavel Paulau
-Author-email: Pavel.Paulau@gmail.com
+Summary: A collection of front end performance measurement tools.
+Home-page: https://github.com/DecipherOne/crtHarstorage/tree/Containment-Unit---Performance-Tools
+Author: Will Canada
+Author-email: willc@decipherone.com
 License: BSD, see LICENSE.txt for details
-Description: HAR Storage is repository for automated client-side performance testing. It's built on MongoDB and Pylons.
+Description: Web Interfaces and unification of Wraith Image Regression,Har Storage, and running casperjs scripts.
 Platform: Linux
 Platform: Windows

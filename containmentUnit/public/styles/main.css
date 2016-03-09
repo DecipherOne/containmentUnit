@@ -647,7 +647,7 @@ input[type='checkbox']{
     width:60%;
 }
 
-//For small devices
+/*For small devices*/
 @media only screen and (max-width: 767px) {
     #existingPathsCont{
       width:90%;    
