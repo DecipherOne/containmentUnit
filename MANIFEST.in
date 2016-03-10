@@ -25,7 +25,7 @@ include containmentUnit\templates\home\*
 include containmentUnit\templates\home\CasperScripts\*
 include containmentUnit\templates\home\casperForms\*
 include containmentUnit\templates\home\images\*
-include dependencyMods\*
-include dependencyMods\bmpExtract\*
-include dependencyMods\executableBase\*
-include dependencyMods\wraith_customFiles\*
+include containmentUnit\dependencyMods\*
+include containmentUnit\dependencyMods\bmpExtract\*
+include containmentUnit\dependencyMods\executableBase\*
+include containmentUnit\dependencyMods\wraith_customFiles\*
