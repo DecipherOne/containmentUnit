@@ -6,13 +6,16 @@ from pylons import config
 from pylons.controllers.util import redirect
 from pylons.decorators.rest import restrict
 from browsermobproxy import Server
-from harstorage.lib.base import BaseController, render
+from containmentUnit.lib.base import BaseController, render
 
 #print "app root is: " + APP_ROOT;
 #This opens a pipe to the standard cmd shell and sets input and output
 class CasperjsController(BaseController):
     # default script to run
-    APP_ROOT = "C:/Python27/Lib/site-packages/harstorage-1.0-py2.7.egg/harstorage"     
+   # APP_ROOT = "C:/Python27/Lib/site-packages/harstorage-1.0-py2.7.egg/harstorage"   
+    pathname = os.path.dirname(sys.argv[0])
+    APP_ROOT = os.path.abspath(pathname)
+    APP_ROOT +=  "/containmentUnit"
     scriptDirectory = APP_ROOT + "/templates/home/CasperScripts/"
     scriptName ="performanceHarRepo.js "
     waitTime = "1000"

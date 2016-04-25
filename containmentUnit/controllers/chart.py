@@ -7,7 +7,7 @@ from pylons import request, response
 from pylons import config
 from pylons.decorators.rest import restrict
 
-from harstorage.lib.base import BaseController
+from containmentUnit.lib.base import BaseController
 
 class ChartController(BaseController):
 

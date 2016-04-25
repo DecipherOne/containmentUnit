@@ -2,7 +2,7 @@ import logging
 
 import pylons.test
 
-from harstorage.config.environment import load_environment
+from containmentUnit.config.environment import load_environment
 
 log = logging.getLogger(__name__)
 

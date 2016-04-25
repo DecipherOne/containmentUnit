@@ -1,7 +1,7 @@
 import pymongo
 import time
 
-from harstorage.tests import *
+from containmentUnit.tests import *
 
 class TestTestflowController(TestController):
 

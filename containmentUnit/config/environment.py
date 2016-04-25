@@ -21,11 +21,11 @@ def load_environment(global_conf, app_conf):
                  templates=[os.path.join(root, "templates"),os.path.join(root,"public")])
 
     # Initialize config with the basic options
-    config.init_app(global_conf, app_conf, package="harstorage", paths=paths)
+    config.init_app(global_conf, app_conf, package="containmentUnit", paths=paths)
 
     config["routes.map"] = make_map(config)
     config["pylons.app_globals"] = app_globals.Globals(config)
-    config["pylons.h"] = harstorage.lib.helpers
+    config["pylons.h"] = containmentUnit.lib.helpers
     
     # Setup cache object as early as possible
     import pylons

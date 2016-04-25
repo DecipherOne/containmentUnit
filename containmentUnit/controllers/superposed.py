@@ -2,9 +2,9 @@ from pylons import request, tmpl_context as c
 from pylons import config
 from pylons.decorators.rest import restrict
 
-from harstorage.lib.base import BaseController, render
-from harstorage.lib.MongoHandler import MongoDB
-from harstorage.lib.Math import Histogram, Aggregator
+from containmentUnit.lib.base import BaseController, render
+from containmentUnit.lib.MongoHandler import MongoDB
+from containmentUnit.lib.Math import Histogram, Aggregator
 
 class SuperposedController(BaseController):
 

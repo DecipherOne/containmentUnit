@@ -2,7 +2,7 @@ import pymongo
 import json
 import time
 
-from harstorage.tests import *
+from containmentUnit.tests import *
 
 class TestResultsController(TestController):
 

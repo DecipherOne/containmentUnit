@@ -2,7 +2,7 @@ from pylons import request, tmpl_context as c
 from pylons import config
 from webhelpers.html.builder import literal
 
-from harstorage.lib.base import BaseController, render
+from containmentUnit.lib.base import BaseController, render
 
 class ErrorController(BaseController):
 
