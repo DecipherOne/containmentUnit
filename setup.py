@@ -2,12 +2,12 @@ from setuptools import setup, find_packages
 
 setup(
     name='containmentUnit',
-    version='1.0.6',
+    version='1.0.7',
     description='A collection of front end performance measurement tools.',
     long_description="Web Interfaces and unification of Wraith Image Regression,Har Storage, and running casperjs scripts",
     author='Will Canada',
     author_email='willc@decipherone.com',
-    url='https://github.com/DecipherOne/crtHarstorage/tree/Containment-Unit---Performance-Tools',
+    url='https://github.com/DecipherOne/containmentUnit',
     license='BSD, see LICENSE.txt for details',
     platforms=['Linux', 'Windows'],
     dependency_links=['http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/2.22/pygtk-all-in-one-2.22.5.win32-py2.7.msi'],

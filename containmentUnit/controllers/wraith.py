@@ -125,6 +125,7 @@ class WraithController(BaseController):
         selfPathArray = selfPathMasterDict['paths']
         filePath = "pathData/" + selfSiteName + "_paths.json"
         fileStream = self._getScriptOutput(filePath)
+        selfPathName = None
         self.updatingRecord = True
         
         print "Updating Path Records for : " + selfSiteName
