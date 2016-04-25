@@ -13,8 +13,6 @@ from containmentUnit.lib.base import BaseController, render
 class CasperjsController(BaseController):
     # default script to run
     APP_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    print "my path is : " + APP_ROOT
-    APP_ROOT +=  "/containmentUnit"
     scriptDirectory = APP_ROOT + "/templates/home/CasperScripts/"
     scriptName ="performanceHarRepo.js "
     waitTime = "1000"
