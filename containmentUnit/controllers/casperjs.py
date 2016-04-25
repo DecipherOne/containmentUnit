@@ -1,5 +1,5 @@
 # This block is used to run casperjs scripts from a web interface.
-import json
+import json, os, sys
 import subprocess,time, requests as serverReq
 from pylons import request, response, tmpl_context as c
 from pylons import config
