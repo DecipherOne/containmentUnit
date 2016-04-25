@@ -4,9 +4,9 @@ from mako.lookup import TemplateLookup
 from pylons.configuration import PylonsConfig
 from pylons.error import handle_mako_error
 
-import harstorage.lib.app_globals as app_globals
-import harstorage.lib.helpers
-from harstorage.config.routing import make_map
+import containmentUnit..lib.app_globals as app_globals
+import containmentUnit..lib.helpers
+from containmentUnit..config.routing import make_map
 
 def load_environment(global_conf, app_conf):
     """Configure the Pylons environment via the ``pylons.config`` object"""

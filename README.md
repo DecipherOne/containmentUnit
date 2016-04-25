@@ -24,6 +24,13 @@ Other Dependencies - Python 2.7
 Setup Instructions - This project currently a collection of open source tools. Each must be setup in the appropriate order.
 
     Install python 2.7 https://www.python.org/downloads/release/python-2710/
+    Install ruby 2.2     http://rubyinstaller.org/downloads/
+    Install Phantomjs 1.9.7 https://github.com/ariya/phantomjs/releases or https://bitbucket.org/ariya/phantomjs/downloads
+    Install Casperjs 1.1.0  https://github.com/n1k0/casperjs/releases
+
+   From the cmd line install Wraith - gem install Wraith
+
+    (However you install make sure your paths are set correctly!)
     
 
 Use - 

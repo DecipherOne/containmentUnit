@@ -30,14 +30,13 @@ setup(
     #   3 - Alpha
     #   4 - Beta
     #   5 - Production/Stable
-    'Development Status :: 4-BETA',
-
+    'Development Status :: 4 - Beta',
     # Indicate who your project is intended for
     'Intended Audience :: Developers',
-    'Topic :: Software Development :: Performance Tools',
-
+    'Intended Audience :: Information Technology',
+    'Topic :: Software Development :: Testing',
     # Pick your license as you wish (should match "license" above)
-     'License :: OSI Approved :: BSD',
+     'License :: OSI Approved :: BSD License',
 
     # Specify the Python versions you support here. 
     'Programming Language :: Python :: 2.7',
