@@ -16,7 +16,7 @@ from pylons.decorators.rest import restrict
 from containmentUnit.lib.base import BaseController, render
 from containmentUnit.lib.HAR import HAR
 from containmentUnit.lib.MongoHandler import MongoDB
-import containmentUnit..lib.helpers as h
+import containmentUnit.lib.helpers as h
 
 log = logging.getLogger(__name__)
 
