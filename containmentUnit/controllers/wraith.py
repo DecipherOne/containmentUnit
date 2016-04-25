@@ -12,8 +12,7 @@ from containmentUnit.lib.base import BaseController, render
 #This opens a pipe to the standard cmd shell and sets input and output
 class WraithController(BaseController):
     # default script to run
-    pathname = os.path.dirname(sys.argv[0])
-    APP_ROOT = os.path.abspath(pathname)   
+    APP_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
     scriptDirectory = APP_ROOT + "/public/Wraith/configs/"
     siteName = 'default'
     paths ='defaultPaths'

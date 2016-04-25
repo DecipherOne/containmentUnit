@@ -12,9 +12,8 @@ from containmentUnit.lib.base import BaseController, render
 #This opens a pipe to the standard cmd shell and sets input and output
 class CasperjsController(BaseController):
     # default script to run
-   # APP_ROOT = "C:/Python27/Lib/site-packages/harstorage-1.0-py2.7.egg/harstorage"   
-    pathname = os.path.dirname(sys.argv[0])
-    APP_ROOT = os.path.abspath(pathname)
+    APP_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    print "my path is : " + APP_ROOT
     APP_ROOT +=  "/containmentUnit"
     scriptDirectory = APP_ROOT + "/templates/home/CasperScripts/"
     scriptName ="performanceHarRepo.js "
@@ -78,7 +77,7 @@ class CasperjsController(BaseController):
             print "\n \t count is :"+ str(count)
 
             # We have all our values setup the cmdline cmd
-            args ="c:/Casper/bin/casperjs --proxy='http://localhost:8081' --ssl-protocol='any' --ignore-ssl-errors=true --disc-cache=false " + self.scriptDirectory + self.scriptName + self.scriptDirectory + self.jsonFile + " " + self.waitTime + " " + self.testLabel
+            args ="c:/Casperjs/bin/casperjs --proxy='http://localhost:8081' --ssl-protocol='any' --ignore-ssl-errors=true --disc-cache=false " + self.scriptDirectory + self.scriptName + self.scriptDirectory + self.jsonFile + " " + self.waitTime + " " + self.testLabel
 
             myProc = subprocess.Popen(args,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.STDOUT);
             
