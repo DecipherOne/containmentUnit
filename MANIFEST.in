@@ -14,6 +14,9 @@ include containmentUnit\public\styles\datatables\images\*
 include containmentUnit\public\swf\*
 include containmentUnit\public\Wraith\*
 include containmentUnit\public\Wraith\configs\*
+include containmentUnit\public\Wraith\configs\screenCaptures\*
+include containmentUnit\public\Wraith\configs\logs\*
+include containmentUnit\public\Wraith\configs\pathData\*
 include containmentUnit\public\Wraith\javascript\*
 include containmentUnit\templates\*
 include containmentUnit\templates\common\*
