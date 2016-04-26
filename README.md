@@ -32,36 +32,36 @@ Install MongoDB -
 	Download the proper version for your os and run the installer.
 
 	Once Installed, you need to set mongodb up as a service, so that it will run when windows
-runs.
+                      runs.
 
 Instructions : https://docs.mongodb.org/v2.4/tutorial/install-mongodb-on-windows/#mongodb-as-a-windows-service
 
 Create a config file called mongodb.cfg  with the following contents. (This is read as a yaml file so indentation is important.)
 	
-	systemLog:
-	    destination:file
+           systemLog:
+            destination:file
                 path: c:\mongodbfiles\loglmongodb.log (Where you want the server log to go.)
             storage:
                 dbPath: c:\mongodbfiles\data\db (Where you want the documents to be stored.)
 
             Save this file,  If the specified directories do not exist, manually create them,
- (You MUST create these directories, otherwise the process will fail.)
-Then from an administrative cmd line run the following command :
-(Make sure your paths are set to where you have things installed.)
-C:\mongodb\bin\mongod.exe --config C:\mongodbfiles\mongodb.cfg --install
-If everything went well, the system will spit out a blank line.
-Then type 
-net start MongoDB
-If everything went well, you’ll see the message that the service started successfully.
-You now have a configured mongodb service that will start automatically with windows.
-Install Ruby 2.3.X or 2.2.X - 
-http://rubyinstaller.org/downloads/
+        (You MUST create these directories, otherwise the process will fail.)
+       Then from an administrative cmd line run the following command :
+       (Make sure your paths are set to where you have things installed.)
+       C:\mongodb\bin\mongod.exe --config C:\mongodbfiles\mongodb.cfg --install
+       If everything went well, the system will spit out a blank line.
+       Then type 
+       net start MongoDB
+       If everything went well, you’ll see the message that the service started successfully.
+       You now have a configured mongodb service that will start automatically with windows.
+       Install Ruby 2.3.X or 2.2.X - 
+       http://rubyinstaller.org/downloads/
 
-Install Browser-Mob Proxy -
-	https://github.com/lightbody/browsermob-proxy/releases
-	This project uses version 2.0
-Download the zip file and extract to c:\ ,path should end up being
-C:\browsermob-proxy-2.0.0 , if you install to a different location,make note, because you will have to update the path in the containmentUnit python files in order to work from a different directory.
+        Install Browser-Mob Proxy -
+                https://github.com/lightbody/browsermob-proxy/releases
+                This project uses version 2.0
+        Download the zip file and extract to c:\ ,path should end up being
+        C:\browsermob-proxy-2.0.0 , if you install to a different location,make note, because you will have to update the path in the containmentUnit python files in order to work from a different directory.
 
 Install Phantomjs 1.9.7 -
 	https://bitbucket.org/ariya/phantomjs/downloads
@@ -79,74 +79,87 @@ Install Wraith -
 
 Install python setuptools -
 
-	Install PyGTK bundle (All-in-one) 
-http://ftp.gnome.org/pub/GNOME/binaries/win32/gnome-python-desktop/ 
-Install pyrsvg http://ftp.gnome.org/pub/GNOME/binaries/win32/gnome-python-desktop/
-Install setuptools http://pypi.python.org/pypi/setuptools
+    Install PyGTK bundle (All-in-one) http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/2.22/
+    Install pyrsvg http://ftp.gnome.org/pub/GNOME/binaries/win32/gnome-python-desktop/
+    Install setuptools http://pypi.python.org/pypi/setuptools
 
 Install additional Python dependencies-
-	From an elevated cmd line run the following commands one at a time :
+
+                From an elevated cmd line run the following commands one at a time :
+
                  easy_install pylons==1.0
+
                  easy_install webob==0.9.8
+
                  easy_install pymongo==2.8
-	     easy_install browsermob-proxy==0.7.1
+
+                easy_install browsermob-proxy==0.7.1
+
                  easy_install containmentUnit
 
 Alter modified dependencies - 
 	
-	Modify browser-mob proxy : 
+            Modify browser-mob proxy : 
 
-               The default server version will not terminate correctly on windows.
+                The default server version will not terminate correctly on windows.
                 I altered the server so that it can successfully shut down.
+
+                Navigate to your python27 installation directory. My directory is C:\Python27
+                Then navigate to C:\Python27\Lib\site-packages you should see the package for 
+                browsermob-proxy, if the egg is inaccessible, you will need a program like 7zip to access 
+                it.
+
+               Once you get the directory open, you will see a list of python files.
+
+               In a seperate window/shell navigate to C:\Python27\Lib\site-packages\containmentUnit1.0-py2.7.egg\containmentUnit\dependencyMods\bmpExtract
+
+               Copy the contents of this directory to 
+
+               C:\Python27\Lib\site-packages\browsermob_proxy-0.7.1-py2.7.egg\browsermobproxy\
+
+                The server is now modified to close correctly on windows.
 	
-	Navigate to your python27 installation directory. My directory is C:\Python27
-	Then navigate to C:\Python27\Lib\site-packages you should see the package for 
-browsermob-proxy, if the egg is inaccessible, you will need a program like 7zip to access 
-it.
-
-Once you get the directory open, you will see a list of python files.
-
-In a seperate window/shell navigate to C:\Python27\Lib\site-packages\containmentUnit1.0-py2.7.egg\containmentUnit\dependencyMods\bmpExtract
-
-Copy the contents of this directory to 
-
-C:\Python27\Lib\site-packages\browsermob_proxy-0.7.1-py2.7.egg\browsermobproxy\
-
-The server is now modified to close correctly on windows.
+            Modify Wraith Template :
 	
-	Modify Wraith Template :
+                By default the wraith template dumps out the system paths, since we are hooking our output stream up to the internet, we don’t want to expose this data, so we have a modified template.
 	
-By default the wraith template dumps out the system paths, since we are hooking our output stream up to the internet, we don’t want to expose this data, so we have a modified template.
-	
-Navigate to : C:\Python27\Lib\site-packages\containmentUnit1.0-py2.7.egg\containmentUnit\dependencyMods\wraith_customFiles
+                Navigate to : C:\Python27\Lib\site-packages\containmentUnit1.0-py2.7.egg\containmentUnit\dependencyMods\wraith_customFiles
 
-You need to locate wraiths template directory, it will be in your ruby path, mine is :
-C:\tools\ruby22\lib\ruby\gems\2.2.0\gems\wraith-3.1.4\lib\wraith
-In the directory replace gallery.rb with the one from the containmentUnit
+                You need to locate wraiths template directory, it will be in your ruby path, mine is :
+                C:\tools\ruby22\lib\ruby\gems\2.2.0\gems\wraith-3.1.4\lib\wraith
+                In the directory replace gallery.rb with the one from the containmentUnit
 
-Then go to C:\tools\ruby22\lib\ruby\gems\2.2.0\gems\wraith-3.1.4\lib\wraith\gallery_template
+                Then go to C:\tools\ruby22\lib\ruby\gems\2.2.0\gems\wraith-3.1.4\lib\wraith\gallery_template
 
-and replace the gallery_template.erb with the one from the containmentUnit.
-Your wraith template is now modified.
+                and replace the gallery_template.erb with the one from the containmentUnit.
+                Your wraith template is now modified.
 
 Configure Server for first Run - 
 
-Navigate to : C:\Python27\Lib\site-packages\containmentunit-1.0-py2.7.egg\containmentUnit\dependencyMods
+    Navigate to : C:\Python27\Lib\site-packages\containmentunit-1.0-py2.7.egg\containmentUnit\dependencyMods
 
-Copy the folder called executableBase and paste it to an easy to remember location like the desktop or c: drive.
+    Copy the folder called executableBase and paste it to an easy to remember location like the desktop or c: drive.
 
-In this directory you will see 3 different batch files. These are examples of files you can use in your systems start folder to kick off the server win windows logs on.
+    In this directory you will see 3 different batch files. These are examples of files you can use in your systems start folder to kick off the server when windows logs on.
 
-Or you can simply double click on the batch file to launch the server. 
+    Or you can simply double click on the batch file to launch the server. 
 
-Before you do that though, you will need to configure the batch files, and the server configuration.
+    Before you do that though, you will need to configure the batch files, and the server configuration.
 
-Server configuration is done here using the production.ini file.
+    Server configuration is done here using the production.ini file. The one in the zip is included for reference.
+    In order for the service to be properly registered, you will want to generate a new one.
+    You can generate a new ini file by browsing to directory you want your server
+    to execute from and issuing the command :
 
-Open that file in a text editor and take a look.
+        paster make-config "containmentUnit" production.ini
+
+    You could actually setup multiple server configurations here, dev.ini for example, to run with debug options set to display verbose information.
+    This could be helpful in testing altered services. 
+
+    Which ever file you decide to use, open that file in a text editor and take a look.
 
 #
-# harstorage - Pylons configuration
+# containmentUnit - Pylons configuration
 #
 # The %(here)s variable will be replaced with the parent directory of this file
 #
@@ -154,13 +167,11 @@ Open that file in a text editor and take a look.
 debug = true
 
 (This is the main configuration, host says it’ll just run on default localhost ip, you can change the port here.)
+
 [server:main]
 use = egg:Paste#http
 host = 0.0.0.0
 port = 5000
-
-
-
 
 [app:main]
 use = egg:containmentUnit
@@ -171,7 +182,8 @@ bin_store  = %(here)s
 ps_enabled = false
 static_version = 1.0
 
-(These are the db settings, you can specify a password, set the port, these defaults should work out of the box.)
+(These are the db settings, you can specify a password, set the port, these defaults should work out of the box.But if deploying to a public environment, you will want
+to change these settings for security reasons.)
 
 mongo_host = localhost
 mongo_port = 27017
@@ -208,23 +220,29 @@ formatter = generic
 
 [formatter_generic]
 format = %(asctime)s %(levelname)-5.5s [%(name)s] [%(threadName)s] %(message)s
+
 Once you have your settings the way you want. Navigate to where the production.ini file is in an admin cmd prompt.
 
 Then type the command :
 
-paster setup-app production.ini
-
+    paster setup-app production.ini
 
 After running the command you should see :
 
-Running setup_app() from containmentUnit.websetup
+    Running setup_app() from containmentUnit.websetup
 
 This should have registered your application.
 
 From the same directory, now run : 
 (log file is optional)
 
-paster serve production.ini --log-file harStorage.log
+    paster serve production.ini --log-file harStorage.log
+
+If you were doing development and you want the server to restart when a change is made to a python class you'll want to run with the --reload argument
+    
+    paster serve --reload production.ini --log-file harStorage.log  
+    
+
 
 Going to http://127.0.0.1:5000 in your browser for the first time will run the data-migration which essentailly creates the db tables and the like. Make sure to leave your browser open while this runs.
 
