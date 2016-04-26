@@ -2,6 +2,9 @@
 
 A collection of front end performance tools.
 
+*Warning : At this time, there are known security issues with the use of the shell parameter from initializing Popen from the casperjs.py module.
+ Use at your own risk. This is currently meant to be used as a standalone web application. This web application is still under development.
+
 Includes : 
 A custom version of HarStorage - https://code.google.com/archive/p/harstorage/
 Also allows execution of casperjs scripts through the Python interpreter, through a web interface. 
@@ -14,6 +17,8 @@ Python 2.7, MongoDB, Ruby, Browser-Mob Proxy
 Ruby Dependencies
 
 Wraith(Requires own versions of phantomjs and casperjs)
+
+Image Magick
 
 Python Dependencies
 
@@ -44,7 +49,7 @@ Create a config file called mongodb.cfg  with the following contents. (This is r
             storage:
                 dbPath: c:\mongodbfiles\data\db (Where you want the documents to be stored.)
 
-            Save this file,  If the specified directories do not exist, manually create them,
+        Save this file,  If the specified directories do not exist, manually create them,
         (You MUST create these directories, otherwise the process will fail.)
        Then from an administrative cmd line run the following command :
        (Make sure your paths are set to where you have things installed.)
@@ -85,10 +90,13 @@ Install casperjs 1.1.0 -
              YOU NEED TO UPDATE THE PATH IN config/thirdPartyPaths.json .
              This has to be set, otherwise the system may resolve casperjs incorrectly to the version wraith uses. If all else fails, check you system PATH variable.
 
-Install Wraith -
-	https://github.com/BBC-News/wraith
-	From the cmd line :
-	gem install wraith
+Install ImageMagick -
+    http://www.imagemagick.org/script/index.php
+
+Install Wraith Version 3.1.0-
+    https://github.com/BBC-News/wraith
+    From the cmd line :
+    gem install wraith -v 3.1.0
 
 Install python setuptools -
 
@@ -98,17 +106,17 @@ Install python setuptools -
 
 Install additional Python dependencies-
 
-                From an elevated cmd line run the following commands one at a time :
+    From an elevated cmd line run the following commands one at a time :
 
-                 easy_install pylons==1.0
+     easy_install pylons==1.0
 
-                 easy_install webob==0.9.8
+     easy_install webob==0.9.8
 
-                 easy_install pymongo==2.8
+     easy_install pymongo==2.8
 
-                easy_install browsermob-proxy==0.7.1
+    easy_install browsermob-proxy==0.7.1
 
-                 easy_install containmentUnit
+     easy_install containmentUnit
 
 Alter modified dependencies - 
 	
@@ -161,7 +169,7 @@ Configure Server for first Run -
 
     Server configuration is done here using the production.ini file. The one in the config directory is included for reference.
     In order for the service to be properly registered, you will want to generate a new one.
-    You can generate a new ini file by browsing to directory, in an elevated cmd shell, you want your server
+    You can generate a new ini file by browsing to the directory, in an elevated cmd shell, you want your server
     to execute from and issuing the command :
 
         paster make-config "containmentUnit" production.ini
@@ -171,7 +179,7 @@ Configure Server for first Run -
 
     Which ever file you decide to use, open that file in a text editor and take a look.
 
-#
+
 # containmentUnit - Pylons configuration
 #
 # The %(here)s variable will be replaced with the parent directory of this file
