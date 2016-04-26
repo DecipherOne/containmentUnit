@@ -51,17 +51,26 @@ Create a config file called mongodb.cfg  with the following contents. (This is r
        C:\mongodb\bin\mongod.exe --config C:\mongodbfiles\mongodb.cfg --install
        If everything went well, the system will spit out a blank line.
        Then type 
+
        net start MongoDB
+
        If everything went well, you’ll see the message that the service started successfully.
        You now have a configured mongodb service that will start automatically with windows.
+
+
        Install Ruby 2.3.X or 2.2.X - 
        http://rubyinstaller.org/downloads/
 
         Install Browser-Mob Proxy -
                 https://github.com/lightbody/browsermob-proxy/releases
                 This project uses version 2.0
+
         Download the zip file and extract to c:\ ,path should end up being
-        C:\browsermob-proxy-2.0.0 , if you install to a different location,make note, because you will have to update the path in the containmentUnit python files in order to work from a different directory.
+
+        C:\browsermob-proxy-2.0.0 
+
+        if you install to a different location,make note,
+        YOU NEED TO UPDATE THE PATH IN config/thirdPartyPaths.json .
 
 Install Phantomjs 1.9.7 -
 	https://bitbucket.org/ariya/phantomjs/downloads
@@ -71,6 +80,10 @@ Install casperjs 1.1.0 -
 	https://github.com/casperjs/casperjs/releases
 	It may be possible to use other versions, but not tested.
             Make sure to set your path so casperjs will resolve to this version. 
+
+            If you install to a different location other than C:\casperjs\bin ,make note,
+             YOU NEED TO UPDATE THE PATH IN config/thirdPartyPaths.json .
+             This has to be set, otherwise the system may resolve casperjs incorrectly to the version wraith uses. If all else fails, check you system PATH variable.
 
 Install Wraith -
 	https://github.com/BBC-News/wraith
@@ -146,9 +159,9 @@ Configure Server for first Run -
 
     Before you do that though, you will need to configure the batch files, and the server configuration.
 
-    Server configuration is done here using the production.ini file. The one in the zip is included for reference.
+    Server configuration is done here using the production.ini file. The one in the config directory is included for reference.
     In order for the service to be properly registered, you will want to generate a new one.
-    You can generate a new ini file by browsing to directory you want your server
+    You can generate a new ini file by browsing to directory, in an elevated cmd shell, you want your server
     to execute from and issuing the command :
 
         paster make-config "containmentUnit" production.ini
@@ -242,13 +255,10 @@ If you were doing development and you want the server to restart when a change i
     
     paster serve --reload production.ini --log-file harStorage.log  
     
-
-
 Going to http://127.0.0.1:5000 in your browser for the first time will run the data-migration which essentailly creates the db tables and the like. Make sure to leave your browser open while this runs.
 
 You are now all set!
             
-
 ----------------------------------------------------------------------------------------------------------------------------
 Linux Cent-OS Installation : (currently Incomplete)
 

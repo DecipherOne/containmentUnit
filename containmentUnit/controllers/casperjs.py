@@ -8,10 +8,7 @@ from pylons.decorators.rest import restrict
 from browsermobproxy import Server
 from containmentUnit.lib.base import BaseController, render
 
-#print "app root is: " + APP_ROOT;
-#This opens a pipe to the standard cmd shell and sets input and output
 class CasperjsController(BaseController):
-    # default script to run
     APP_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     scriptDirectory = APP_ROOT + "/templates/home/CasperScripts/"
     scriptName ="performanceHarRepo.js "
@@ -24,10 +21,27 @@ class CasperjsController(BaseController):
     url = None
     testLabel = '-defaultLabel-'
     throttleSpeed = None
+    casperPath = "c:/casperjs/bin/"
+    bmpPath = "c:/browsermob-proxy-2.0.0/bin/"
+    
     
     def __before__(self):
         """Define version of static content"""
         c.rev = config["app_conf"]["static_version"]
+        
+        #Get the Paths to our thirdparty executables
+        fileStream = open(self.APP_ROOT + "/config/thirdPartyPaths.json",'r')
+        outPut = fileStream.read()
+        fileStream.close()
+        fileStream = json.loads(outPut)
+        
+        if fileStream['casperjs'] !=  None:
+            self.casperPath = fileStream['casperjs']
+            
+        if fileStream['browser-mob-proxy'] !=  None:
+            self.bmpPath = fileStream['browser-mob-proxy']
+            
+        
     @restrict("POST")
     def exeScript(self):
         
@@ -60,8 +74,6 @@ class CasperjsController(BaseController):
         if reqParams['throttleSpeed'] != None:
             self.throttleSpeed = reqParams['throttleSpeed']
             
-        
-        
         count = int(self.timesToExe)
         self.startProxy()
         
@@ -75,7 +87,7 @@ class CasperjsController(BaseController):
             print "\n \t count is :"+ str(count)
 
             # We have all our values setup the cmdline cmd
-            args ="c:/Casperjs/bin/casperjs --proxy='http://localhost:8081' --ssl-protocol='any' --ignore-ssl-errors=true --disc-cache=false " + self.scriptDirectory + self.scriptName + self.scriptDirectory + self.jsonFile + " " + self.waitTime + " " + self.testLabel
+            args = self.casperPath +"casperjs --proxy='http://localhost:8081' --ssl-protocol='any' --ignore-ssl-errors=true --disc-cache=false " + self.scriptDirectory + self.scriptName + self.scriptDirectory + self.jsonFile + " " + self.waitTime + " " + self.testLabel
 
             myProc = subprocess.Popen(args,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.STDOUT);
             
@@ -124,7 +136,8 @@ class CasperjsController(BaseController):
         
         
     def startProxy(self):
-        self.proxyServer = Server('C:/browsermob-proxy-2.0.0/bin/browsermob-proxy.bat',{'port':8080})
+        myPath = self.bmpPath + 'browsermob-proxy.bat'
+        self.proxyServer = Server(myPath,{'port':8080})
         self.scriptOutput += "<div>Attempting to start Proxy</div></br>"
         self.proxyServer.start()
         self.myProxy = self.proxyServer.create_proxy({'httpsProxy':'localhost:8081'})
