@@ -345,9 +345,9 @@ you should see the path to python2.6
 
     https://github.com/lightbody/browsermob-proxy/releases/tag/browsermob-proxy-2.0.0
 
-    Download the appropriate package.
+    Download the appropriate bin zip package.
 
-    Extract package to desired location : ~/browser-mob-proxy2.0
+    Extract package to desired location : ~/browser-mob-proxy2.0.0
     (You will need to set this path in config/thirdParyPaths.json, so the application can resolve the path.)
 
 ###Install PhantomJS1.9.7 -
@@ -356,6 +356,8 @@ you should see the path to python2.6
     https://www.bonusbits.com/wiki/HowTo:Install_PhantomJS_on_CentOS
 
 ###Install CasperJS 1.1.0 -
+    https://github.com/casperjs/casperjs/releases/tag/1.1.0
+    I just manually downloaded release 1.1.0 and extracted the folder to the Home/casperjs directory
     (You will need to set this path in config/thirdParyPaths.json, so the application can resolve the path.)
 
 ###Install ImageMagick -
@@ -393,3 +395,28 @@ From a cmd line run the following commands one at a time :
    <b> If installation of the containmentUnit fails because of a conflict with WebTests simply installed the required version</b>
 
     pip install WebTest==1.3.3
+
+###Update thirdPartyPaths.json
+
+    You will need to find where python27 is located and get to the containmentUnit site-package.
+
+    My installation was located at : /usr/local/lib/python2.7/site-packages/containmentUnit
+    
+    Inside containmentUnit there should be a config folder.
+    Inside config you should see a file called thirdPartyPaths.json
+
+    Open this folder up in a text editor.
+
+    ###Update Contents of thirdPartyPaths.json
+
+        When you first Open the file you will see the default windows paths :
+
+        {"casperjs": "c:/casperjs/bin/","browser-mob-proxy":"c:/browsermob-proxy-2.0.0/bin/browsermob-proxy.bat" }
+
+        This json structure is how the application will resolve the path of our casperjs and browser-mob-proxy installations.
+        For my linux installation, I had to alter this to : 
+
+        {"casperjs": "/home/me/casperjs/bin","browser-mob-proxy":"/home/me/browser-mob-proxy2.0/bin/browsermob-proxy" }
+
+        
+###Make sure that the project has adequate read/write permissions
