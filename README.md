@@ -127,15 +127,15 @@ From the cmd line :
 
 From an elevated cmd line run the following commands one at a time :
 
-	easy_install pylons==1.0
+    *easy_install pylons==1.0
 
-    easy_install webob==0.9.8
+   * easy_install webob==0.9.8
 
-    easy_install pymongo==2.8
+    *easy_install pymongo==2.8
 
-    easy_install browsermob-proxy==0.7.1
+    *easy_install browsermob-proxy==0.7.1
 
-    easy_install containmentUnit
+   *easy_install containmentUnit
 
 ###Alter modified dependencies
 
@@ -311,13 +311,85 @@ From the cmd line : (The software collections repository explanation) - [https:/
 Follow these instructions
 https://dmngaya.com/2015/10/25/installing-python-2-7-on-centos-6-7/
 
-Side by side install, in order to have python resolve to 2.7, as user
-alias python=/usr/local/bin/python2.7
-	root should still be using vers 2.6
-Install MongoDB -
-Install Ruby 2.3.X -
+Side by side install, in order to have python resolve to 2.7, as user navigate to your home directory and open  ~/.bashrc for editing
+Find already defined aliases or simply add the line:
 
+    alias python=/usr/local/bin/python2.7
 
-Ruby Dependencies
+This allows the user account to use python2.7 while the root account is still using python2.6 which the system requires.
+To verify you are using the right python, from the cmd line type :
+    
+    which python
 
-Python Dependencies
+You should see the path to python2.7 dumped out. Now switch to su   then type
+
+    which python
+
+you should see the path to python2.6
+
+###Install MongoDB -
+
+    https://www.mongodb.org/downloads#production
+    Follow Installation Instructions here to setup as service :
+    https://docs.mongodb.org/v2.4/tutorial/install-mongodb-on-red-hat-centos-or-fedora-linux/
+
+###Install Ruby -
+
+    Try this first
+    http://tecadmin.net/install-ruby-2-2-oncentos-rhel/
+
+    Option 2
+    https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-on-centos-6
+
+###Browser-Mob Proxy 2.0 -
+
+    https://github.com/lightbody/browsermob-proxy/releases/tag/browsermob-proxy-2.0.0
+
+    Download the appropriate package.
+
+    Extract package to desired location : ~/browser-mob-proxy2.0
+    (You will need to set this path in config/thirdParyPaths.json, so the application can resolve the path.)
+
+###Install PhantomJS1.9.7 -
+
+    Follow these same instructions , make sure to substitute the version for 1.9.7 
+    https://www.bonusbits.com/wiki/HowTo:Install_PhantomJS_on_CentOS
+
+###Install CasperJS 1.1.0 -
+    (You will need to set this path in config/thirdParyPaths.json, so the application can resolve the path.)
+
+###Install ImageMagick -
+
+    sudo yum install ImageMagick
+
+###Install python setuptools
+
+       *sudo yum install pygtk2.x86_64
+
+       *sudo yum install pycairo
+
+       *sudo yum install gnome-python2-rsvg
+
+       * Follow these instructions to get setup tools to register with python2.7 in a side by side install (make sure to install pip)
+
+            https://www.digitalocean.com/community/tutorials/how-to-set-up-python-2-7-6-and-3-3-3-on-centos-6-4
+
+###Install additional Python dependencies
+
+From a cmd line run the following commands one at a time :
+
+    *pip install  pylons==1.0
+
+    *pip install webob==0.9.8
+
+    *pip install pymongo==2.8
+
+    *pip install browsermob-proxy==0.7.1
+
+    *pip install WebTest==1.3.3
+
+   *sudo easy_install containmentUnit
+
+   <b> If installation of the containmentUnit fails because of a conflict with WebTests simply installed the required version</b>
+
+    *pip install WebTest==1.3.3

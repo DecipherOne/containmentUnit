@@ -22,7 +22,7 @@ class CasperjsController(BaseController):
     testLabel = '-defaultLabel-'
     throttleSpeed = None
     casperPath = "c:/casperjs/bin/"
-    bmpPath = "c:/browsermob-proxy-2.0.0/bin/"
+    bmpPath = "c:/browsermob-proxy-2.0.0/bin/browsermob-proxy.bat"
     
     
     def __before__(self):
@@ -136,7 +136,7 @@ class CasperjsController(BaseController):
         
         
     def startProxy(self):
-        myPath = self.bmpPath + 'browsermob-proxy.bat'
+        myPath = self.bmpPath
         self.proxyServer = Server(myPath,{'port':8080})
         self.scriptOutput += "<div>Attempting to start Proxy</div></br>"
         self.proxyServer.start()
