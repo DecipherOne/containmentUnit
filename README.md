@@ -127,15 +127,15 @@ From the cmd line :
 
 From an elevated cmd line run the following commands one at a time :
 
-    *easy_install pylons==1.0
+    easy_install pylons==1.0
 
-   * easy_install webob==0.9.8
+   easy_install webob==0.9.8
 
-    *easy_install pymongo==2.8
+    easy_install pymongo==2.8
 
-    *easy_install browsermob-proxy==0.7.1
+    easy_install browsermob-proxy==0.7.1
 
-   *easy_install containmentUnit
+   easy_install containmentUnit
 
 ###Alter modified dependencies
 
@@ -364,13 +364,13 @@ you should see the path to python2.6
 
 ###Install python setuptools
 
-       *sudo yum install pygtk2.x86_64
+       sudo yum install pygtk2.x86_64
 
-       *sudo yum install pycairo
+       sudo yum install pycairo
 
-       *sudo yum install gnome-python2-rsvg
+       sudo yum install gnome-python2-rsvg
 
-       * Follow these instructions to get setup tools to register with python2.7 in a side by side install (make sure to install pip)
+       Follow these instructions to get setup tools to register with python2.7 in a side by side install (make sure to install pip)
 
             https://www.digitalocean.com/community/tutorials/how-to-set-up-python-2-7-6-and-3-3-3-on-centos-6-4
 
@@ -378,18 +378,18 @@ you should see the path to python2.6
 
 From a cmd line run the following commands one at a time :
 
-    *pip install  pylons==1.0
+    pip install  pylons==1.0
 
-    *pip install webob==0.9.8
+    pip install webob==0.9.8
 
-    *pip install pymongo==2.8
+    pip install pymongo==2.8
 
-    *pip install browsermob-proxy==0.7.1
+    pip install browsermob-proxy==0.7.1
 
-    *pip install WebTest==1.3.3
+    pip install WebTest==1.3.3
 
-   *sudo easy_install containmentUnit
+    pip install containmentUnit
 
    <b> If installation of the containmentUnit fails because of a conflict with WebTests simply installed the required version</b>
 
-    *pip install WebTest==1.3.3
+    pip install WebTest==1.3.3
