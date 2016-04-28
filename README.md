@@ -80,7 +80,7 @@ You now have a configured mongodb service that will start automatically with win
 
 Note: This project uses version 2.0
 
- Download the zip file and extract to c:\
+ Download the bin zip file and extract to c:\
 
  Path should end up being:
 
