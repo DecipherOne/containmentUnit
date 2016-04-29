@@ -81,7 +81,8 @@ class WraithController(BaseController):
             yamlCache += " " + self.paths['paths'][count]['label'] + ": /" + self.paths['paths'][count]['url'] + "\n"
             count+=1
     
-        yamlCache += "\nbefore_capture: '" +self.scriptDirectory+ "../javascript/wait--phantom.js'\n"  
+        #TODO: figure out why this call isn't working on fresh installs
+        #yamlCache += "\nbefore_capture: '" +self.scriptDirectory+ "../javascript/wait--phantom.js'\n"  
         #set viewport widths to test
         yamlCache += '\nscreen_widths: \n'
         yamlCache += " - 320 \n" + " - 667 \n" + " - 768 \n" + " - 1024 \n" + " - 1280 \n" + " - 1920 \n \n"

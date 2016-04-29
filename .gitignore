@@ -1747,3 +1747,8 @@
 /build/lib/containmentUnit/tests/functional/test_superposed.py
 /build/lib/containmentUnit/tests/test_models.py
 /build/lib/containmentUnit/websetup.py
+/static_build/bower_components/
+/static_build/css/
+/static_build/node_modules/
+/static_build/.sass-cache/
+/static_build/.bundle/

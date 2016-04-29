@@ -33,7 +33,8 @@ Setuptools, pyMongo 2.8, Browser-Mob Proxy 0.7.1 (modified),  pylons 1.0, paste 
 [https://www.python.org/downloads/release/python-2710/](https://www.python.org/downloads/release/python-2710/)
 
 * Must be this version of python
-Simply run the installer.
+
+<b>Make sure that the path(s) to the python and python/scripts is set : - Double check to see if the installer set these.</b>
 
 ###Install MongoDB
 
@@ -115,13 +116,14 @@ Download the MinGW
 
 From the cmd line :
 
-	gem install wraith -v 3.1.0
+    gem install wraith -v 3.1.0
 
 ###Install python setuptools
 
-    Install PyGTK bundle (All-in-one) http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/2.22/
-    Install pyrsvg http://ftp.gnome.org/pub/GNOME/binaries/win32/gnome-python-desktop/
-    Install setuptools http://pypi.python.org/pypi/setuptools
+    [Install PyGTK bundle (All-in-one)] (http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/2.22/)
+    [Install pyrsvg] (http://ftp.gnome.org/pub/GNOME/binaries/win32/gnome-python-desktop/)
+    [Install setuptools] (http://pypi.python.org/pypi/setuptools)
+     <b> Make sure the path for python/Scipts
 
 ###Install additional Python dependencies
 
@@ -207,7 +209,6 @@ Replace the gallery_template.erb with the one from the containmentUnit. Your wra
 
 Which ever file you decide to use, open that file in a text editor and take a look.
 
-    #
     # containmentUnit - Pylons configuration
 	#
 	# The %(here)s variable will be replaced with the parent directory of this file
