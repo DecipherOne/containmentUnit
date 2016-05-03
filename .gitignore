@@ -1752,3 +1752,4 @@
 /static_build/node_modules/
 /static_build/.sass-cache/
 /static_build/.bundle/
+/static_build/nbproject/private/

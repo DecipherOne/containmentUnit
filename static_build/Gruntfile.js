@@ -29,7 +29,7 @@ module.exports = function(grunt) {
             dist: {
                 options: {
                     sassDir: 'sass',
-                    cssDir: '../containmentUnit/public/styles/',
+                    cssDir: 'css',
                     outputStyle: 'compact',
                     noLineComments: true ,
                     bundleExec:true
@@ -38,7 +38,7 @@ module.exports = function(grunt) {
             localDev: {
                 options: {
                     sassDir: 'sass',
-                    cssDir: '../containmentUnit/public/styles/',
+                    cssDir: 'css',
                     outputStyle: 'expanded',
                     noLineComments: false
                 }
@@ -49,23 +49,24 @@ module.exports = function(grunt) {
                 src:[
                     'bower_components/jquery/jquery.js',
                     'js/harStorageExisting/harviewer/require.js',
+                    'js/harStorageExisting/LAB.min.js',
+                    'js/harStorageExisting/datatables/jquery.dataTables.min.js',
                     'js/harStorageExisting/datatables/ColReorder.min.js',
                     'js/harStorageExisting/datatables/TableTools.min.js',
-                    'js/harStorageExisting/datatables/jquery.dataTables.min.js',
                     'js/harStorageExisting/harviewer/core/trace.js',
                     'js/harStorageExisting/harviewer/domplate/domplate.js',
-                    'js/harStorageExisting/harviewer/harPreview.js',
-                    'js/harStorageExisting/highcharts/exporting.js',
-                    'js/harStorageExisting/highcharts/highcharts.js',
-                    'js/harStorageExisting/highcharts/themes.js',
-                    'js/harStorageExisting/LAB.min.js',
-                    'js/harStorageExisting/chosen.jquery.js',
-                    'js/harStorageExisting/harstorage.js',
                     'js/harStorageExisting/preferences.js',
+                    'js/harStorageExisting/harviewer/harPreview.js',
+                    'js/harStorageExisting/highcharts/highcharts.js',  
+                    'js/harStorageExisting/highcharts/themes.js',
+                    'js/harStorageExisting/highcharts/exporting.js',
+                    'js/harStorageExisting/chosen.jquery.js',                    
                     'js/harStorageExisting/spin.js',
-                    'js/harStorageExisting/tabber.js',
+                    'js/harStorageExisting/harstorage.js',
                     'js/ectoControl.js',
-                    'js/wraithControl.js'
+                    'js/wraithControl.js',
+                    'js/harStorageExisting/tabber.js',
+                    'js/initTemplates.js'
                     
                 ],
                 dest:'../containmentUnit/public/scripts/containmentUnit.js',
@@ -79,7 +80,7 @@ module.exports = function(grunt) {
             },
             minify: {
                 expand: true,
-                cwd: 'css/',
+                cwd: 'css',
                 src: ['**/*.css', '!*.min.css'],
                 dest: '../containmentUnit/public/styles/',
                 ext: '.min.css'
@@ -92,7 +93,7 @@ module.exports = function(grunt) {
             },
             minify:{
                 expand: true,
-                cwd: 'js/bundled/',
+                cwd: '../containmentUnit/public/scripts/',
                 src: ['**/*.js','!*.min.js'],
                 dest: '../containmentUnit/public/scripts/',
                 ext: '.min.js'
