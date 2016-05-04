@@ -1,7 +1,11 @@
 <%def name="html()">
 <script type="text/javascript">
     $(document).ready(function(){
-        setTimeout(ecto1.initHistogram,500);
+        setTimeout(function(){
+            HARSTORAGE.AggregatedStatistics("timings");
+            var chart = new HARSTORAGE.Histogram();
+            chart.draw("${c.data}","${c.title}");
+        },500);
     });
 </script>
 </%def>

@@ -8,9 +8,8 @@ include containmentUnit\public\scripts\harviewer\core\*
 include containmentUnit\public\scripts\harviewer\domplate\*
 include containmentUnit\public\scripts\highcharts\*
 include containmentUnit\public\styles\*
-include containmentUnit\public\styles\chosen\*
-include containmentUnit\public\styles\datatables\*
-include containmentUnit\public\styles\datatables\images\*
+include containmentUnit\public\styles\images\*
+include containmentUnit\public\styles\images\menu\*
 include containmentUnit\public\swf\*
 include containmentUnit\public\Wraith\*
 include containmentUnit\public\Wraith\configs\*

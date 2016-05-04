@@ -23,7 +23,7 @@ module.exports = function(grunt) {
             options: {
                 force: true
             },
-            files: ['../containmentUnit/public/scripts/*','../containmentUnit/public/styles/*']
+            files: ['../containmentUnit/public/scripts/*','css']
         },
         compass: {
             dist: {
@@ -81,7 +81,7 @@ module.exports = function(grunt) {
             minify: {
                 expand: true,
                 cwd: 'css',
-                src: ['**/*.css', '!*.min.css'],
+                src: ['containmentUnitCore.css'],
                 dest: '../containmentUnit/public/styles/',
                 ext: '.min.css'
             }

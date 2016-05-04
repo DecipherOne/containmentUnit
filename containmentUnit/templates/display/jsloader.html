@@ -1,7 +1,27 @@
 <%def name="html()">
 <script type="text/javascript">
     $(document).ready(function(){
-        setTimeout(ecto1.initDisplay,300);
+        setTimeout(function(){
+            var columns = new HARSTORAGE.Columns();
+            columns.draw("${c.points}", "${c.chart_type}");
+
+            HARSTORAGE.AggregatedStatistics("metrics");
+
+            $("#stats_table").dataTable({
+                "bJQueryUI": true,
+                "sPaginationType": "full_numbers",
+                "sDom": 'R<"H"Tfr>t<"F"ip>',
+                "oTableTools": {
+                        "sSwfPath": "/swf/copy_cvs_xls.swf",
+                        "aButtons": ["copy", "csv", "xls"]
+                },
+                "bAutoWidth": false,
+                "iDisplayLength": 100,
+                "sScrollX": "4270px"
+            });
+
+            $("#summary-table").css("visibility", "visible");
+        },300);
     });
 </script>
 </%def>
