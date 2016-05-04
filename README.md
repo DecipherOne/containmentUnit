@@ -2,12 +2,18 @@
 
 A collection of front end performance tools.
 
-*Warning : At this time, there are known security issues with the use of the shell parameter from initializing Popen from the casperjs.py module.
+------------------------------------------------------------------------------------------------------------------------------------------
+
+####Warning :
+
+At this time, there are known security issues with the use of the shell parameter from initializing Popen from the casperjs.py module.
  Use at your own risk. This is currently meant to be used as a standalone web application. This web application is still under development.
 
-Includes : 
+ ------------------------------------------------------------------------------------------------------------------------------------------
+
+Includes :
 A custom version of HarStorage - https://code.google.com/archive/p/harstorage/
-Also allows execution of casperjs scripts through the Python interpreter, through a web interface. 
+Also allows execution of casperjs scripts through the Python interpreter, through a web interface.
 Also makes use of Wraith https://github.com/BBC-News/wraith with a web interface for regression image testing.
 
 Third Party Application Dependencies
@@ -24,8 +30,6 @@ Python Dependencies
 
 Setuptools, pyMongo 2.8, Browser-Mob Proxy 0.7.1 (modified),  pylons 1.0, paste 2.0.2, containmentUnit1.0)
 
-----------------------------------------------------------------------------------------------------------------------------
-
 ##Windows Installation:
 
 ###Install Python 2.7
@@ -34,13 +38,30 @@ Setuptools, pyMongo 2.8, Browser-Mob Proxy 0.7.1 (modified),  pylons 1.0, paste 
 
 * Must be this version of python
 
-<b>Make sure that the path(s) to the python and python/scripts is set : - Double check to see if the installer set these.</b>
+<b>Make sure that the path(s) to python and python/scripts is set : - Double check to see if the installer set these.</b>
 
 ###Install MongoDB
 
 [https://www.mongodb.org/downloads#production](https://www.mongodb.org/downloads#production)
 
-Download the proper version for your os and run the installer.
+####For Windows 7 or Windows Server 2008 R2
+
+The MongoDB service installation instructions will not work for you until you install Hotfix KB2731284 on your machine. Until you do,
+you will receive "Hotfix KB2731284 not installed" error when attempting to run the following command from the docs:
+
+    "C:\mongodb\bin\mongod.exe" --config "C:\mongodb\mongod.cfg" --install
+
+The hotfix must be requested from Microsoft. That request can be made here: [https://support.microsoft.com/en-us/kb/2731284](https://support.microsoft.com/en-us/kb/2731284)
+
+You will be emailed the hotfix. Install it by unzipping the file and running the .exe file. You will have to restart your computer before
+continuing with the MongoDB service installation.
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Go here for downloads: [https://www.mongodb.org/downloads#production](https://www.mongodb.org/downloads#production)
+
+Download the proper version for your os and run the installer.  The docs all assume you have installed Mongo to C:\mongodb. To do this,
+select 'Custom' as the installation type and set installation location to C:\mongodb
 
 Once installed, you need to set mongodb up as a service, so that it will run when windows runs.
 
@@ -52,7 +73,7 @@ Create a config file called C:\mongodb\mongodb.cfg  with the following contents.
 
 	systemLog:
 		destination:file
-    		path: c:\mongodbfiles\loglmongodb.log (Where you want the server log to go.)
+    		path: c:\mongodbfiles\log\mongodb.log (Where you want the server log to go.)
     	storage:
         	dbPath: c:\mongodbfiles\data\db (Where you want the documents to be stored.)
 
@@ -108,7 +129,7 @@ This has to be set, otherwise the system may resolve casperjs incorrectly to the
 
 [http://www.imagemagick.org/script/index.php](http://www.imagemagick.org/script/index.php)
 
-Download the MinGW 
+ Make sure to add ImageMagick\bin to your PATH environment variable.
 
 ###Install Wraith 3.1.0
 
@@ -120,10 +141,25 @@ From the cmd line :
 
 ###Install python setuptools
 
-    [Install PyGTK bundle (All-in-one)] (http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/2.22/)
-    [Install pyrsvg] (http://ftp.gnome.org/pub/GNOME/binaries/win32/gnome-python-desktop/)
-    [Install setuptools] (http://pypi.python.org/pypi/setuptools)
-     <b> Make sure the path for python/Scipts
+
+
+[http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/2.22/](http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/2.22/)
+
+Grab the .msi and run it to install.
+
+####Install pyrsvg
+
+[http://ftp.gnome.org/pub/GNOME/binaries/win32/gnome-python-desktop/](http://ftp.gnome.org/pub/GNOME/binaries/win32/gnome-python-desktop/)
+
+Grab the .msi and run it to install.
+
+####Install setuptools
+
+[http://pypi.python.org/pypi/setuptools](http://pypi.python.org/pypi/setuptools)
+
+The recommended installation method is to download the ez_setup.py file and run it from the command line.
+
+
 
 ###Install additional Python dependencies
 
@@ -131,13 +167,13 @@ From an elevated cmd line run the following commands one at a time :
 
     easy_install pylons==1.0
 
-   easy_install webob==0.9.8
+    easy_install webob==0.9.8
 
     easy_install pymongo==2.8
 
     easy_install browsermob-proxy==0.7.1
 
-   easy_install containmentUnit
+    easy_install containmentUnit
 
 ###Alter modified dependencies
 
@@ -183,7 +219,7 @@ Then go to:
 
 	C:\tools\ruby22\lib\ruby\gems\2.2.0\gems\wraith-3.1.4\lib\wraith\gallery_template
 
-Replace the gallery_template.erb with the one from the containmentUnit. Your wraith template is now modified.
+Replace the slideshow_template.erb with the one from the containmentUnit. Your wraith template is now modified.
 
 ####Configure Server for first Run
 
@@ -208,15 +244,15 @@ Replace the gallery_template.erb with the one from the containmentUnit. Your wra
     This could be helpful in testing altered services.
 
 Which ever file you decide to use, open that file in a text editor and take a look.
-
-    # containmentUnit - Pylons configuration
+<p>
+        # containmentUnit - Pylons configuration Example
 	#
 	# The %(here)s variable will be replaced with the parent directory of this file
 	#
 	[DEFAULT] (if actually in a production environment prob want to set this to false.)
 	debug = true
 
-(This is the main configuration, host says it'll just run on default localhost ip, you can change the port here.)
+        (This is the main configuration, host says it'll just run on default localhost ip, you can change the port here.)
 
 	[server:main]
 	use = egg:Paste#http
@@ -232,8 +268,8 @@ Which ever file you decide to use, open that file in a text editor and take a lo
 	ps_enabled = false
 	static_version = 1.0
 
-(These are the db settings, you can specify a password, set the port, these defaults should work out of the box.But if deploying to a public environment, you will want
-to change these settings for security reasons.)
+        (These are the db settings, you can specify a password, set the port, these defaults should work out of the box.But if deploying to a public environment, you will want
+        to change these settings for security reasons.)
 
 	mongo_host = localhost
 	mongo_port = 27017
@@ -248,29 +284,20 @@ to change these settings for security reasons.)
 
 	app_instance_uuid = {86dcf52f-197f-4c6b-b852-0116128797d6}
 
-# Logging configuration
-[loggers]
-keys = root
+        Logging configuration 
 
-[handlers]
-keys = console
+        [loggers] keys = root
 
-[formatters]
-keys = generic
+        [handlers] keys = console
 
-[logger_root]
-level = INFO
-handlers = console
+        [formatters] keys = generic
 
-[handler_console]
-class = StreamHandler
-args = (sys.stderr,)
-level = NOTSET
-formatter = generic
+        [logger_root] level = INFO handlers = console
 
-[formatter_generic]
-format = %(asctime)s %(levelname)-5.5s [%(name)s] [%(threadName)s] %(message)s
+        [handler_console] class = StreamHandler args = (sys.stderr,) level = NOTSET formatter = generic
 
+        [formatter_generic] format = %(asctime)s %(levelname)-5.5s [%(name)s] [%(threadName)s] %(message)s
+</p>
 Once you have your settings the way you want. Navigate to where the production.ini file is in an admin cmd prompt.
 
 Then type the command :
@@ -315,11 +342,11 @@ https://dmngaya.com/2015/10/25/installing-python-2-7-on-centos-6-7/
 Side by side install, in order to have python resolve to 2.7, as user navigate to your home directory and open  ~/.bashrc for editing
 Find already defined aliases or simply add the line:
 
-    alias python=/usr/local/bin/python2.7
+alias python=/usr/local/bin/python2.7
 
 This allows the user account to use python2.7 while the root account is still using python2.6 which the system requires.
 To verify you are using the right python, from the cmd line type :
-    
+
     which python
 
 You should see the path to python2.7 dumped out. Now switch to su   then type
