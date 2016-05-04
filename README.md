@@ -244,7 +244,7 @@ Replace the slideshow_template.erb with the one from the containmentUnit. Your w
     This could be helpful in testing altered services.
 
 Which ever file you decide to use, open that file in a text editor and take a look.
-<p>
+
         # containmentUnit - Pylons configuration Example
 	#
 	# The %(here)s variable will be replaced with the parent directory of this file
@@ -297,7 +297,7 @@ Which ever file you decide to use, open that file in a text editor and take a lo
         [handler_console] class = StreamHandler args = (sys.stderr,) level = NOTSET formatter = generic
 
         [formatter_generic] format = %(asctime)s %(levelname)-5.5s [%(name)s] [%(threadName)s] %(message)s
-</p>
+
 Once you have your settings the way you want. Navigate to where the production.ini file is in an admin cmd prompt.
 
 Then type the command :
