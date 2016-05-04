@@ -660,6 +660,7 @@ input[type='checkbox']{
     background-color:#090909;
     margin:10px auto;
     min-height:300px;
+    z-index:2;
     
 }
 
@@ -668,15 +669,16 @@ input[type='checkbox']{
     width:25%;
     float:left;
     padding:0px 10px;
+    
 }
 
 #wraithLogo{
-    float:left;
     background-image:url('/images/wraithLogo.png');
     width:188px;
     height:190px;
     background-size: contain;
-    position: relative;
-    bottom: 35px;
-    right: 20px;
+    position: absolute;
+    left:30px;
+    top:75px;
+    z-index:1;
 }
