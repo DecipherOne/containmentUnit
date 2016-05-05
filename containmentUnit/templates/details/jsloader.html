@@ -1,0 +1,17 @@
+<%def name="html()">
+<script type="text/javascript">
+    $(document).ready(function(){
+        setTimeout(function(){
+           var run_info = new HARSTORAGE.RunInfo("${c.mode}", "${c.label}", "${c.query}", "${c.histo}");
+            run_info.addSpinner();
+            run_info.get();
+            run_info.timedStyleChange();
+
+            var timeline = new HARSTORAGE.Timeline(run_info);
+            timeline.get("${c.label}", "${c.mode}");  
+        },400);
+    });
+        
+    
+</script>
+</%def>
