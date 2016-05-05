@@ -31,14 +31,14 @@ include containmentUnit\dependencyMods\*
 include containmentUnit\dependencyMods\bmpExtract\*
 include containmentUnit\dependencyMods\executableBase\*
 include containmentUnit\dependencyMods\wraith_customFiles\*
-include containmentUnit\static_build\*
-include containmentUnit\static_build\js\*
-include containmentUnit\static_build\js\harStorageExisting\*
-include containmentUnit\static_build\js\harStorageExisting\datatables\*
-include containmentUnit\static_build\js\harStorageExisting\harviewer\*
-include containmentUnit\static_build\js\harStorageExisting\harviewer\core\*
-include containmentUnit\static_build\js\harStorageExisting\harviewer\domplate\*
-include containmentUnit\static_build\js\harStorageExisting\highcharts\*
-include containmentUnit\static_build\sass\*
-include containmentUnit\static_build\sass\partials\*
+include static_build\*
+include static_build\js\*
+include static_build\js\harStorageExisting\*
+include static_build\js\harStorageExisting\datatables\*
+include static_build\js\harStorageExisting\harviewer\*
+include static_build\js\harStorageExisting\harviewer\core\*
+include static_build\js\harStorageExisting\harviewer\domplate\*
+include static_build\js\harStorageExisting\highcharts\*
+include static_build\sass\*
+include static_build\sass\partials\*
 

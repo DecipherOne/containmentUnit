@@ -324,7 +324,7 @@ Going to http://127.0.0.1:5000 in your browser for the first time will run the d
 You are now all set!
 
 ----------------------------------------------------------------------------------------------------------------------------
-##Linux Cent-OS Installation : (currently Incomplete)
+##Linux Cent-OS Installation :
 
 ###Install Python 2.7 -
 
@@ -378,6 +378,76 @@ you should see the path to python2.6
     Extract package to desired location : ~/browser-mob-proxy2.0.0
     (You will need to set this path in config/thirdParyPaths.json, so the application can resolve the path.)
 
+    <b>Important</b>
+    browser mob proxy requires a jdk version of at least 1.7, on my system, I was using 1.6
+
+    In order to remedy this issue follow this tutorial:
+    [http://www.mkyong.com/java/java-unsupported-major-minor-version-51-0](http://www.mkyong.com/java/java-unsupported-major-minor-version-51-0)
+
+    Once this is done, create an alias for java for the user account.
+    <b> This step had to be done, no matter what I tried, using alternative, ect..
+    adding the alias and changing the bash script had to be done in order to resolve the correct
+    java version.</b>
+
+    open ~/.bashrc and add the lines
+
+    alias java='/usr/java/jdk1.7.0_79/bin/java'
+    
+    make sure to substitute the path to where your jdk is installed
+
+    Modify bash shell script -
+
+    After having set the alias, you can now update the shell script
+
+    Navigate to ~/browsermob-proxy2.0.0/bin/
+
+    open browsermob-proxy.sh in an editor
+
+    Go to line 55 to 67  
+
+    You should see a block that looks like :
+
+    <code>
+     If a specific java binary isn't specified search for the standard 'java' binary
+    if [ -z "$JAVACMD" ] ; then
+      if [ -n "$JAVA_HOME"  ] ; then
+        if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
+          # IBM's JDK on AIX uses strange locations for the executables
+          JAVACMD="$JAVA_HOME/jre/sh/java"
+        else
+          JAVACMD="$JAVA_HOME/bin/java"
+        fi
+      else
+        JAVACMD=`which java`
+      fi
+    fi
+    </code>
+
+    Line 62 where it is :
+
+        else
+          JAVACMD="$JAVA_HOME/bin/java"
+
+   change it to :
+        
+        JAVACMD="java"
+
+    on line 69 you will see:
+
+    if [ ! -x "$JAVACMD" ] ; then
+
+    change this to :
+
+    if [ ! exec "$JAVACMD" ] ; then
+
+    We change this because we are executing the java cmd directly.
+
+    Save, and finished. This lets the alias settings resolve the java version, as the 
+    this script trying to figure it out fails with multiple jdk versions.
+    
+
+    
+
 ###Install PhantomJS1.9.7 -
 
     Follow these same instructions , make sure to substitute the version for 1.9.7 
@@ -427,11 +497,8 @@ From a cmd line run the following commands one at a time :
 ###Update thirdPartyPaths.json
 
     You will need to find where python27 is located and get to the containmentUnit site-package.
-
-    My installation was located at : /usr/local/lib/python2.7/site-packages/containmentUnit
     
-    Inside containmentUnit there should be a config folder.
-    Inside config you should see a file called thirdPartyPaths.json
+    Path to thirdPartyPaths.json for me is : /usr/local/lib/python2.7/site-packages/containmentUnit/config/
 
     Open this folder up in a text editor.
 
@@ -444,7 +511,57 @@ From a cmd line run the following commands one at a time :
         This json structure is how the application will resolve the path of our casperjs and browser-mob-proxy installations.
         For my linux installation, I had to alter this to : 
 
-        {"casperjs": "/home/me/casperjs/bin","browser-mob-proxy":"/home/me/browser-mob-proxy2.0/bin/browsermob-proxy" }
+        {"casperjs": "/home/me/casperjs/bin/","browser-mob-proxy":"/home/me/browser-mob-proxy2.0/bin/browsermob-proxy" }
 
         
 ###Make sure that the project has adequate read/write permissions
+    
+    Depending on how your system is setup, you may need to change ownership of the project directories and
+    files so that proper file modification can be performed by the program.
+
+    On installation, ownership for my project directory was set to root.
+    You can check ownership by browsing to the directory where containmentUnit is installed and
+    typing :
+
+    ls -l
+
+    from the command line. This will give you something like :
+
+    [user@localhost containmentUnit]$ ls -l                                                                                                                     
+    total 40                                                                                                                                                   
+    drwxr-xr-x 2 root root 4096 Apr 27 15:36 config                                                                                                            
+    drwxr-xr-x 2 root root 4096 Apr 27 13:06 controllers                                                                                                       
+    drwxr-xr-x 5 root root 4096 Apr 27 13:06 dependencyMods                                                                                                    
+    -rw-r--r-- 1 root root    0 Apr 27 13:06 __init__.py                                                                                                       
+    -rw-r--r-- 1 root root  152 Apr 27 13:06 __init__.pyc                                                                                                      
+    drwxr-xr-x 2 root root 4096 Apr 27 13:06 lib                                                                                                               
+    drwxr-xr-x 7 root root 4096 Apr 27 13:06 public                                                                                                            
+    drwxr-xr-x 7 root root 4096 Apr 27 13:06 templates                                                                                                         
+    drwxr-xr-x 3 root root 4096 Apr 27 13:06 tests                                                                                                             
+    -rw-r--r-- 1 root root  367 Apr 27 13:06 websetup.py                                                                                                       
+    -rw-r--r-- 1 root root  676 Apr 27 13:06 websetup.pyc
+
+    If ownership is set to root, when trying to run applications commands, we are going
+    to have permission issues. To change ownership of all the files and folders in the directory tree,
+    issue the following command.
+
+    sudo chown -R user ../containmentUnit
+
+    now if you do ls -l again, you should see
+
+    [user@localhost containmentUnit]$ ls -l                                                                                                                     
+    total 40                                                                                                                                                   
+    drwxr-xr-x 2 user root 4096 Apr 27 15:36 config                                                                                                            
+    drwxr-xr-x 2 user root 4096 Apr 27 13:06 controllers                                                                                                       
+    drwxr-xr-x 5 user root 4096 Apr 27 13:06 dependencyMods                                                                                                    
+    -rw-r--r-- 1 user root    0 Apr 27 13:06 __init__.py                                                                                                       
+    -rw-r--r-- 1 user root  152 Apr 27 13:06 __init__.pyc                                                                                                      
+    drwxr-xr-x 2 user root 4096 Apr 27 13:06 lib                                                                                                               
+    drwxr-xr-x 7 user root 4096 Apr 27 13:06 public                                                                                                            
+    drwxr-xr-x 7 user root 4096 Apr 27 13:06 templates                                                                                                         
+    drwxr-xr-x 3 user root 4096 Apr 27 13:06 tests                                                                                                             
+    -rw-r--r-- 1 user root  367 Apr 27 13:06 websetup.py                                                                                                       
+    -rw-r--r-- 1 user root  676 Apr 27 13:06 websetup.pyc
+
+    The project now has proper rwx permissions.
+
