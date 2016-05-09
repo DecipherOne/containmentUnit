@@ -1,0 +1,6 @@
+{
+    "name":"containmentUnit",
+    "dependencies":{
+        "jquery":"https://github.com/jquery/jquery.git#1.7"
+    }
+}

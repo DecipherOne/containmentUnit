@@ -461,16 +461,19 @@ TabberObj.prototype.navClearActive = function(tabberIndex) {
     /* Find all DIV elements in the document that have class=tabber */
 
     /* First get an array of all DIV elements and loop through them */
-    divs = document.getElementsByTagName("div");
-    for (i=0; i < divs.length; i++) {
+    setTimeout(function(){
+       divs = document.getElementsByTagName("div");
+        for (i=0; i < divs.length; i++) {
 
-        /* Is this DIV the correct class? */
-        if (divs[i].className &&
-	divs[i].className.match(tempObj.REclassMain)) {
+            /* Is this DIV the correct class? */
+            if (divs[i].className &&
+            divs[i].className.match(tempObj.REclassMain)) {
 
-            /* Now tabify the DIV */
-            tabberArgs.div = divs[i];
-            divs[i].tabber = new TabberObj(tabberArgs);
-        }
-    }
+                /* Now tabify the DIV */
+                tabberArgs.div = divs[i];
+                divs[i].tabber = new TabberObj(tabberArgs);
+            }
+        } 
+    },100);
+    
 })();

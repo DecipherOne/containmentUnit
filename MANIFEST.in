@@ -8,9 +8,8 @@ include containmentUnit\public\scripts\harviewer\core\*
 include containmentUnit\public\scripts\harviewer\domplate\*
 include containmentUnit\public\scripts\highcharts\*
 include containmentUnit\public\styles\*
-include containmentUnit\public\styles\chosen\*
-include containmentUnit\public\styles\datatables\*
-include containmentUnit\public\styles\datatables\images\*
+include containmentUnit\public\styles\images\*
+include containmentUnit\public\styles\images\menu\*
 include containmentUnit\public\swf\*
 include containmentUnit\public\Wraith\*
 include containmentUnit\public\Wraith\configs\*
@@ -32,3 +31,14 @@ include containmentUnit\dependencyMods\*
 include containmentUnit\dependencyMods\bmpExtract\*
 include containmentUnit\dependencyMods\executableBase\*
 include containmentUnit\dependencyMods\wraith_customFiles\*
+include static_build\*
+include static_build\js\*
+include static_build\js\harStorageExisting\*
+include static_build\js\harStorageExisting\datatables\*
+include static_build\js\harStorageExisting\harviewer\*
+include static_build\js\harStorageExisting\harviewer\core\*
+include static_build\js\harStorageExisting\harviewer\domplate\*
+include static_build\js\harStorageExisting\highcharts\*
+include static_build\sass\*
+include static_build\sass\partials\*
+
