@@ -12,6 +12,7 @@ serverIsRunning = False
 lock = threading.RLock()
 portMap = dict()
 proxyServer = None
+indexCount = None
 
 def init(defaultPort,path):
     global lock
@@ -20,6 +21,7 @@ def init(defaultPort,path):
     global proxyIsInit
     global serverIsRunning
     global proxyServer
+    global indexCount
     
     lock.acquire()
     
@@ -34,6 +36,7 @@ def init(defaultPort,path):
         proxyServer = Server(path,{'port':int(serverPort)})
         proxyServer.start()
         serverIsRunning = True
+        indexCount = 0
     
     lock.release()
 
@@ -41,21 +44,25 @@ def init(defaultPort,path):
 def incrementPort():
     
     global proxyPortIndex 
+    global indexCount
     global lock
     lock.acquire()
     
     proxyPortIndex += 1
+    indexCount +=1
     print "Incrementing proxy port to : " + str(proxyPortIndex)
     
     lock.release()
 
 def decrementPort():
     global proxyPortIndex
+    global indexCount
     global lock
     
     lock.acquire()
     
     proxyPortIndex -= 1
+    indexCount -= 1
     print "Decrementing proxy port to : " + str(proxyPortIndex)
     
     lock.release()
@@ -67,21 +74,29 @@ def getProxyPort():
 def addPortMapEntry(instanceId, portNum):
     global portMap
     global lock
+    global indexCount
     
+    print " # Updating Port Map Entries #"
+    print " Current Mappings : " + str(portMap)
     lock.acquire()
-    portMap.update({"entries":[{"instanceId": str(instanceId),"portNum":str(portNum)}]})
+    if indexCount==0:
+       portMap.update({"instanceId": [str(instanceId)],"portNum":[str(portNum)]})
+    else:
+        portMap['instanceId'].append(str(instanceId))
+        portMap['portNum'].append(str(portNum))
     lock.release()
+    print "Mappings after Update : " + str(portMap)
     
 def updateInstanceIdForPort(instanceId,portNum):
     global portMap
     global lock
     
     lock.acquire()
-    numOfEntries = len(portMap)
+    numOfEntries = len(portMap["instanceId"])
     
     for entry in range(0,numOfEntries):
-        if portMap["entries"][entry]["portNum"] == portNum :
-            portMap.portMap["entries"][entry]["instanceId"]=instanceId
+        if portMap["portNum"][entry] == portNum :
+            portMap["instanceId"][entry]=instanceId
             break
             
     lock.release()
@@ -95,8 +110,9 @@ def removePortMapEntry(instanceId):
     numOfEntries = len(portMap)
     
     for entry in range(0,numOfEntries):
-        if portMap["entries"][entry]["instanceId"] == instanceId :
-            del portMap["entries"][entry]
+        if portMap["instanceId"][entry] == instanceId :
+            del portMap["instanceId"][entry]
+            del portMap["portNum"][entry]
             break
             
     lock.release()

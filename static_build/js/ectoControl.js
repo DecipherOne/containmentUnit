@@ -303,7 +303,7 @@
             }
 
             function showCasperOptions(){
-                 waitTimeCont.show();
+                waitTimeCont.show();
                 timesToExeCont.show();
                 throttleCont.show();
             }
