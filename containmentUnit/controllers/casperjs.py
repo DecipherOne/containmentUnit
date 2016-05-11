@@ -7,14 +7,13 @@ from pylons.controllers.util import redirect
 from pylons.decorators.rest import restrict
 from containmentUnit.lib.base import BaseController, render
 import containmentUnit.lib.proxyPortManager  as portManager
-import threading
 
 class CasperjsController(BaseController):
     APP_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     scriptDirectory = APP_ROOT + "/templates/home/CasperScripts/"
     scriptName ="performanceHarRepo.js "
     waitTime = "1000"
-    jsonFile = "TestLinks.json"
+    jsonFile = "TestLinks0.json"
     timesToExe = '3'
     scriptOutput = "::::::::::::::::::::::::::::::::::::::::::"
     proxyServer = None
@@ -25,8 +24,6 @@ class CasperjsController(BaseController):
     casperPath = "c:/casperjs/bin/"
     bmpPath = "c:/browsermob-proxy-2.0.0/bin/browsermob-proxy.bat"
     defaultProxyPort = "8080"
-    __instance = None
-    proxyRunning= False
     myPort = 0
     scriptOutputFile = None 
     
@@ -52,9 +49,9 @@ class CasperjsController(BaseController):
             self.defaultProxyPort = fileStream['defaultProxyPort']
         
         if portManager.indexCount != None:
-            self.scriptOutputFile = self.scriptDirectory+"scriptOutput"+str(portManager.indexCount)+".html"
+            self.scriptOutputFile = self.scriptDirectory+"/output/scriptOutput"+str(portManager.indexCount)+".html"
         else:
-            self.scriptOutputFile = self.scriptDirectory+"scriptOutput0.html"
+            self.scriptOutputFile = self.scriptDirectory+"/output/scriptOutput0.html"
             
              
     @restrict("POST")
@@ -72,7 +69,10 @@ class CasperjsController(BaseController):
             self.scriptName ="performanceHarRepo.js "
             
             if reqParams['urls'] != None:
-                self.jsonFile = "TestLinks" + str(portManager.indexCount)+".json"
+                if portManager.indexCount != None:
+                    self.jsonFile = "TestLinks" + str(portManager.indexCount)+".json"
+                else:
+                   self.jsonFile = "TestLinks0.json" 
                 self._writeUrlsToFile(reqParams)
             else:
                 self.scriptOutput = "<div> Please Enter in Urls to Test </div></br>"
@@ -96,14 +96,13 @@ class CasperjsController(BaseController):
         if self.throttleSpeed != None:
             self.setNetworkSpeed(self.throttleSpeed)
         
-        while count>0:
+        while count > 0:
         
-            time.sleep(1)
             
             print "\n \t count is :"+ str(count)
 
             # We have all our values setup the cmdline cmd
-            args = self.casperPath +"casperjs --proxy='http://localhost:"+str(self.myPort) +"' --ssl-protocol='any' --ignore-ssl-errors=true --disc-cache=false " + self.scriptDirectory + self.scriptName + self.scriptDirectory + self.jsonFile + " " + self.waitTime + " " + self.testLabel
+            args = self.casperPath +"casperjs --proxy='http://localhost:"+str(self.myPort) +"' --ssl-protocol='any' --ignore-ssl-errors=true --disc-cache=false " + self.scriptDirectory + self.scriptName + self.scriptDirectory + "/output/"+ self.jsonFile + " " + self.waitTime + " " + self.testLabel + " " + self.myPort
 
             print " Here are the altered args : " + args
             myProc = subprocess.Popen(args,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.STDOUT);
@@ -130,12 +129,11 @@ class CasperjsController(BaseController):
 
             count -= 1
         
+        
         self.stopProxy()
         print '\n\t Script output:', repr(self.scriptOutput) , '</br>'
         print '\n\t stderr value   :', repr(self.scriptErrors), '</br>'
-        
-        
-        
+       
 
     @restrict("GET")
     def getAvailableScripts(self):
@@ -151,7 +149,7 @@ class CasperjsController(BaseController):
     def _writeUrlsToFile(self,reqParams):
         
         portManager.lock.acquire()
-        fileStream = open(self.scriptDirectory+self.jsonFile,'w')
+        fileStream = open(self.scriptDirectory+"/output/"+self.jsonFile,'w')
         writeUrls = '{"links":[' + reqParams['urls'] + ']}'
         fileStream.write(writeUrls)
         fileStream.close()
@@ -168,15 +166,13 @@ class CasperjsController(BaseController):
             portManager.init(self.defaultProxyPort,myPath)
         
         self.proxyServer = portManager.proxyServer
-            
-        self.myPort = portManager.getProxyPort()
-        portManager.addPortMapEntry(id(self),self.myPort)
+        portManager.assignProxyPort()    
+        self.myPort = portManager.portMap['portNum'][portManager.indexCount-1]
         
         #startup client instance
         print " Starting new proxy client instance. \n"
-        print " In startProxy myPort set to : " + str(self.myPort)
-        self.myProxy = self.proxyServer.create_proxy({'httpsProxy':'localhost:'+str(self.myPort)})
-        portManager.incrementPort()
+        print " In startProxy myPort set to : " + self.myPort
+        self.myProxy = self.proxyServer.create_proxy({'httpsProxy':'localhost:'+self.myPort})
         
         #Setting Proxy Read Timeout to inifinite
         payload = {'readTimeout':0,'requestTimeout':-1}
@@ -189,14 +185,13 @@ class CasperjsController(BaseController):
         portManager.lock.acquire()
         self.scriptOutput += "<div>Reached end of script, closing proxy.</div></br>"
         self.myProxy.close()
-        portManager.decrementPort()
-        portManager.removePortMapEntry(id(self))
+        portManager.removePortMapEntry(self.myPort)
         
-        print " Getting Ready for shut down proxy eval"
-        print " Current Port : " + str(portManager.getProxyPort())
-        print " default Port : " + str(self.defaultProxyPort)
+        print " # Getting Ready for shut down proxy eval #"
         
-        if portManager.getProxyPort() == int(self.defaultProxyPort)+1: 
+        numOpenPorts = len(portManager.portMap['portNum'])
+        
+        if numOpenPorts == 0: 
             self.scriptOutput += "<div>All proxy clients closed, stopping proxy server.</div></br>"
             portManager.proxyServer.stop()
             portManager.serverIsRunning = False
@@ -207,9 +202,9 @@ class CasperjsController(BaseController):
     def createHar(self):
          
          portManager.lock.acquire()
-         self.resolveProxyPort()
+         self.myPort = request.params['port']
          payload = {'captureHeaders':True,'captureContent':False,'initialPageRef':request.params['label']}
-         proxyServerPort = 'http://localhost:'+ str(self.defaultProxyPort)
+         proxyServerPort = 'http://localhost:'+ str(portManager.serverPort)
          print " In create Har proxy Server port is : " + proxyServerPort
          print " myPort is : " + str(self.myPort)
          r = serverReq.put('%s/proxy/%s/har' % (proxyServerPort, self.myPort), payload)
@@ -223,8 +218,8 @@ class CasperjsController(BaseController):
         """
         
         portManager.lock.acquire()
-        self.resolveProxyPort()
-        proxyServerPort = 'http://localhost:'+ str(self.defaultProxyPort)
+        self.myPort = request.params['port']
+        proxyServerPort = 'http://localhost:'+ str(portManager.serverPort)
         r = serverReq.get('%s/proxy/%s/har' % (proxyServerPort, self.myPort))
         
         if r.status_code==200:
@@ -263,9 +258,16 @@ class CasperjsController(BaseController):
         filestream = open(self.scriptOutputFile,'r')
         output = filestream.read()
         filestream.close()
-        #delete the intermediary files
-        os.remove(self.scriptDirectory+self.jsonFile)
-        os.remove(self.scriptOutputFile)
+        
+        print "Getting Script output portmanager index at : " + str(portManager.indexCount)
+        if portManager.indexCount == 0:
+            print " Attempting to delete intermediarey files."
+            #delete the intermediary files
+            dirPath = self.scriptDirectory+"/output/"
+            fileList = os.listdir(dirPath)
+            for fileName in fileList:
+                os.remove(dirPath+"/"+fileName)
+                
         portManager.lock.release()
         return output
     
@@ -282,55 +284,7 @@ class CasperjsController(BaseController):
             portManager.lock.release()
             return
             
-        proxyServerPort = 'http://localhost:'+ str(self.defaultProxyPort)
+        proxyServerPort = 'http://localhost:'+ str(portManager.serverPort)
         serverReq.put('%s/proxy/%s/limit' % (proxyServerPort, self.myPort), payload)
         portManager.lock.release()
         
-    def getLastProxyPort(self):
-        
-        portManager.lock.acquire()
-        proxyServerPort = 'http://localhost:'+ str(self.defaultProxyPort)
-        r = serverReq.get('%s/proxy/' % (proxyServerPort))
-        numOpenPorts = 0
-        
-        if r.status_code==200:
-            response = json.loads(r.text)
-            
-            numOpenPorts = len(response['proxyList'])
-            print "# Getting Last Proxy Port Open"
-            print " number of currently open ports : " + str(numOpenPorts)
-            
-            for x in range(0,numOpenPorts):
-                print " Port Number : " + str(response['proxyList'][x]['port']) + " is currently open."
-                portManager.lock.release()
-                return response['proxyList'][numOpenPorts-1]['port']  
-        portManager.lock.release()        
-        return 0
-    
-    def resolveProxyPort(self):
-         
-         portManager.lock.acquire()
-        #Need to resolve the correct port with the instance
-         
-         if self.myPort == 0:
-             
-            numOfEntries = len(portManager.portMap['instanceId'])
-            print "# Resolving Proxy Port #"
-            print "Checking Number of Current Port Entries : " + str(numOfEntries)
-            if numOfEntries > 1:
-               for entry in range(0,numOfEntries):
-                   #attempt to resolve the port with the instance
-                  if portManager.portMap["instanceId"][entry] == id(self):
-                      print "attempting to set port to : " + str(portManager.portMap["portNum"][entry])
-                      self.myPort = portManager.portMap["portNum"][entry]
-                  else:
-                      #couldn't find instance to get last port created assign it and update portmanager
-                      print " Could not find instance, assigning last created port."
-                      self.myPort = self.getLastProxyPort()
-                      portManager.updateInstanceIdForPort(id(self),self.myPort)
-
-            else:
-                self.myPort = portManager.portMap["portNum"][0]
-                portManager.updateInstanceIdForPort(id(self),self.myPort)
-         portManager.lock.release()       
-         return self.myPort

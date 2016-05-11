@@ -4,19 +4,24 @@
 
 import threading
 from browsermobproxy import Server
+import sys 
+import codecs
+#This sets up the system to use utf-8 encoding but also sets standard out to convert properly
+#reload(sys) 
+#sys.setdefaultencoding('utf-8') 
+#UTF8Writer = codecs.getwriter('utf8')
+#sys.stdout = UTF8Writer(sys.stdout)
 
 serverPort = 0
-proxyPortIndex = 0
 proxyIsInit = False
 serverIsRunning = False
 lock = threading.RLock()
 portMap = dict()
 proxyServer = None
-indexCount = None
+indexCount = 0
 
 def init(defaultPort,path):
     global lock
-    global proxyPortIndex 
     global serverPort
     global proxyIsInit
     global serverIsRunning
@@ -26,93 +31,112 @@ def init(defaultPort,path):
     lock.acquire()
     
     serverPort = int(defaultPort)
-    proxyPortIndex = serverPort + 1
     proxyIsInit = True
     print "Initializing Proxy Manager - server port : set to : " + str(serverPort)
-    print " proxyPortIndex set to : " + str(proxyPortIndex)
     
     #checks to see if the server has already started
     if not serverIsRunning:
         proxyServer = Server(path,{'port':int(serverPort)})
         proxyServer.start()
         serverIsRunning = True
-        indexCount = 0
+        
     
     lock.release()
 
 
-def incrementPort():
-    
-    global proxyPortIndex 
+def incrementIndex():
     global indexCount
     global lock
     lock.acquire()
-    
-    proxyPortIndex += 1
     indexCount +=1
-    print "Incrementing proxy port to : " + str(proxyPortIndex)
-    
     lock.release()
 
-def decrementPort():
-    global proxyPortIndex
+def decrementIndex():
     global indexCount
     global lock
-    
     lock.acquire()
-    
-    proxyPortIndex -= 1
     indexCount -= 1
-    print "Decrementing proxy port to : " + str(proxyPortIndex)
-    
     lock.release()
 
-def getProxyPort():
-    global proxyPortIndex 
-    return proxyPortIndex
+def assignProxyPort():
+    global portMap
+    global lock
+    global indexCount
+    global serverPort
+    global indexCount
+    
+    print " # Assigning Proxy Port # "
+    
+    clientPort = serverPort + 1
+    assigned = False
+    foundPort = False
+    
+    if indexCount != 0:
+        numOpenPorts = len(portMap['portNum'])
+    
+        print "   -- Number of Open Ports : " + str(numOpenPorts)
+        if numOpenPorts > 0:
 
-def addPortMapEntry(instanceId, portNum):
+            count = 1
+            while not assigned:
+
+                testPort = serverPort + count
+                testPort = str(testPort)
+                
+                print "     -- Looking for test port : " + testPort
+
+                for i in range(0,numOpenPorts):
+                    if testPort == portMap['portNum'][i]:
+                        foundPort = True
+                        print "     -- test port : " + testPort + " already mapped."
+
+                if foundPort:
+                    foundPort = False
+
+                else:
+                    #we have an open port, go a head an assign it to he client
+                    print " Didn't find the port, mapping client to port : " + testPort
+                    clientPort = testPort
+                    assigned = True
+                    break
+
+
+                count += 1
+            
+    addPortMapEntry(clientPort)
+
+def addPortMapEntry(portNum):
     global portMap
     global lock
     global indexCount
     
-    print " # Updating Port Map Entries #"
+    print " # Updating Port Map Entries #".encode("utf-8")
     print " Current Mappings : " + str(portMap)
     lock.acquire()
     if indexCount==0:
-       portMap.update({"instanceId": [str(instanceId)],"portNum":[str(portNum)]})
+       portMap.update({"portNum":[str(portNum)]})
     else:
-        portMap['instanceId'].append(str(instanceId))
         portMap['portNum'].append(str(portNum))
-    lock.release()
-    print "Mappings after Update : " + str(portMap)
+        
+    incrementIndex()
     
-def updateInstanceIdForPort(instanceId,portNum):
+    print "Mappings after Update : " + str(portMap)
+    myPort = portMap['portNum'][indexCount-1]
+    print " HERE IS THE PORT NUMBER BEING RETURNED " + myPort
+    lock.release()
+    
+    
+def removePortMapEntry(portNum):
     global portMap
     global lock
     
     lock.acquire()
-    numOfEntries = len(portMap["instanceId"])
+    numOfEntries = len(portMap["portNum"])
     
     for entry in range(0,numOfEntries):
         if portMap["portNum"][entry] == portNum :
-            portMap["instanceId"][entry]=instanceId
-            break
-            
-    lock.release()
-    
-  
-def removePortMapEntry(instanceId):
-    global portMap
-    global lock
-    
-    lock.acquire()
-    numOfEntries = len(portMap)
-    
-    for entry in range(0,numOfEntries):
-        if portMap["instanceId"][entry] == instanceId :
-            del portMap["instanceId"][entry]
             del portMap["portNum"][entry]
+            decrementIndex()
             break
             
     lock.release()
