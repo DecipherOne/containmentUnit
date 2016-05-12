@@ -127,6 +127,7 @@ class CasperjsController(BaseController):
                     stdout_value, stderr_value = myProc.communicate()
                     self.scriptOutput = repr(stdout_value)
                     self.scriptErrors = stderr_value
+                    return self.getScriptOutput(self.scriptOutputFile)
                 except:
                     print "\n\t Error: second attempt failed, program will quit."
                     self.stopProxy()

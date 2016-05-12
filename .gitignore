@@ -1753,3 +1753,6 @@
 /static_build/.sass-cache/
 /static_build/.bundle/
 /static_build/nbproject/private/
+/static_build/nbproject/project.xml
+/dist/containmentUnit-1.0.10.zip
+/static_build/nbproject/project.properties
