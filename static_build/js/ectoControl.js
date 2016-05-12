@@ -190,23 +190,11 @@
 
                     },
 
-                    success: function (response) {
-
-                        $.ajax({
-                            url: "casperjs/getScriptOutput",
-                            type: "GET",
-
-                            success:function(response){
-                                response += '</br><div>------- End of Script Output ------</div></br></br>';
-                                scriptOutputCont.append(response);
-                            },
-                            error:function(){
-                                scriptOutputCont.append("Problem retrieving script output : " + JSON.stringify(response));
-                            }
-
-                        });
-
+                    success:function(response){
+                        response += '</br><div>------- End of Script Output ------</div></br></br>';
+                        scriptOutputCont.append(response);
                     },
+         
                     error: function (response) {
 
                        if(response.status===0){

@@ -121,8 +121,6 @@ def addPortMapEntry(portNum):
     incrementIndex()
     
     print "Mappings after Update : " + str(portMap)
-    myPort = portMap['portNum'][indexCount-1]
-    print " HERE IS THE PORT NUMBER BEING RETURNED " + myPort
     lock.release()
     
     

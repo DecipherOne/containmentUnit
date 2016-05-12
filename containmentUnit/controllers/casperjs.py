@@ -13,7 +13,7 @@ class CasperjsController(BaseController):
     scriptDirectory = APP_ROOT + "/templates/home/CasperScripts/"
     scriptName ="performanceHarRepo.js "
     waitTime = "1000"
-    jsonFile = "TestLinks0.json"
+    jsonFile = "TestLinks8081.json"
     timesToExe = '3'
     scriptOutput = "::::::::::::::::::::::::::::::::::::::::::"
     proxyServer = None
@@ -49,9 +49,12 @@ class CasperjsController(BaseController):
             self.defaultProxyPort = fileStream['defaultProxyPort']
         
         if portManager.indexCount != None:
-            self.scriptOutputFile = self.scriptDirectory+"/output/scriptOutput"+str(portManager.indexCount)+".html"
+            fIndex = int(portManager.serverPort) + portManager.indexCount + 1
+            self.scriptOutputFile = self.scriptDirectory+"/output/scriptOutput"+str(fIndex)+".html"
         else:
-            self.scriptOutputFile = self.scriptDirectory+"/output/scriptOutput0.html"
+            fIndex = int(self.defaultProxyPort)
+            fIndex += 1
+            self.scriptOutputFile = self.scriptDirectory+"/output/scriptOutput"+str(fIndex)+".html"
             
              
     @restrict("POST")
@@ -70,9 +73,14 @@ class CasperjsController(BaseController):
             
             if reqParams['urls'] != None:
                 if portManager.indexCount != None:
-                    self.jsonFile = "TestLinks" + str(portManager.indexCount)+".json"
+                    fIndex = int(portManager.serverPort) + portManager.indexCount + 1
+                    self.jsonFile = "TestLinks"+str(fIndex)+".json"
                 else:
-                   self.jsonFile = "TestLinks0.json" 
+                    fIndex = int(self.defaultProxyPort)
+                    fIndex += 1
+                    if fIndex < 1000:
+                        fIndex = 8081
+                    self.jsonFile = "TestLinks"+str(fIndex)+".json" 
                 self._writeUrlsToFile(reqParams)
             else:
                 self.scriptOutput = "<div> Please Enter in Urls to Test </div></br>"
@@ -126,14 +134,16 @@ class CasperjsController(BaseController):
                 self._writeOutput(self.scriptOutput)
             else:
                 self._appendOutput(self.scriptOutput)
-
+    
             count -= 1
-        
+            
         
         self.stopProxy()
+        
         print '\n\t Script output:', repr(self.scriptOutput) , '</br>'
         print '\n\t stderr value   :', repr(self.scriptErrors), '</br>'
-       
+        return self.getScriptOutput(self.scriptOutputFile)
+        
 
     @restrict("GET")
     def getAvailableScripts(self):
@@ -251,22 +261,23 @@ class CasperjsController(BaseController):
         fileStream.close()
         portManager.lock.release()
         
-    @restrict("GET")    
-    def getScriptOutput(self):
+    def getScriptOutput(self,outPutFile):
         
         portManager.lock.acquire()
-        filestream = open(self.scriptOutputFile,'r')
+        filestream = open(outPutFile,'r')
         output = filestream.read()
         filestream.close()
         
-        print "Getting Script output portmanager index at : " + str(portManager.indexCount)
+        print "Getting Script output, portmanager index at : " + str(portManager.indexCount)
         if portManager.indexCount == 0:
             print " Attempting to delete intermediarey files."
             #delete the intermediary files
             dirPath = self.scriptDirectory+"/output/"
             fileList = os.listdir(dirPath)
             for fileName in fileList:
-                os.remove(dirPath+"/"+fileName)
+                pathPlFile = dirPath+"/"+fileName
+                if os.path.exists(pathPlFile):
+                    os.remove(pathPlFile)
                 
         portManager.lock.release()
         return output
