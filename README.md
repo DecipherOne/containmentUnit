@@ -221,6 +221,25 @@ Then go to:
 
 Replace the slideshow_template.erb with the one from the containmentUnit. Your wraith template is now modified.
 
+###Update thirdPartyPaths.json
+
+    You will need to find where python27 is located and get to the containmentUnit site-package.
+    
+    Path to thirdPartyPaths.json for me is : c:/python2.7/Lib/site-packages/containmentUnit/config/
+
+    Open this folder up in a text editor.
+
+    ###Update Contents of thirdPartyPaths.json
+
+        When you first Open the file you will see the default windows paths :
+
+        {"casperjs": "c:/casperjs/bin/","browser-mob-proxy":"c:/browsermob-proxy-2.0.0/bin/browsermob-proxy.bat","defaultProxyPort":"8080" }
+
+        This json structure is how the application will resolve the path of our casperjs and browser-mob-proxy installations.
+        
+        defaultProxyPort - This value is which port the proxy server will attempt to use. Change this here if you 
+            the server to use a different port.
+
 ####Configure Server for first Run
 
     Navigate to : C:\Python27\Lib\site-packages\containmentunit-1.0-py2.7.egg\containmentUnit\dependencyMods
@@ -506,13 +525,17 @@ From a cmd line run the following commands one at a time :
 
         When you first Open the file you will see the default windows paths :
 
-        {"casperjs": "c:/casperjs/bin/","browser-mob-proxy":"c:/browsermob-proxy-2.0.0/bin/browsermob-proxy.bat" }
+        {"casperjs": "c:/casperjs/bin/","browser-mob-proxy":"c:/browsermob-proxy-2.0.0/bin/browsermob-proxy.bat","defaultProxyPort":"8080" }
 
         This json structure is how the application will resolve the path of our casperjs and browser-mob-proxy installations.
         For my linux installation, I had to alter this to : 
 
-        {"casperjs": "/home/me/casperjs/bin/","browser-mob-proxy":"/home/me/browser-mob-proxy2.0/bin/browsermob-proxy" }
+        {"casperjs": "/home/me/casperjs/bin/","browser-mob-proxy":"/home/me/browser-mob-proxy2.0/bin/browsermob-proxy","defaultProxyPort":"8080" }
+        
+        defaultProxyPort - This value is which port the proxy server will attempt to use. Change this here if you 
+            the server to use a different port.
 
+	
         
 ###Make sure that the project has adequate read/write permissions
     
