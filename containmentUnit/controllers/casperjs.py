@@ -7,6 +7,9 @@ from pylons.controllers.util import redirect
 from pylons.decorators.rest import restrict
 from containmentUnit.lib.base import BaseController, render
 import containmentUnit.lib.proxyPortManager  as portManager
+import codecs
+
+#This sets up the system to use utf-8 encoding but also sets standard out to convert properly
 
 class CasperjsController(BaseController):
     APP_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -111,8 +114,6 @@ class CasperjsController(BaseController):
 
             # We have all our values setup the cmdline cmd
             args = self.casperPath +"casperjs --proxy='http://localhost:"+str(self.myPort) +"' --ssl-protocol='any' --ignore-ssl-errors=true --disc-cache=false " + self.scriptDirectory + self.scriptName + self.scriptDirectory + "/output/"+ self.jsonFile + " " + self.waitTime + " " + self.testLabel + " " + self.myPort
-
-            print " Here are the altered args : " + args
             myProc = subprocess.Popen(args,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.STDOUT);
             
             try:
@@ -218,7 +219,12 @@ class CasperjsController(BaseController):
          print " In create Har proxy Server port is : " + proxyServerPort
          print " myPort is : " + str(self.myPort)
          r = serverReq.put('%s/proxy/%s/har' % (proxyServerPort, self.myPort), payload)
-         print "Create Har Response : " + str(r.status_code) + " " + str(r.text)
+         try:
+            print "Create Har Response : " + str(r.status_code) + " " + str(r.text)
+         except:
+            statusCode = str(r.status_code)
+            statusText = unicode(r.text)
+            print "Create Har Response : " + statusCode.encode("utf-8","replace") + " " + statusText.encode("utf-8","replace")
          portManager.lock.release()
          
     @restrict("GET")     

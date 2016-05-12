@@ -5,12 +5,6 @@
 import threading
 from browsermobproxy import Server
 import sys 
-import codecs
-#This sets up the system to use utf-8 encoding but also sets standard out to convert properly
-#reload(sys) 
-#sys.setdefaultencoding('utf-8') 
-#UTF8Writer = codecs.getwriter('utf8')
-#sys.stdout = UTF8Writer(sys.stdout)
 
 serverPort = 0
 proxyIsInit = False

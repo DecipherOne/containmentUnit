@@ -25,7 +25,7 @@ include containmentUnit\include templates\display\*
 include containmentUnit\templates\histogram\*
 include containmentUnit\templates\home\*
 include containmentUnit\templates\home\CasperScripts\*
-include containmentUnit\templates\home\CasperScripts\output
+include containmentUnit\templates\home\CasperScripts\output\*
 include containmentUnit\templates\home\casperForms\*
 include containmentUnit\templates\home\images\*
 include containmentUnit\dependencyMods\*

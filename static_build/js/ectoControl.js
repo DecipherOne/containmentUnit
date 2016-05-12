@@ -196,22 +196,7 @@
                     },
          
                     error: function (response) {
-
-                       if(response.status===0){
-                           $.ajax({
-                            url: "casperjs/getScriptOutput",
-                            type: "GET",
-
-                            success:function(response){
-                                scriptOutputCont.append(response);
-                            },
-                            error:function(){
-                                scriptOutputCont.append("Problem retrieving script output : " + JSON.stringify(response));
-                            }
-
-                        });
-                           return;
-                       }
+                       
                        if(response.responseText.length){
                             scriptOutputCont.append("There was a problem executing the script : " + response.responseText);
                        }
