@@ -1,0 +1,53 @@
+/* 
+    Created on : May 13, 2016, 11:06:45 AM
+    Author     : WillC
+*/
+
+.wraithGalCard{
+    margin:16px;
+    width:300px;
+    height:175px;
+    max-height:250px;
+    float:left;
+    border-radius: 5px;
+    border: 1px solid;
+    display: table;
+}
+
+#linkCont{
+    width:97%;
+    padding:10px 10px;
+    background-color:#090909;
+    margin:10px auto;
+    min-height:300px;
+    z-index:2;
+    display:table;
+    
+    a{
+        margin:0px auto;
+        display:block;
+    }
+    
+}
+
+.wraithLogo{
+    background-image:url('/images/wraithLogo.png');
+    width:188px;
+    height:190px;
+    background-size: contain;
+    z-index:1;
+    display:block;
+    margin: 0px auto;
+}
+
+.wcSite, .wcLastUpdate{
+    width: 90%;
+    display: block;
+    margin: 0px auto;
+    margin-bottom: 8px;
+}
+
+.wcSite{
+    font-weight: bold;
+    font-size: 20px;
+}

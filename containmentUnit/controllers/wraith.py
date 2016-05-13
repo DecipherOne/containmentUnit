@@ -6,7 +6,9 @@ from pylons import config
 from pylons.controllers.util import redirect
 from pylons.decorators.rest import restrict
 from browsermobproxy import Server
+from time import strftime
 from containmentUnit.lib.base import BaseController, render
+import containmentUnit.lib.proxyPortManager  as portManager
 
 #print "app root is: " + APP_ROOT;
 #This opens a pipe to the standard cmd shell and sets input and output
@@ -30,6 +32,7 @@ class WraithController(BaseController):
         
         
     def _updateRequestData(self,requirePaths):
+        portManager.lock.acquire()
         self.reqParams = json.loads(request.body)
         
         if self.reqParams['siteName'] != None:
@@ -46,6 +49,7 @@ class WraithController(BaseController):
             
         if self.reqParams['protocol'] != "https":
             self.protocol = "http"
+        portManager.lock.release()
             
         
     @restrict("POST")
@@ -53,6 +57,7 @@ class WraithController(BaseController):
         
         self._updateRequestData(True)
         
+        portManager.lock.acquire()
         if self._addSiteToExisting() == False:
             return self.scriptOutput
         
@@ -108,6 +113,8 @@ class WraithController(BaseController):
         self._writeOutput(yamlCache,self.siteName+'_History.yaml')
         print "Yaml file successfully created :)"
         
+        portManager.lock.release()
+        
         if self.updatingRecord == False :
             return self.generateBaseTestImages()
         else:
@@ -117,6 +124,7 @@ class WraithController(BaseController):
         
     def updateSitePaths(self):
        
+        portManager.lock.acquire()
         self.reqParams = json.loads(request.body)
         self.siteName = self.reqParams['siteName']
         selfSiteName = self.siteName
@@ -160,12 +168,14 @@ class WraithController(BaseController):
                     if y < (len(newPathArray) - 1):
                         self._appendOutput(',', filePath)
                 self._appendOutput(']}', filePath)
-
+                portManager.lock.release()
                 return self.generateSiteYaml()
             else:
                 #Should only occur in error. You can't select an existing path if the file is empty
                 self.scriptOutput += "File is empty, path not found."
+                portManager.lock.release()
                 return self.generateSiteYaml()
+            portManager.lock.release()
             return self.scriptOutput
         
         else:
@@ -206,7 +216,7 @@ class WraithController(BaseController):
                     if y < (len(newPathArray) - 1):
                         self._appendOutput(',', filePath)
                 self._appendOutput(']}', filePath)
-
+                portManager.lock.release()
                 return self.generateSiteYaml()
             else:
             #Adds Paths to file that is empty
@@ -219,7 +229,9 @@ class WraithController(BaseController):
                 self._appendOutput(']}', filePath)
 
                 self.scriptOutput += "Path : " + selfPathName + " added successfully</br>"
+                portManager.lock.release()
                 return self.generateSiteYaml()
+            portManager.lock.release()
             return self.scriptOutput
         
         
@@ -289,26 +301,35 @@ class WraithController(BaseController):
     @restrict("PUT")
     def removeExistingSite(self):
         #Delete log files
+        portManager.lock.acquire()
         self.siteName = request.params['siteName']
-        if os.path.isfile(self.scriptDirectory+'logs/' + self.siteName +'_GetLatestImageOutput.log'):
-            os.remove(self.scriptDirectory+'logs/' + self.siteName +'_GetLatestImageOutput.log')
-        if os.path.isfile(self.scriptDirectory+'logs/' + self.siteName +'_GenBaseImageOutput.log'):
-            os.remove(self.scriptDirectory+'logs/' + self.siteName +'_GenBaseImageOutput.log')
+        
+        latestLog = self.scriptDirectory+'logs/' + self.siteName +'_GetLatestImageOutput.log' 
+        baseLog = self.scriptDirectory+'logs/' + self.siteName +'_GenBaseImageOutput.log'
+        baseDirectory = self.scriptDirectory + "screenCaptures/" + self.siteName + "_base_shots"
+        latestDirectory = self.scriptDirectory + "screenCaptures/" + self.siteName + "_latest_shots"
+        pathsFile = self.scriptDirectory+'pathData/' + self.siteName +'_paths.json'
+        historyFile = self.scriptDirectory + self.siteName +'_History.yaml'
+        
+        if os.path.isfile(latestLog):
+            os.remove(latestLog)
+        if os.path.isfile(baseLog):
+            os.remove(baseLog)
         
         #Delete Images and Folders
-        if os.path.exists(self.scriptDirectory + "screenCaptures/" + self.siteName + "_base_shots"):
-            shutil.rmtree(self.scriptDirectory + "screenCaptures/" + self.siteName + "_base_shots")
+        if os.path.exists(baseDirectory):
+            shutil.rmtree(baseDirectory)
             
-        if os.path.exists(self.scriptDirectory + "screenCaptures/" + self.siteName + "_latest_shots"):
-            shutil.rmtree(self.scriptDirectory + "screenCaptures/" + self.siteName + "_latest_shots")
+        if os.path.exists(latestDirectory):
+            shutil.rmtree(latestDirectory)
         
         #Delete Path Files
-        if os.path.isfile(self.scriptDirectory+'pathData/' + self.siteName +'_paths.json'):
-            os.remove(self.scriptDirectory+'pathData/' + self.siteName +'_paths.json')
+        if os.path.isfile(pathsFile):
+            os.remove(pathsFile)
         
         #Delete yaml
-        if os.path.isfile(self.scriptDirectory + self.siteName +'_History.yaml'):
-            os.remove(self.scriptDirectory + self.siteName +'_History.yaml')
+        if os.path.isfile(historyFile):
+            os.remove(historyFile)
         
         #remove site from existingSites.config
         f = open(self.scriptDirectory + "existingSites.config","r+")
@@ -326,30 +347,37 @@ class WraithController(BaseController):
         f = open(self.scriptDirectory + "wraithGalleryIndex.html","r+")
         d = f.readlines()
         f.seek(0)
-        
+        search = '<span class="wcSite"><label>Site : </label>'+self.siteName+'</span>'
         for i in d:
-            if i != '<div><a href="wraith/loadWraithGallery?siteName=' + self.siteName +'" target="_blank">' + self.siteName + '\'s gallery</a></div>\n':
+            if not re.search(search,i):
                 f.write(i)
                 
         f.truncate()
         f.close()
+        portManager.lock.release()
         return "Site : " + self.siteName + " has been removed from the system."
     
     
     def _writeOutput(self,data,filename):
+        portManager.lock.acquire()
         fileStream = open(self.scriptDirectory+filename,'w')
         fileStream.write(data)
         fileStream.close()
+        portManager.lock.release()
         
     def _appendOutput(self,data,filename):
+        portManager.lock.acquire()
         fileStream = open(self.scriptDirectory+filename,'a')
         fileStream.write(data)
         fileStream.close()
+        portManager.lock.release()
         
     def _getScriptOutput(self,filename):
+       
         fileStream = open(self.scriptDirectory+filename,'r')
         output = fileStream.read()
         fileStream.close();
+        
         return output
     
     @restrict("GET")
@@ -367,6 +395,7 @@ class WraithController(BaseController):
     @restrict("GET")
     def getExistingSites(self):
         # Read existing site entries from log
+        portManager.lock.acquire()
         fileStream = open(self.scriptDirectory+"existingSites.config",'r')
         temp = fileStream.read().splitlines()
         newtemp = ''
@@ -378,6 +407,7 @@ class WraithController(BaseController):
                 newtemp += '{"siteName": "' +entry +'"}'
             count += 1  
         temp = '{"sites":['+str(newtemp)+']}'
+        portManager.lock.release()
         return json.dumps(temp)
         
     @restrict("GET")
@@ -389,64 +419,105 @@ class WraithController(BaseController):
     def _addSiteToExisting(self):
         print "Adding site to existingSites.config "
         fileStream = self._getScriptOutput('existingSites.config')
-
-        
+        portManager.lock.acquire()
+        foundSite = False
         if fileStream != None:
            
             with open(self.scriptDirectory+'existingSites.config') as f:
                 print("stream is open")
                 
                 for line in f:
-                    if re.search(self.siteName+'\n',line):
+                    if self.siteName+'\n'==line:
+                        foundSite = True
+                        break
+            
                         
-                        if self.updatingRecord :
-                            print("Existing Record is being updated.")
-                            return True
-                        else:
-                            print("The Site Already Exists.")
-                            self.scriptOutput += self.siteName + " already exists, please remove or update paths to edit."
-                            return False
+            if foundSite:
+                if self.updatingRecord :
+                    print("Existing Record is being updated.")
+                    portManager.lock.release()
+                    return True
+                else:
+                    print("The Site Already Exists.")
+                    self.scriptOutput += self.siteName + " already exists, please remove or update paths to edit."
+                    portManager.lock.release()
+                    return False
                     
-                    else:
-                        print("attempting to write output")
-                        self._appendOutput(self.siteName+'\n','existingSites.config')
-                        #preserve our paths to file so we can reference them from the web interface.
-                        self._writeOutput(self.rawPathData,"pathData/"+self.siteName+'_paths.json')
-                        self.scriptOutput += "Site : " + self.siteName + " added Successfully"
-                        return True
+            else:
+                print("attempting to write output")
+                self._appendOutput(self.siteName+'\n','existingSites.config')
+                #preserve our paths to file so we can reference them from the web interface.
+                self._writeOutput(self.rawPathData,"pathData/"+self.siteName+'_paths.json')
+                self.scriptOutput += "Site : " + self.siteName + " added Successfully"
+                portManager.lock.release()
+                return True
         else:
             self._writeOutput(self.siteName+'\n','existingSites.config')
             #preserve our paths to file so we can reference them from the web interface.
             self._writeOutput(self.rawPathData,"pathData/"+self.siteName+'_paths.json')
             self.scriptOutput += "Site : " + self.siteName + " added Successfully"
+            portManager.lock.release()
             return True
-        
+        portManager.lock.release()
         return False
     
     def _addSiteToGalleryIndex(self):
-        print "Adding site to wraithGalleryIndex.html "
-        link = '<div><a href="wraith/loadWraithGallery?siteName=' + self.siteName +'" target="_blank">' + self.siteName + '\'s gallery</a></div>\n'
+        print "# Adding site to wraithGalleryIndex.html #"
+        
+        timeStamp = strftime("%A %m/%d/%y @ %I:%M:%S %p") 
+        
+        myFile = self.scriptDirectory+'wraithGalleryIndex.html'
+        link = '<a href="wraith/loadWraithGallery?siteName=' + self.siteName +'" target="_blank"><div class="wraithGalCard"><span class="wraithLogo"></span><span class="wcSite"><label>Site : </label>' + self.siteName + '</span><span class="wcLastUpdate">'+ timeStamp.encode('utf-8') +'</span></div></a>\n'
+        foundSite = False
+        portManager.lock.acquire()
         if os.path.isfile(self.scriptDirectory+'wraithGalleryIndex.html'):
-           
-            with open(self.scriptDirectory+'wraithGalleryIndex.html') as f:
-                print("stream is open")
-                
-                for line in f:
-                    if link==line:
-                        print("The Gallery Already Exists.")
-                        self.scriptOutput += self.siteName + "'s gallery is already listed."
-                        return
+            if os.stat(myFile).st_size > 0 :
+                with open(myFile) as f:
+                    print("# Opened wriathGalleryIndex #")
+                    search = '<span class="wcSite"><label>Site : </label>'+self.siteName+'</span>'
+                    for line in f:
                         
-                        
-                    else:
-                        print("Adding site to gallery Index.")
-                        self._appendOutput(link,'wraithGalleryIndex.html')
-                        return
+                        if re.search(search,line):
+                            foundSite = True
+                if foundSite:            
+                    print("The Gallery Already Exists.")
+                    self.scriptOutput += self.siteName + "'s gallery is already listed."
+                    self.__updateGalleryIndex()
+                    portManager.lock.release()
+                    return
+
+                else:
+                    print("Adding site to gallery Index.")
+                    self._appendOutput(link,'wraithGalleryIndex.html')
+                    portManager.lock.release()
+                    return
+            else:
+                print("Adding site to gallery Index.")
+                self._writeOutput(link,'wraithGalleryIndex.html')
+                portManager.lock.release()
+                return
         else:
-            print("Adding site to gallery Index.")
+            print("# wriathGalleryIndex is empty adding site to file. #")
             self._writeOutput(link,'wraithGalleryIndex.html')
+            portManager.lock.release()
             return
-            
+        
+    def __updateGalleryIndex(self):
+        timeStamp = strftime("%A %m/%d/%y @ %I:%M:%S %p") 
+        link = '<a href="wraith/loadWraithGallery?siteName=' + self.siteName +'" target="_blank"><div class="wraithGalCard"><span class="wraithLogo"></span><span class="wcSite"><label>Site : </label>' + self.siteName + '</span><span class="wcLastUpdate">'+ timeStamp.encode('utf-8') +'</span></div></a>\n'
+        portManager.lock.acquire()
+        #update gallery index
+        f = open(self.scriptDirectory + "wraithGalleryIndex.html","r+")
+        d = f.readlines()
+        f.seek(0)
+        search = '<span class="wcSite"><label>Site : </label>'+self.siteName+'</span>'
+        for i in d:
+            if re.search(search,i):
+                f.write(link)
+                
+        f.truncate()
+        f.close()
+        portManager.lock.release()
         
        
     

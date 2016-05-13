@@ -59,6 +59,7 @@ def assignProxyPort():
     global serverPort
     global indexCount
     
+    lock.acquire()
     print " # Assigning Proxy Port # "
     
     clientPort = serverPort + 1
@@ -98,6 +99,7 @@ def assignProxyPort():
                 count += 1
             
     addPortMapEntry(clientPort)
+    lock.release()
 
 def addPortMapEntry(portNum):
     global portMap
