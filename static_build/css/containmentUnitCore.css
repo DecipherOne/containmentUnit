@@ -235,12 +235,6 @@ input[type='checkbox'] { min-width: 20px; min-height: 20px; }
 
 /*For small devices*/
 @media only screen and (max-width: 767px) { #existingPathsCont { width: 90%; } }
-#linkCont { width: 80%; padding: 10px 10px; background-color: #090909; margin: 10px auto; min-height: 300px; z-index: 2; }
-
-#linkCont div { margin: 16px auto; width: 25%; float: left; padding: 0px 10px; }
-
-#wraithLogo { background-image: url("/images/wraithLogo.png"); width: 188px; height: 190px; background-size: contain; position: absolute; left: 30px; top: 75px; z-index: 1; }
-
 /*-------------------------------------------------- REQUIRED to hide the non-active tab content. But do not hide them in the print stylesheet! --------------------------------------------------*/
 .tabberlive .tabbertabhide { display: none; }
 
@@ -1737,3 +1731,16 @@ tr.even.gradeU td.sorting_3 { background-color: #e2e2e2; }
 .ex_highlight #example tbody tr.even:hover, #example tbody tr.even td.highlighted { background-color: #ECFFB3; }
 
 .ex_highlight #example tbody tr.odd:hover, #example tbody tr.odd td.highlighted { background-color: #E6FF99; }
+
+/*  Created on : May 13, 2016, 11:06:45 AM Author     : WillC
+*/
+.wraithGalCard { margin: 16px; width: 300px; height: 175px; max-height: 250px; float: left; border-radius: 5px; border: 1px solid; display: table; }
+
+#linkCont { width: 97%; padding: 10px 10px; background-color: #090909; margin: 10px auto; min-height: 300px; z-index: 2; display: table; }
+#linkCont a { margin: 0px auto; display: block; }
+
+.wraithLogo { background-image: url("/images/wraithLogo.png"); width: 188px; height: 190px; background-size: contain; z-index: 1; display: block; margin: 0px auto; }
+
+.wcSite, .wcLastUpdate { width: 90%; display: block; margin: 0px auto; margin-bottom: 8px; }
+
+.wcSite { font-weight: bold; font-size: 20px; }

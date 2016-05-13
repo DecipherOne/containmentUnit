@@ -17925,8 +17925,9 @@ HARSTORAGE.SuperposeForm.prototype.checkbox = function(input) {
                             hideCasperOptions();
                              $('#loadBuffer').load("/wraith/loadWraithForm",function(){
                                     optionsCont.append($(this).html());
+                                    setTimeout(ecto1.wraith.attachEventHandlers,1000);
                                 }); 
-                            setTimeout(ecto1.wraith.attachEventHandlers,1000);
+                            
 
                             break;
                     }
@@ -18200,7 +18201,15 @@ HARSTORAGE.SuperposeForm.prototype.checkbox = function(input) {
 
                 //Populates path select box with backend data
                 for(i = 0; i < temp.paths.length; i++) {
-                    pathSelect.append("<option value = "+temp.paths[i].url+">"+temp.paths[i].url+"</option>");
+                    //Trailing slash in option causes malformed data, sanitize it
+                    var length = temp.paths[i].url.length,
+                        sanitizedOption = temp.paths[i].url;
+                
+                    if(sanitizedOption.substr(length,-1)==='/'){
+                        sanitizedOption = sanitizedOption.slice(0,-1);
+                    }
+                    var option = '<option value = "'+temp.paths[i].url+'">'+temp.paths[i].url+'</option>';
+                    pathSelect.append(option);
                 }
             }
 
@@ -18214,7 +18223,9 @@ HARSTORAGE.SuperposeForm.prototype.checkbox = function(input) {
                     payLoad = null,
                     pathLabels=null,
                     pathUrls=null,
-                    protocol="https";
+                    protocol="https",
+                    lastPath = $('#existingPathsSel').children()[1],
+                    existing = $('#existingPathsSel').children()[0];
 
                 if(arg!==true && arg !==false){
                     arg=false;
@@ -18223,11 +18234,21 @@ HARSTORAGE.SuperposeForm.prototype.checkbox = function(input) {
                 delPath = arg;
 
                 if(delPath){
-
-                    if(pathSelect.children().length<=2 || $('#existingPathsSel :selected').length > pathSelect.children.length-1){
-                        alert("You can not delete all paths from a site. Sites require atleast one path.");
+                    
+                    if($(lastPath).is(':selected')){
+                        alert("The first path is reserved and can not be deleted. \n" +
+                                "To update this path, delete the site and add it back\n"+
+                                "with a new root path. If trying to delete other paths, \n" +
+                                "make sure the first path is not selected.");
                         return;
                     }
+                    
+                    //Make sure the root Existing Paths placeholder is not being added.
+                    
+                    if($(existing).is(':selected')){
+                        $(existing).prop('selected',false);
+                    }
+
                     if(confirm("Delete The Selected Test Paths From The System?")){
                         update = true;
                     }

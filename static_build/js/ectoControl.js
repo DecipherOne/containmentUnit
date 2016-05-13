@@ -107,8 +107,9 @@
                             hideCasperOptions();
                              $('#loadBuffer').load("/wraith/loadWraithForm",function(){
                                     optionsCont.append($(this).html());
+                                    setTimeout(ecto1.wraith.attachEventHandlers,1000);
                                 }); 
-                            setTimeout(ecto1.wraith.attachEventHandlers,1000);
+                            
 
                             break;
                     }
