@@ -26,7 +26,6 @@ ul.tabbernav
 {
  margin:0;
  padding: 3px 0;
- border-bottom: 1px solid #498a2d;
  font: bold 12px Verdana, sans-serif;
  text-align:left;
 }
@@ -40,12 +39,20 @@ ul.tabbernav li
 
 ul.tabbernav li a
 {
- padding: 3px 0.5em;
- margin-left: 3px;
- border: 1px solid #498a2d;
- border-bottom: none;
- background: #D7E7CF;
+ margin-left: 2px;
+ background: #000000;
  text-decoration: none;
+ padding: 16px;
+ bottom: 16px;
+ position: relative;
+ border-radius: 3px;
+}
+
+ul.tabbernav li.tabberactive {
+    a{
+      background-color:#292929; 
+      font-size: 16px;
+    }
 }
 
 ul.tabbernav li a:link { color: #498a2d; }
@@ -54,21 +61,14 @@ ul.tabbernav li a:visited { color: #498a2d; }
 ul.tabbernav li a:hover
 {
  color: #498a2d;
- background: #F2FBED;
- border-color: #498a2d;
+ background: #7DFF45;
 }
 
-ul.tabbernav li.tabberactive a
-{
- background-color: #fff;
- border-bottom: 1px solid #fff;
-}
 
 ul.tabbernav li.tabberactive a:hover
 {
  color: #000;
- background: white;
- border-bottom: 1px solid white;
+ background: #7DFF45;
 }
 
 /*--------------------------------------------------
@@ -76,11 +76,10 @@ ul.tabbernav li.tabberactive a:hover
   Add style only after the tabber interface is set up (.tabberlive)
   --------------------------------------------------*/
 .tabberlive .tabbertab {
-    padding:5px;
-    border:1px solid #498a2d;
+    padding:16px;
     border-bottom-left-radius:10px;
     border-bottom-right-radius:10px;
     border-top:none;
-    width:930;
-    overflow:auto;
+    width:100%;
+    overflow:scroll-y;
 }

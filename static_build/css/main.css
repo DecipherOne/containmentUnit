@@ -35,7 +35,7 @@ label [for=casperScripts] { margin: 0px 10px 0px 40px; }
 
 .header .right { text-align: right; font-family: "Gill Sans", Verdana; font-size: 77%; margin: 6px 0 0 0; }
 
-.header .left { float: left; text-align: left; font-family: times, "Times New Roman", times-roman, georgia, serif; font-weight: bold; font-size: 174%; }
+.header .left { float: left; text-align: left; font-family: times, "Times New Roman", times-roman, georgia, serif; font-weight: bold; font-size: 174%; margin-left: 16px; }
 
 .header .hr, .footer .hr { height: 1px; width: 100%; background-color: #498a2d; margin: 10px 0 10px 0; }
 
@@ -235,3 +235,4 @@ input[type='checkbox'] { min-width: 20px; min-height: 20px; }
 
 /*For small devices*/
 @media only screen and (max-width: 767px) { #existingPathsCont { width: 90%; } }
+#mainContent { margin-top: -34px !important; margin-left: 0px !important; width: 98%; }

@@ -99,7 +99,8 @@ label [for=casperScripts]{
     text-align: left;
     font-family: times, "Times New Roman", times-roman, georgia, serif;
     font-weight: bold;
-    font-size: 174%;    
+    font-size: 174%;
+    margin-left: 16px;    
 }
 .header .hr,.footer .hr {
     height: 1px;
@@ -655,3 +656,8 @@ input[type='checkbox']{
 }
 
 
+#mainContent{
+    margin-top:-34px !important;
+    margin-left:0px !important;
+    width:98%;
+}

@@ -35,7 +35,7 @@ label [for=casperScripts] { margin: 0px 10px 0px 40px; }
 
 .header .right { text-align: right; font-family: "Gill Sans", Verdana; font-size: 77%; margin: 6px 0 0 0; }
 
-.header .left { float: left; text-align: left; font-family: times, "Times New Roman", times-roman, georgia, serif; font-weight: bold; font-size: 174%; }
+.header .left { float: left; text-align: left; font-family: times, "Times New Roman", times-roman, georgia, serif; font-weight: bold; font-size: 174%; margin-left: 16px; }
 
 .header .hr, .footer .hr { height: 1px; width: 100%; background-color: #498a2d; margin: 10px 0 10px 0; }
 
@@ -235,6 +235,8 @@ input[type='checkbox'] { min-width: 20px; min-height: 20px; }
 
 /*For small devices*/
 @media only screen and (max-width: 767px) { #existingPathsCont { width: 90%; } }
+#mainContent { margin-top: -34px !important; margin-left: 0px !important; width: 98%; }
+
 /*-------------------------------------------------- REQUIRED to hide the non-active tab content. But do not hide them in the print stylesheet! --------------------------------------------------*/
 .tabberlive .tabbertabhide { display: none; }
 
@@ -242,24 +244,24 @@ input[type='checkbox'] { min-width: 20px; min-height: 20px; }
 .tabberlive { margin-top: 1em; width: 90%; border: 10px; }
 
 /*-------------------------------------------------- ul.tabbernav = the tab navigation list li.tabberactive = the active tab --------------------------------------------------*/
-ul.tabbernav { margin: 0; padding: 3px 0; border-bottom: 1px solid #498a2d; font: bold 12px Verdana, sans-serif; text-align: left; }
+ul.tabbernav { margin: 0; padding: 3px 0; font: bold 12px Verdana, sans-serif; text-align: left; }
 
 ul.tabbernav li { list-style: none; margin: 0; display: inline; }
 
-ul.tabbernav li a { padding: 3px 0.5em; margin-left: 3px; border: 1px solid #498a2d; border-bottom: none; background: #D7E7CF; text-decoration: none; }
+ul.tabbernav li a { margin-left: 2px; background: #000000; text-decoration: none; padding: 16px; bottom: 16px; position: relative; border-radius: 3px; }
+
+ul.tabbernav li.tabberactive a { background-color: #292929; font-size: 16px; }
 
 ul.tabbernav li a:link { color: #498a2d; }
 
 ul.tabbernav li a:visited { color: #498a2d; }
 
-ul.tabbernav li a:hover { color: #498a2d; background: #F2FBED; border-color: #498a2d; }
+ul.tabbernav li a:hover { color: #498a2d; background: #7DFF45; }
 
-ul.tabbernav li.tabberactive a { background-color: #fff; border-bottom: 1px solid #fff; }
-
-ul.tabbernav li.tabberactive a:hover { color: #000; background: white; border-bottom: 1px solid white; }
+ul.tabbernav li.tabberactive a:hover { color: #000; background: #7DFF45; }
 
 /*-------------------------------------------------- .tabbertab = the tab content Add style only after the tabber interface is set up (.tabberlive) --------------------------------------------------*/
-.tabberlive .tabbertab { padding: 5px; border: 1px solid #498a2d; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; border-top: none; width: 930; overflow: auto; }
+.tabberlive .tabbertab { padding: 16px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; border-top: none; width: 100%; overflow: scroll-y; }
 
 /* Namespace DTCR - "DataTables ColReorder" plug-in */
 table.DTCR_clonedTable { background-color: white; z-index: 202; }
@@ -1744,3 +1746,9 @@ tr.even.gradeU td.sorting_3 { background-color: #e2e2e2; }
 .wcSite, .wcLastUpdate { width: 90%; display: block; margin: 0px auto; margin-bottom: 8px; }
 
 .wcSite { font-weight: bold; font-size: 20px; }
+
+/*  Created on : May 13, 2016, 3:00:17 PM Author     : WillC
+*/
+.header { height: 75px; background-color: black; padding: 16px 8px; position: relative; top: -10px; width: 100%; margin: 0px; margin-left: -7px; box-shadow: 1px 10px 10px #1D0101; }
+
+#ectoCont, #wraithCont { margin-top: 40px; }

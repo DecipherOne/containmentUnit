@@ -7,3 +7,8 @@
 @import "jquery-ui-1.8.4.custom";
 @import "table_jui";
 @import "partials/wraithGallery";
+@import "partials/newHeader";
+
+#ectoCont, #wraithCont{
+    margin-top:40px;
+}
