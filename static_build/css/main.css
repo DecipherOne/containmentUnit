@@ -13,7 +13,7 @@ body a:hover { text-decoration: underline; }
 
 label [for=casperScripts] { margin: 0 0.625rem 0 2.5rem; }
 
-#harOptions { width: 70%; margin: 1rem 17%; color: black; }
+#harOptions { width: 86%; margin: 1rem auto; color: black; }
 
 #logo { background-image: url("/images/slimer.png"); width: 6.875rem; height: 7rem; position: absolute; left: 4rem; top: 10rem; background-size: contain; }
 @media only screen and (max-width: 1023px) { #logo { left: 1rem; } }

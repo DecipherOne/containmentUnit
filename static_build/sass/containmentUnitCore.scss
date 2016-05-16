@@ -10,9 +10,12 @@
 @import "table_jui";
 @import "partials/wraithGallery";
 @import "partials/newHeader";
+@import "partials/about";
 
-#ectoCont, #wraithCont{
-   margin-top:remCalc(40);
+#ectoCont, #wraithCont, #resultsCont{
+    margin: 0px auto;
+    margin-top:remCalc(40);
+    width: 90%;
 }
 
 #detailsTabs{
@@ -52,7 +55,7 @@ button, .button{
 }
 
 #reportControls:last-child{
-   @media only screen and (max-width: 767px) {
+   @media only screen and (max-width: 1023px) {
        margin:remCalc(40) auto;
    }
 }
