@@ -1,3 +1,5 @@
+
+@import "mixins/remFontSize";
 @import "main";
 @import "tabber";
 @import "ColReorder";
@@ -10,5 +12,66 @@
 @import "partials/newHeader";
 
 #ectoCont, #wraithCont{
-    margin-top:40px;
+   margin-top:remCalc(40);
+}
+
+#detailsTabs{
+    margin-top:remCalc(60);
+    background-color:#000000;
+}
+
+button, .button{
+    padding:remCalc(16);
+}
+
+#reportControls{
+    
+    height:remCalc(150);
+    width:100%;
+    form{
+        width: remCalc(280);
+        float: left;
+        margin-left: remCalc(120);
+        height: remCalc(94);
+        margin:remCalc(40) auto remCalc(20) auto;
+        fieldset{
+            height:100%; 
+            legend{
+                float:left;
+                margin-bottom:remCalc(8);
+            }
+            .button{
+                width:100%;
+            }                
+            button{
+                margin-top:remCalc(20);
+            }
+        }
+    }
+    
+}
+
+#reportControls:last-child{
+   @media only screen and (max-width: 767px) {
+       margin:remCalc(40) auto;
+   }
+}
+
+#ectoMain{
+    margin: 0px auto;
+    width: 90%;
+    margin-bottom:remCalc(20);
+    display:table;
+}
+
+select{
+    padding:remCalc(16);
+}
+
+.file{
+    padding:0px;
+}
+
+input{
+    padding:remCalc(8);
 }

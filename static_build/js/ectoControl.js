@@ -117,6 +117,8 @@
                        break;     
                     }
                 }
+                
+                setTimeout(synchOutputContHeight,750);
             });
             submitButton.on('click',function(){
                  scriptOutputCont.html('');
@@ -232,6 +234,7 @@
                 if(scriptSelect.val()==='0'){
                     toggleButtonState(submitButton);
                 }
+                setTimeout(synchOutputContHeight,1000);
             });
 
 
@@ -281,6 +284,16 @@
                 timesToExeCont.show();
                 throttleCont.show();
             }
+            
+            function synchOutputContHeight(){
+                
+                var formHeight = $('#casperForm').height(),
+                    outHeight = $('#scriptOutputCont').height();
+                if( formHeight !== outHeight){
+                    formHeight -= 32;
+                    $('#scriptOutputCont').css('height',formHeight);
+                }
+            }
 
             ecto1.casper.hideOptions = function(){
                 return hideCasperOptions();
@@ -293,6 +306,8 @@
 
             return ecto1;
         },3000);
+        
+        
     });
     
 })(jQuery,ecto1 = window.ecto1 || {});

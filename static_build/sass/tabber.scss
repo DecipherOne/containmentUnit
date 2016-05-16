@@ -1,3 +1,4 @@
+@import "mixins/_remFontSize";
 /*--------------------------------------------------
   REQUIRED to hide the non-active tab content.
   But do not hide them in the print stylesheet!
@@ -13,9 +14,8 @@
 .tabber {
 }
 .tabberlive {
- margin-top:1em;
- width:90%;
- border:10px;
+ margin-top:remCalc(16);
+ border:remCalc(16);
 }
 
 /*--------------------------------------------------
@@ -28,6 +28,9 @@ ul.tabbernav
  padding: 3px 0;
  font: bold 12px Verdana, sans-serif;
  text-align:left;
+ @media only screen and (max-width: 1023px) {
+            @include font-size(8);
+      }
 }
 
 ul.tabbernav li
@@ -46,12 +49,20 @@ ul.tabbernav li a
  bottom: 16px;
  position: relative;
  border-radius: 3px;
+ 
+ @media only screen and (max-width: 1023px) {
+        padding:remCalc(8);
+  }
 }
 
 ul.tabbernav li.tabberactive {
     a{
       background-color:#292929; 
-      font-size: 16px;
+      @include font-size(16);
+      
+      @media only screen and (max-width: 1023px) {
+            @include font-size(12);
+      }
     }
 }
 
@@ -76,7 +87,7 @@ ul.tabbernav li.tabberactive a:hover
   Add style only after the tabber interface is set up (.tabberlive)
   --------------------------------------------------*/
 .tabberlive .tabbertab {
-    padding:16px;
+    padding:16px 0px;
     border-bottom-left-radius:10px;
     border-bottom-right-radius:10px;
     border-top:none;

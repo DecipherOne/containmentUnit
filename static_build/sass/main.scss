@@ -1,4 +1,6 @@
 /* Document Body */
+@import "mixins/remFontSize";
+
 body {
     color: #498a2d;
     background-color:#292929;
@@ -12,62 +14,98 @@ body a:hover {
 }
 /* Stuff added for this instance */
 #casperForm{
- width: 100%;
+  max-width:remCalc(600);
+  min-width:remCalc(300);
+  float:left;
   background-color: #c2c2c2;
-  margin: 0px auto 16px auto;
+  margin: 0px auto;
+  width:47%;
+  @media only screen and (max-width: 1023px) {
+        float:none;
+        width:100%;
+    }
 }
 
 #casperScripts{
-  margin:16px auto 16px 2%;
-  padding:8px;
+  width: remCalc(220);
+  margin:remCalc(16) auto remCalc(16) 24%;
+  padding:remCalc(8);
 }
 
 label [for=casperScripts]{
-   margin:0px 10px 0px 40px; 
+   margin:0 remCalc(10) 0 remCalc(40); 
 }
 
 #harOptions{
     width:70%;
-    margin: 16px 17%;
+    margin: remCalc(16) 17%;
     color:black;
 }
 
 #logo{
-    float:left;
     background-image:url('/images/slimer.png');
-    width:188px;
-    height:190px;
+    width:remCalc(110);
+    height:remCalc(112);
+    position: absolute;
+    left: remCalc(64);
+    top: remCalc(160);
+    background-size: contain;
+    @media only screen and (max-width: 1023px) {
+       left: remCalc(16);
+    }
 }
 
 #urlList{
     width:100%; 
-    margin:10px 16px;
+    margin:remCalc(10) remCalc(16);
     clear:both;
 }
 
 #waitTimeCont, #exeTimeCont, #throttlingCont{
-    width:200px; 
-    margin:16px 16px;
+    min-width:remCalc(200); 
+    max-width:remCalc(320);
+    width:100%;
+    margin:remCalc(16) remCalc(16);
     float:left;
+    
+    input,select{
+        width:80%;
+    }
+    
+    #enableThrottle{
+        width:remCalc(8);
+    }
+}
+
+#testLabel{
+    width:80%;
 }
 
 #networkThrottle{
-    width:155px;
+    width:remCalc(155);
     position: relative;
-    bottom: 7px;
+    bottom: remCalc(8);
+    margin: remCalc(16) 0px;
 }
 
 #enableThrottle{
-    width:20px;
-    height:20px;
+    width:remCalc(20);
+    height:remCalc(20);
+    margin: remCalc(16) 0px;
 }
 
 #ghostIt{
     background-color: red;
     float: right;
-    margin-right: 150px;
-    padding: 16px;
-    width: 200px;  
+    margin-right:remCalc(150);
+    padding: remCalc(16);
+    width: remCalc(200);  
+    
+     @media only screen and (max-width: 1023px) {
+        float:none;
+        margin:remCalc(16) auto;
+        display:block;
+    }
 }
 
 #harPerfUrls{
@@ -77,12 +115,20 @@ label [for=casperScripts]{
 }
 
 #scriptOutputCont{
-    width:95%; 
-    height:300px;
+    height:remCalc(400);
     background-color:#000000;
-    margin:0 auto;
-    padding:16px;
+    margin:0px auto;
+    padding:remCalc(16);
     overflow-y:scroll;
+    max-width:remCalc(580);
+    min-width:remCalc(300);
+    float:left;
+    width:47%;
+    
+    @media only screen and (max-width: 1023px) {
+        float:none;
+        width:85%;
+    }
 }
 /* Document Header and Footer*/
 .header .left a:hover {
@@ -91,8 +137,8 @@ label [for=casperScripts]{
 .header .right {
     text-align: right;
     font-family: "Gill Sans", Verdana;
-    font-size: 77%;
-    margin: 6px 0 0 0;
+    @include font-size(16);
+    margin: remCalc(16);
 }
 .header .left {
     float: left;
@@ -100,35 +146,33 @@ label [for=casperScripts]{
     font-family: times, "Times New Roman", times-roman, georgia, serif;
     font-weight: bold;
     font-size: 174%;
-    margin-left: 16px;    
+    margin-left: remCalc(16);    
 }
 .header .hr,.footer .hr {
-    height: 1px;
+    height: remCalc(2);
     width: 100%;
     background-color: #498a2d;
-    margin: 10px 0 10px 0;
+    margin: remCalc(16) 0;
 }
 /* Preferences menu */
 .header #preferences {
     position: absolute;
-    width: 250px;
-    height: 168px;
-    top: 60px;
-    right: 7px;
-    padding: 8px;
+    width:remCalc(250);
+    height: remCalc(168);
+    top: remCalc(60);
+    right: remCalc(8);
+    padding: remCalc(8);
     background: #FFFFFF;
     opacity: 0.85;
-    border: 1px solid #498a2d;
-    -moz-border-radius: 0px 0px 10px 10px;
-    -webkit-border-radius: 0px 0px 10px 10px;
-    border-radius: 0px 0px 10px 10px;
+    border: remCalc(2) solid #498a2d;
+    border-radius: 0 0 remCalc(10) remCalc(10);
     z-index: 100;
     display: none;
 }
 .header #close {
     position: absolute;
-    top: 7px;
-    right: 8px;
+    top: remCalc(16);
+    right: remCalc(8);
     z-index: 110;
     font-family: "Gill Sans", Verdana;
     font-weight: bold;
@@ -142,7 +186,7 @@ label [for=casperScripts]{
 }
 .header .radio {
     vertical-align: -3px;
-    margin: 0 0 10px 0;
+    margin: 0 0 remCalc(16) 0;
 }
 .header #preferences strong {
     font-family: "Gill Sans", Verdana;
@@ -155,36 +199,32 @@ label [for=casperScripts]{
 }
 .header #preferences button {
     width: 100px;
-    padding: 4px 0;
-    margin: 0px 75px 0px 75px;
+    padding: remCalc(4) 0;
+    margin: 0 remCalc(75) 0 remCalc(75);
     color: #000;
     font-family: arial;
     font-size: 77%;
     background: #d7e7cf;
-    border: 1px solid #498a2d;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
+    border: remCalc(2) solid #498a2d;
+    border-radius: remCalc(4);
     cursor: pointer;
 }
 
 #reportControls{
-    margin:20px 20px 20px 20px;
+    margin:remCalc(24) remCalc(24);
 }
 .uploader{
     width:45%;
     float:left;
-    margin:0px auto 0px auto;
+    margin:0 auto;
 }
 
 
 /* Manual uploader */
 .uploader fieldset {
-    margin: 20px 10px 20px 10px;
-    border: 1px solid #498a2d;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
+    margin: remCalc(24) remCalc(14);
+    border: remCalc(2) solid #498a2d;
+    border-radius: remCalc(16);
   
 }
 .uploader legend {
@@ -192,47 +232,41 @@ label [for=casperScripts]{
     font-family: times, "Times New Roman", times-roman, georgia, serif;
     font-size: 93%;
     background: #498a2d;
-    border: 1px solid #498a2d;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    padding: 2px 20px;
+    border: remCalc(2) solid #498a2d;
+    border-radius: remCalc(4);
+    padding: remCalc(2) remCalc(20);
 }
 .uploader .file {
     float:left;
     color: #000;
     font-size: 77%;
     background: #d7e7cf;
-    border: 1px solid #498a2d;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
+    border: remCalc(2) solid #498a2d;
+    border-radius: remCalc(4);
     cursor: pointer;
 }
 .uploader .button {
     width: 100px;
-    padding: 4px 0;
-    margin: 0px 0 20px 0px;
+    padding: remCalc(4) 0;
+    margin: 0 0 remCalc(20) 0;
     color: #000;
     font-family: arial;
     font-size: 77%;
     background: #d7e7cf;
-    border: 1px solid #498a2d;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
+    border: remCalc(2) solid #498a2d;
+    border-radius: remCalc(4);
     cursor: pointer;
 }
 /* Summary Table on Home Page */
 .summary {
-    width: 960px;
+    width: 98%;
     visibility: hidden;
 }
 .summary .title {
     font-family: times, "Times New Roman", times-roman, georgia, serif;
     font-weight: bold;
     font-size: 108%;
-    margin: 0 0 12px 0;
+    margin: 0 0 remCalc(12) 0;
     text-align: left;
     clear:both;
 }
@@ -240,26 +274,24 @@ label [for=casperScripts]{
     table-layout: fixed;
 }
 .summary button {
-    width: 220px;
-    padding: 4px 0;
-    margin: 20px 0;
+    width: remCalc(220);
+    padding: remCalc(4) 0;
+    margin: remCalc(24) 0;
     color: #000;
     font-family: arial;
     font-size: 77%;
     background: #d7e7cf;
-    border: 1px solid #498a2d;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
+    border:remCalc(2) solid #498a2d;
+    border-radius: remCalc(4);
     cursor: pointer;
 }
 /* Superposed Test */
 .sp-display {
-    width: 960px;
+    width:remCalc(960);
 }
 .sp-display #chart{
-    width: 960px;
-    height: 400px;
+    width: remCalc(960);
+    height: remCalc(400);
 }
 .sp-display #summary-table {
     visibility: hidden;
@@ -268,7 +300,7 @@ label [for=casperScripts]{
     font-family: times, "Times New Roman", times-roman, georgia, serif;
     font-weight: bold;
     font-size: 108%;
-    margin: 12px 0 18px 0;
+    margin: remCalc(16) 0 remCalc(18) 0;
     float: left;
     text-align: left;
 }
@@ -276,32 +308,28 @@ label [for=casperScripts]{
     visibility: hidden;
 }
 .sp-display #metrics {
-    width: 155px;
+    width: remCalc(160);
 }
 .sp-display #timings {
-    width: 200px;
+    width:remCalc(200);
 }
 .sp-display .selector {
     text-align: right;
-    margin: 12px 0 18px 0;
+    margin: remCalc(16) 0 remCalc(18) 0;
 }
 .sp-create fieldset {
-    width: 960px;    
-    border: 1px solid #498a2d;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
+    width: remCalc(960);    
+    border: remCalc(2) solid #498a2d;
+    border-radius: remCalc(16);
 }
 .sp-create legend {
     color: #fff;
     font-family: times, "Times New Roman", times-roman, georgia, serif;
     font-size: 93%;
     background: #498a2d;
-    border: 1px solid #498a2d;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    padding: 2px 20px;
+    border: remCalc(2) solid #498a2d;
+    border-radius: remCalc(4);
+    padding: remCalc(2) remCalc(24);
 }
 .sp-create {
     position: relative;
@@ -311,11 +339,12 @@ label [for=casperScripts]{
     z-index: 1;
 }
 .sp-create .spinner {
-    position: relative;
+    position: absolute;
     z-index: 2;
-    width: 24px;
-    top: 32px;
-    left: 480px;
+    width:remCalc(24);
+    height:remCalc(24);
+    top: 33%;
+    left: 24%;
     display: none;
 }
 .sp-create .howto {
@@ -387,23 +416,26 @@ label [for=casperScripts]{
 }
 /* Results */
 .results {
-    width: 960px;
+    width:remCalc(960);
+    background-color:#000000;
+    margin:0px auto;
 }
 .results #timeline{
-    width: 960px;
-    height: 450px;
+    width: remCalc(960);
+    height:remCalc(450);
 }
 .results .title {
     font-family: times, "Times New Roman", times-roman, georgia, serif;
     font-weight: bold;
     font-size: 108%;
-    margin: 12px 0 0 0;
+    margin: remCalc(16) 0 0 remCalc(16);
     float: left;
     text-align: left;
 }
 .results select {
-    width: 200px;
-    display: none;
+    width:remCalc(220);
+    padding:remCalc(16);
+    margin-right:remCalc(16);
 }
 .results .selector {
     text-align: right;
@@ -422,16 +454,16 @@ label [for=casperScripts]{
     margin: 10px 0 0 0;
     font-family: times, "Times New Roman", times-roman, georgia, serif;
     font-size: 93%;
+    background-color:#000000;
+    width:33.3%;
 }
-.results .container-max {
-    width: 260px;
+
+.results .container-umin{
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom:remCalc(16);
 }
-.results .container-min {
-    width: 220px;
-}
-.results .container-umin {
-    width: 200px;
-}
+
 .results .title-max, .results .title-min, .results .title-umax {
     text-align: right;
     font-family: times, "Times New Roman", times-roman, georgia, serif;
@@ -461,7 +493,7 @@ label [for=casperScripts]{
     float: left;
 }
 .results .image {
-    margin: 35px 0 0 170px;
+    float:left;
 }
 .results #by-size, .results #by-req {
     width:450px;
@@ -510,7 +542,7 @@ label [for=casperScripts]{
 .results .newtab button {
     width: 200px;
     padding: 4px 0;
-    margin: 5px 0px 10px 0px;
+    margin: 5px 0 10px 0;
     color: #000;
     font-family: arial;
     font-size: 77%;
@@ -533,32 +565,29 @@ label [for=casperScripts]{
 
 /* Wraith Interface Styles */
 #existingSiteCont, #newSiteCont, #newBaselineCont {
-    width: 200px;
     margin: 8px 8px;
     float: left;
 }
 
 #existingPathsCont{
     height:100%;
-    width:50%; 
-    margin:0px 16px;
+    width:100%;
+    margin:remCalc(16) auto;
     float:left;
 }
 
 #editPathsCont{
     margin:8px;
-    width:300px;
     float:left;
 }
 
 #wraithBottom {
-    height: 250px;
-    max-width:900px;
+    min-height: 250px;
+    height:100%;
 }
 
 #wraithTop{
    min-height:77px;
-   max-width:854px;
 }
 #updateData, #removeData {
     padding: 16px;
@@ -571,6 +600,7 @@ label [for=casperScripts]{
 #existingPathsSel {
     height: 100%;
     width: 100%;
+    min-height:remCalc(200);
     background-color: black;
     color: #498a2d;
 }
@@ -581,22 +611,27 @@ input[type='checkbox']{
 }
 
 
-
 #existingSiteSel{
     min-width:150px;
     max-width:200px;
 }
 
 #newSiteCont label, #newPathCont label{
-    margin:5px 0px;
+    margin:remCalc(4) 0;
+    float:left;
+    margin-right:remCalc(4)
 }
 
 #labelNewPath, #labelSecureProto{
     display:inline !important;
 }
 
+#secureProtoCheck{
+    float:left;
+}
+
 #newPathCont{
-    margin-bottom:16px;
+    margin:remCalc(16) auto;
 }
 
 #newPathCont label{
@@ -605,6 +640,7 @@ input[type='checkbox']{
 
 #newPathCheck{
     margin-right:10px;
+    float:left;
 }
 
 #newPathLabel{
@@ -613,17 +649,22 @@ input[type='checkbox']{
 }
 
 #newSiteCheck{
-    position: relative;
-    bottom: 3px;
+    float: left;
+}
+
+#newSiteCheck label{
+    margin-right: 8px;
     float:left;
 }
 
 #newSiteName{
    float:left;
+   width:50%;
 }
 
 #newBaselineCont{
-    width:300px; 
+    width:remCalc(300); 
+    margin:0px remCalc(16);
 }
 
 #newBaselineCont label{
@@ -643,21 +684,14 @@ input[type='checkbox']{
 
 #updateButtonsCont{
     min-height:80px;
-    margin:0px auto;
+    margin:0 auto;
     display:block;
     width:60%;
-}
-
-/*For small devices*/
-@media only screen and (max-width: 767px) {
-    #existingPathsCont{
-      width:90%;    
-    }
 }
 
 
 #mainContent{
     margin-top:-34px !important;
-    margin-left:0px !important;
+    margin-left:0 !important;
     width:98%;
 }

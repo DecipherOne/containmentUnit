@@ -2,16 +2,19 @@
 .tabberlive .tabbertabhide { display: none; }
 
 /*-------------------------------------------------- .tabber = before the tabber interface is set up .tabberlive = after the tabber interface is set up --------------------------------------------------*/
-.tabberlive { margin-top: 1em; width: 90%; border: 10px; }
+.tabberlive { margin-top: 1rem; border: 1rem; }
 
 /*-------------------------------------------------- ul.tabbernav = the tab navigation list li.tabberactive = the active tab --------------------------------------------------*/
 ul.tabbernav { margin: 0; padding: 3px 0; font: bold 12px Verdana, sans-serif; text-align: left; }
+@media only screen and (max-width: 1023px) { ul.tabbernav { font-size: "8px"; font-size: 0.5rem; } }
 
 ul.tabbernav li { list-style: none; margin: 0; display: inline; }
 
 ul.tabbernav li a { margin-left: 2px; background: #000000; text-decoration: none; padding: 16px; bottom: 16px; position: relative; border-radius: 3px; }
+@media only screen and (max-width: 1023px) { ul.tabbernav li a { padding: 0.5rem; } }
 
-ul.tabbernav li.tabberactive a { background-color: #292929; font-size: 16px; }
+ul.tabbernav li.tabberactive a { background-color: #292929; font-size: "16px"; font-size: 1rem; }
+@media only screen and (max-width: 1023px) { ul.tabbernav li.tabberactive a { font-size: "12px"; font-size: 0.75rem; } }
 
 ul.tabbernav li a:link { color: #498a2d; }
 
@@ -22,4 +25,4 @@ ul.tabbernav li a:hover { color: #498a2d; background: #7DFF45; }
 ul.tabbernav li.tabberactive a:hover { color: #000; background: #7DFF45; }
 
 /*-------------------------------------------------- .tabbertab = the tab content Add style only after the tabber interface is set up (.tabberlive) --------------------------------------------------*/
-.tabberlive .tabbertab { padding: 16px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; border-top: none; width: 100%; overflow: scroll-y; }
+.tabberlive .tabbertab { padding: 16px 0px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; border-top: none; width: 100%; overflow: scroll-y; }

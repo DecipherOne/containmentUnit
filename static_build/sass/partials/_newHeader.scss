@@ -4,13 +4,13 @@
 */
 
 .header{
-    height: 75px;
+    height: remCalc(75);
     background-color: black;
-    padding: 16px 8px;
+    padding: remCalc(16) remCalc(8);
     position: relative;
-    top: -10px;
+    top: remCalc(-10);
     width: 100%;
     margin: 0px;
-    margin-left:-7px;
-    box-shadow: 1px 10px 10px #1D0101;
+    margin-left:remCalc(-7);
+    box-shadow: remCalc(1) remCalc(10) remCalc(10) #1D0101;
 }
