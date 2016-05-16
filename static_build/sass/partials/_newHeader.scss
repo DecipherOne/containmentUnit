@@ -1,0 +1,16 @@
+/* 
+    Created on : May 13, 2016, 3:00:17 PM
+    Author     : WillC
+*/
+
+.header{
+    height: remCalc(75);
+    background-color: black;
+    padding: remCalc(16) remCalc(8);
+    position: relative;
+    top: remCalc(-10);
+    width: 100%;
+    margin: 0px;
+    margin-left:remCalc(-7);
+    box-shadow: remCalc(1) remCalc(10) remCalc(10) #1D0101;
+}

@@ -27,19 +27,17 @@ ${header.html()}
         </div>    
     </div>
 </div>
-<center>
-    <div class="sp-display">
-        <div id="chart"></div>
-        <p class="title">Histogram</p>
+<div class="sp-display">
+    <div id="chart"></div>
+    <p class="title">Histogram</p>
 
-        <div class="selector">
-            <select id="timings" class="chosen-select">
-                % for metric, title in c.metrics:
-                <option value="${metric}">${title}</option>
-                % endfor                
-            </select>
-        </div>
+    <div class="selector">
+        <select id="timings" class="chosen-select">
+            % for metric, title in c.metrics:
+            <option value="${metric}">${title}</option>
+            % endfor                
+        </select>
     </div>
-</center>
+</div>
 ${jsloader.html()}
 ${footer.html()}

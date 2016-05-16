@@ -1,0 +1,73 @@
+
+#aboutCont{
+    width:90%;
+    margin:remCalc(40) auto remCalc(20) auto;
+}
+
+.harLogo{
+    background-image:url('/images/harLogo.png');
+    width:remCalc(103);
+    height:remCalc(105);
+    background-size: contain;
+    background-repeat:no-repeat;
+    z-index:1;
+    display:block;
+    margin: 0px auto;
+}
+
+.casperjsLogo{
+    background-image:url('/images/casperjsLogo.png');
+    width:remCalc(85);
+    height:remCalc(123);
+    background-size: contain;
+    background-repeat:no-repeat;
+    z-index:1;
+    display:block;
+    margin: 0px auto;
+}
+
+.phantomjsLogo{
+    background-image:url('/images/phantomjsLogo.png');
+    width:remCalc(120);
+    height:remCalc(123);
+    background-size: cover;
+    background-repeat:no-repeat;
+    z-index:1;
+    display:block;
+    margin: 0px auto;
+}
+
+.pythonLogo{
+    background-image:url('/images/pythonDarkLogo.jpeg');
+    width:remCalc(121);
+    height:remCalc(154);
+    background-size: contain;
+    background-repeat:no-repeat;
+    z-index:1;
+    display:block;
+    margin: 0px auto;
+}
+
+.meredithLogo{
+    background-image:url('/images/meredithLogo.png');
+    width:remCalc(99);
+    height:remCalc(26);
+    background-size: cover;
+    background-repeat:no-repeat;
+    z-index:1;
+    display:block;
+    margin: 0px auto;
+    float:right;
+    position:relative;
+    bottom:remCalc(30);
+}
+
+#casperCard, #phantomCard, #pythonCard{
+    height:remCalc(154);
+}
+
+#aboutDescript{
+    width:80%;
+    margin:remCalc(16) auto;
+}
+

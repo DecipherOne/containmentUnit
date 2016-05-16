@@ -12,6 +12,7 @@
     border-radius: 5px;
     border: 1px solid;
     display: table;
+    text-align:center;
 }
 
 #linkCont{
@@ -32,9 +33,10 @@
 
 .wraithLogo{
     background-image:url('/images/wraithLogo.png');
-    width:188px;
-    height:190px;
+    width:remCalc(188);
+    height:remCalc(190);
     background-size: contain;
+    background-repeat:no-repeat;
     z-index:1;
     display:block;
     margin: 0px auto;

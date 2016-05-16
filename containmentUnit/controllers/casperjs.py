@@ -305,4 +305,12 @@ class CasperjsController(BaseController):
         proxyServerPort = 'http://localhost:'+ str(portManager.serverPort)
         serverReq.put('%s/proxy/%s/limit' % (proxyServerPort, self.myPort), payload)
         portManager.lock.release()
-        
+    
+    #Documentation Specific Stuff
+    @restrict("GET")
+    def about(self):
+        return render('/home/about.html')
+    
+    @restrict("GET")
+    def manaul(self):
+        return render('/home/manual.html')
