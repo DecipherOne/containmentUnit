@@ -514,6 +514,8 @@ class WraithController(BaseController):
         for i in d:
             if re.search(search,i):
                 f.write(link)
+            else:
+                f.write(i)
                 
         f.truncate()
         f.close()

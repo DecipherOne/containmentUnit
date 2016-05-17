@@ -21,7 +21,7 @@ include containmentUnit\templates\*
 include containmentUnit\templates\common\*
 include containmentUnit\templates\create\*
 include containmentUnit\templates\details\*
-include containmentUnit\include templates\display\*
+include containmentUnit\templates\display\*
 include containmentUnit\templates\histogram\*
 include containmentUnit\templates\home\*
 include containmentUnit\templates\home\CasperScripts\*

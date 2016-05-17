@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='containmentUnit',
-    version='1.0.10',
+    version='1.0.14',
     description='A collection of front end performance measurement tools.',
     long_description="Web Interfaces and unification of Wraith Image Regression,Har Storage, and running casperjs scripts",
     author='Will Canada',
